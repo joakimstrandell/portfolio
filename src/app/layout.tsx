@@ -27,7 +27,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Link href="/" className="absolute top-0 left-0 z-30 m-6 inline-block">
+          <Link href="/" className="fixed top-0 left-0 z-30 m-6 inline-block">
             <div className="bg-accent flex h-12 w-12 items-end justify-end p-1">
               <Signature className="h-6" />
             </div>
@@ -37,7 +37,7 @@ export default function RootLayout({
               <Navigation />
             </PageContent>
           </div>
-          <div className="from-background absolute top-0 left-0 z-10 h-38 w-full bg-gradient-to-b via-black to-transparent" />
+          <div className="from-background fixed top-0 left-0 z-10 h-38 w-full bg-gradient-to-b to-transparent" />
           {children}
         </ThemeProvider>
       </body>

@@ -4,11 +4,9 @@ export default function Blog() {
   return (
     <Page>
       <PageContent>
-        <main>
-          <h1>Blog</h1>
-          <p>This is a placeholder for the blog page.</p>
-          <p>Add your content here.</p>
-        </main>
+        <h1>Blog</h1>
+        <p>This is a placeholder for the blog page.</p>
+        <p>Add your content here.</p>
       </PageContent>
     </Page>
   );

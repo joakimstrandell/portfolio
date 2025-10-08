@@ -128,7 +128,7 @@ body {
   }
 
   h2 {
-    @apply text-2xl font-bold;
+    @apply mb-4 text-2xl font-bold;
   }
 
   p {

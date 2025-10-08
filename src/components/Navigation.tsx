@@ -5,8 +5,6 @@ import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
 export default function Navigation() {
-  const pathname = usePathname();
-
   return (
     <nav>
       <ul className="flex gap-8 text-sm leading-none">

@@ -1,11 +1,11 @@
-import AnimateContentOnScroll from '@/components/AnimateContentOnScroll';
+import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 
 export default function About() {
   return (
     <Page>
       <PageContent>
-        <AnimateContentOnScroll>
+        <AnimateContent>
           <h1>About</h1>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
@@ -26,8 +26,8 @@ export default function About() {
             veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
             consequatur.
           </p>
-        </AnimateContentOnScroll>
-        <AnimateContentOnScroll>
+        </AnimateContent>
+        <AnimateContent>
           <h2>Skills</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
@@ -48,8 +48,8 @@ export default function About() {
             veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
             consequatur.
           </p>
-        </AnimateContentOnScroll>
-        <AnimateContentOnScroll>
+        </AnimateContent>
+        <AnimateContent>
           <h2>Experience</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
@@ -70,7 +70,7 @@ export default function About() {
             veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
             consequatur.
           </p>
-        </AnimateContentOnScroll>
+        </AnimateContent>
       </PageContent>
     </Page>
   );

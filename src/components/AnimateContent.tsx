@@ -46,7 +46,7 @@ export default function AnimateContent({
 
     // If element is already visible, animate it with sequence delay
     if (isInViewport) {
-      // Find all AnimateContentOnScroll elements in viewport and sort by position
+      // Find all AnimateContent elements in viewport and sort by position
       const allElements = document.querySelectorAll('[data-animate-content]');
       const visibleElements = Array.from(allElements)
         .filter((el) => {

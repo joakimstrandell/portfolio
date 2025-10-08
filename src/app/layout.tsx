@@ -25,7 +25,6 @@ export default function RootLayout({
       <body className={`${robotoMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <HeaderNavigation />
-          <div className="from-background fixed top-0 left-0 z-10 h-38 w-full bg-gradient-to-b to-transparent" />
           {children}
         </ThemeProvider>
       </body>

@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 export default function Navigation() {
   return (
     <nav>
-      <ul className="flex gap-8 text-sm leading-none">
+      <ul className="flex gap-6 text-sm leading-none">
         <Navigation.Item href="/about">About</Navigation.Item>
         <Navigation.Item href="/work">Work</Navigation.Item>
         <Navigation.Item href="/blog">Blog</Navigation.Item>
@@ -28,7 +28,9 @@ Navigation.Item = function NavigationItem({ href, children }: { href: string; ch
         'text-muted-foreground': !isActive,
       })}
     >
-      <Link href={href}>{children}</Link>
+      <Link href={href} className="p-1">
+        {children}
+      </Link>
     </li>
   );
 };

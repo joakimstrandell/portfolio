@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { getCssVariable, getRGB } from '@/lib/utils';
 
 interface GridBackgroundProps {
   cellSize?: number;
@@ -88,52 +89,17 @@ export default function GridBackground({ cellSize = 24, fadeRate = 0.015, maxCel
       cellsToRemove.forEach((key) => activeCellsRef.current.delete(key));
     };
 
-    // Get CSS custom properties for colors
-    const getColors = () => {
-      const computedStyle = getComputedStyle(document.documentElement);
-
-      // Convert CSS color to hex for Canvas compatibility
-      const cssToHex = (cssColor: string): string => {
-        if (!cssColor) return '#3b82f6'; // fallback
-
-        // Create a temporary element to compute the color
-        const tempDiv = document.createElement('div');
-        tempDiv.style.color = cssColor;
-        document.body.appendChild(tempDiv);
-
-        const computedColor = getComputedStyle(tempDiv).color;
-        document.body.removeChild(tempDiv);
-
-        // Convert rgb/rgba to hex
-        const rgbMatch = computedColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-        if (rgbMatch) {
-          const r = parseInt(rgbMatch[1]);
-          const g = parseInt(rgbMatch[2]);
-          const b = parseInt(rgbMatch[3]);
-          return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-        }
-
-        return '#3b82f6'; // fallback
-      };
-
-      return {
-        gridColor: cssToHex(computedStyle.getPropertyValue('--border').trim()) || '#fff',
-        highlightColor: cssToHex(computedStyle.getPropertyValue('--accent').trim()) || '#fff',
-      };
-    };
-
     // Draw the grid
     const drawGrid = () => {
       const { width, height } = canvas;
-      const colors = getColors();
 
       // Clear canvas
       ctx.clearRect(0, 0, width, height);
 
       // Set grid line style
-      ctx.strokeStyle = colors.gridColor;
+      ctx.strokeStyle = getRGB(getCssVariable('--foreground')) || '';
       ctx.lineWidth = 0.5;
-      ctx.globalAlpha = 0.3;
+      ctx.globalAlpha = 0.15;
 
       // Draw vertical lines
       for (let x = 0; x <= width; x += cellSize) {
@@ -157,20 +123,9 @@ export default function GridBackground({ cellSize = 24, fadeRate = 0.015, maxCel
 
     // Draw active cells
     const drawCells = () => {
-      const colors = getColors();
-
-      // Convert hex to rgba for opacity
-      const hexToRgba = (hex: string, alpha: number): string => {
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-      };
-
       // Draw each active cell
       activeCellsRef.current.forEach((cell) => {
-        const alpha = cell.intensity * 0.3; // Max opacity of 30%
-        ctx.fillStyle = hexToRgba(colors.highlightColor, alpha);
+        ctx.fillStyle = getRGB(getCssVariable('--foreground'), cell.intensity * 0.2) || '';
         ctx.globalAlpha = 1;
 
         // Draw cell with slight padding for better visual effect

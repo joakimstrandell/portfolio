@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <GridBackground />
+          <GridBackground enableGame={true} />
           <HeaderNavigation />
           {children}
         </ThemeProvider>

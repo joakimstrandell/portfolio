@@ -1,6 +1,7 @@
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
       <PageContent className="flex flex-1 items-center">
         <div>
           <AnimateContent>
-            <h1>Hi! My name is Joakim</h1>
+            <h1>Hej! My name is Joakim</h1>
           </AnimateContent>
           <AnimateContent>
             <p className="text-lg">
@@ -18,9 +19,15 @@ export default function Home() {
             </p>
           </AnimateContent>
           <AnimateContent>
-            <div className="mt-8 flex gap-6">
-              <Button>About</Button>
-              <Button>Work</Button>
+            <div className="mt-8 flex items-center gap-8">
+              <Link href="/about">
+                <Button size="lg">Read more</Button>
+              </Link>
+              <Link href="/work">
+                <Button size="lg" variant="outline">
+                  Play a game
+                </Button>
+              </Link>
             </div>
           </AnimateContent>
         </div>

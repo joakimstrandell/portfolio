@@ -25,7 +25,7 @@ export default function Home() {
               </Link>
               <Link href="/work">
                 <Button size="lg" variant="outline">
-                  Play a game
+                  View work
                 </Button>
               </Link>
             </div>

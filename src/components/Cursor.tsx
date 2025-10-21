@@ -2,91 +2,222 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-export function CustomCursor() {
-  const ref = useRef<HTMLDivElement>(null);
-  const pos = useRef({ x: 0, y: 0 });
+// Constants
+const CURSOR_OFFSET = 2;
+const ACTIVATE_SCALE = 10;
+const ACTIVATE_DURATION = 0.25;
+const EASING = 'power3.out';
+const INTERACTIVE_SELECTORS = "a, button, [data-cursor='active']";
 
-  useEffect(() => {
-    const el = ref.current!;
+// Types
+interface CursorPosition {
+  x: number;
+  y: number;
+}
+
+// Custom hook for cursor positioning logic
+function useCursorPosition() {
+  const pos = useRef<CursorPosition>({ x: 0, y: 0 });
+  const isFirstMove = useRef(true);
+
+  const handleMove = (e: MouseEvent) => {
     const state = pos.current;
 
-    // Initialize position to center of screen as fallback
-    state.x = window.innerWidth / 2;
-    state.y = window.innerHeight / 2;
+    state.x = e.clientX;
+    state.y = e.clientY;
+
+    // First mouse move
+    if (isFirstMove.current) {
+      isFirstMove.current = false;
+      return { isFirstMove: true, x: state.x, y: state.y };
+    }
+
+    // Subsequent moves
+    return { isFirstMove: false, x: state.x, y: state.y };
+  };
+
+  return { handleMove };
+}
+
+// Custom hook for cursor animations
+function useCursorAnimations(elementRef: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = elementRef.current;
+    if (!el) return;
 
     // Hide cursor initially
     gsap.set(el, { opacity: 0 });
+  }, [elementRef]);
 
-    // Track if this is the first mouse move
-    let isFirstMove = true;
+  const animateToPosition = (x: number, y: number, isFirstMove: boolean) => {
+    const el = elementRef.current;
+    if (!el) return;
 
-    const move = (e: MouseEvent) => {
-      if (isFirstMove) {
-        // First mouse move - show cursor at actual position
-        state.x = e.clientX;
-        state.y = e.clientY;
-        gsap.set(el, {
-          x: state.x - 2,
-          y: state.y - 2,
-          opacity: 1,
-        });
-        isFirstMove = false;
-      } else {
-        // Subsequent moves - instant follow
-        gsap.to(state, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0,
-          ease: 'power3.out',
-          onUpdate: () => {
-            gsap.set(el, { x: state.x - 2, y: state.y - 2 });
-          },
-        });
-      }
+    if (isFirstMove) {
+      // First move - show cursor at actual position
+      gsap.set(el, {
+        x: x - CURSOR_OFFSET,
+        y: y - CURSOR_OFFSET,
+        opacity: 1,
+      });
+    } else {
+      // Subsequent moves - instant follow
+      gsap.to(el, {
+        x: x - CURSOR_OFFSET,
+        y: y - CURSOR_OFFSET,
+        duration: 0,
+        ease: EASING,
+      });
+    }
+  };
+
+  return { animateToPosition };
+}
+
+// Custom hook for mouse tracking and animation
+function useCursorTracking(
+  handleMove: (e: MouseEvent) => { isFirstMove: boolean; x: number; y: number },
+  animateToPosition: (x: number, y: number, isFirstMove: boolean) => void,
+) {
+  useEffect(() => {
+    const moveHandler = (e: MouseEvent) => {
+      const { isFirstMove, x, y } = handleMove(e);
+      animateToPosition(x, y, isFirstMove);
     };
 
-    window.addEventListener('pointermove', move);
+    window.addEventListener('pointermove', moveHandler);
+
+    return () => {
+      window.removeEventListener('pointermove', moveHandler);
+    };
+  }, [handleMove, animateToPosition]);
+}
+
+// Custom hook for hover/focus interactions
+function useCursorInteractions(elementRef: React.RefObject<HTMLDivElement | null>) {
+  useEffect(() => {
+    const el = elementRef.current;
+    if (!el) return;
+
+    // Create a timeline for smooth animation control
+    const tl = gsap.timeline({ paused: true });
+
+    // Set up the animation timeline
+    tl.to(el, {
+      scale: ACTIVATE_SCALE,
+      backgroundColor: 'var(--accent)',
+      duration: ACTIVATE_DURATION,
+      ease: EASING,
+    });
 
     // Morph shape on interactive hover
     const activate = () => {
-      gsap.to(el, {
-        scale: 10,
-        backgroundColor: 'var(--accent)',
-        duration: 0.25,
-        ease: 'power3.out',
-      });
+      tl.play();
     };
 
     const deactivate = () => {
-      gsap.to(el, {
-        scale: 1,
-        backgroundColor: 'var(--accent)',
-        duration: 0.3,
-        ease: 'power3.out',
-      });
+      tl.reverse();
     };
 
-    // Observe all links/buttons/[data-cursor='active']
-    const targets = document.querySelectorAll("a, button, [data-cursor='active']");
+    // Function to attach event listeners to elements
+    const attachListeners = (target: Element) => {
+      target.addEventListener('mouseenter', activate);
+      target.addEventListener('mouseleave', deactivate);
+      target.addEventListener('focus', activate);
+      target.addEventListener('blur', deactivate);
+    };
 
-    targets.forEach((t) => {
-      t.addEventListener('mouseenter', activate);
-      t.addEventListener('mouseleave', deactivate);
-      t.addEventListener('focus', activate);
-      t.addEventListener('blur', deactivate);
+    // Function to remove event listeners from elements
+    const removeListeners = (target: Element) => {
+      target.removeEventListener('mouseenter', activate);
+      target.removeEventListener('mouseleave', deactivate);
+      target.removeEventListener('focus', activate);
+      target.removeEventListener('blur', deactivate);
+    };
+
+    // Track elements that already have listeners attached
+    const attachedElements = new Set<Element>();
+
+    // Function to safely attach listeners (avoid duplicates)
+    const safeAttachListeners = (target: Element) => {
+      if (!attachedElements.has(target)) {
+        attachListeners(target);
+        attachedElements.add(target);
+      }
+    };
+
+    // Function to safely remove listeners
+    const safeRemoveListeners = (target: Element) => {
+      if (attachedElements.has(target)) {
+        removeListeners(target);
+        attachedElements.delete(target);
+      }
+    };
+
+    // Initially attach listeners to existing elements
+    const initialTargets = document.querySelectorAll(INTERACTIVE_SELECTORS);
+    initialTargets.forEach(safeAttachListeners);
+
+    // Set up MutationObserver to watch for new interactive elements
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        // Handle added nodes
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as Element;
+
+            // Check if the added element itself matches our selectors
+            if (element.matches && element.matches(INTERACTIVE_SELECTORS)) {
+              safeAttachListeners(element);
+            }
+
+            // Check for interactive elements within the added node
+            const interactiveChildren = element.querySelectorAll?.(INTERACTIVE_SELECTORS);
+            interactiveChildren?.forEach(safeAttachListeners);
+          }
+        });
+
+        // Handle removed nodes
+        mutation.removedNodes.forEach((node) => {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const element = node as Element;
+
+            // Remove listeners from the removed element
+            if (element.matches && element.matches(INTERACTIVE_SELECTORS)) {
+              safeRemoveListeners(element);
+            }
+
+            // Remove listeners from interactive children
+            const interactiveChildren = element.querySelectorAll?.(INTERACTIVE_SELECTORS);
+            interactiveChildren?.forEach(safeRemoveListeners);
+          }
+        });
+      });
+    });
+
+    // Start observing
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
     });
 
     return () => {
-      window.removeEventListener('pointermove', move);
+      // Clean up initial targets
+      initialTargets.forEach(safeRemoveListeners);
 
-      targets.forEach((t) => {
-        t.removeEventListener('mouseenter', activate);
-        t.removeEventListener('mouseleave', deactivate);
-        t.removeEventListener('focus', activate);
-        t.removeEventListener('blur', deactivate);
-      });
+      // Stop observing
+      observer.disconnect();
     };
-  }, []);
+  }, [elementRef]);
+}
+
+export function CustomCursor() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { handleMove } = useCursorPosition();
+  const { animateToPosition } = useCursorAnimations(ref);
+
+  useCursorTracking(handleMove, animateToPosition);
+  useCursorInteractions(ref);
 
   return (
     <div

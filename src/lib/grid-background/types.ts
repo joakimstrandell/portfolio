@@ -37,6 +37,7 @@ export interface GridBackgroundConfig {
 
 export interface CellManager {
   addCell: (x: number, y: number) => void;
+  addCellsAlongPath: (x0: number, y0: number, x1: number, y1: number) => void;
   updateCells: (fadeRate: number) => void;
   getCells: () => ReadonlyMap<string, CellState>;
   clear: () => void;
@@ -57,6 +58,7 @@ export interface GridBackgroundController {
   start: () => void;
   stop: () => void;
   handleMouseMove: (x: number, y: number) => void;
+  handleMouseLeave: () => void;
   resize: (width: number, height: number) => void;
   destroy: () => void;
 }

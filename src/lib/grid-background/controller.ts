@@ -1,4 +1,4 @@
-import type { GridBackgroundConfig, GridBackgroundController } from './types';
+import type { GridBackgroundConfig, GridBackgroundController, CellState } from './types';
 import { createCellManager } from './cellManager';
 import { createGameManager } from './gameManager';
 import { drawGrid, drawCells, drawDot, clearCanvas } from './gridRenderer';
@@ -26,6 +26,7 @@ export const createGridBackgroundController = (
   let canvasWidth = canvas.width;
   let canvasHeight = canvas.height;
   let isOverInteractiveElement = false;
+  let isFirstMouseMove = true;
 
   // Helper to get cell key from position
   const getCellKey = (x: number, y: number): string => `${Math.floor(x / cellSize)},${Math.floor(y / cellSize)}`;
@@ -46,7 +47,7 @@ export const createGridBackgroundController = (
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
     // Get foreground color from CSS variable
-    const foregroundRGB = getRGB(getCssVariable('--foreground')) || 'rgb(0, 0, 0)';
+    const foregroundRGB = getRGB(getCssVariable('--accent')) || 'rgb(0, 0, 0)';
 
     // Draw grid
     drawGrid(ctx, canvasWidth, canvasHeight, cellSize, foregroundRGB);
@@ -128,7 +129,15 @@ export const createGridBackgroundController = (
     });
 
     // Store references for cleanup
-    (window as any).__gridInteractiveListeners = { handleMouseEnter, handleMouseLeave, interactiveElements };
+    (
+      window as unknown as {
+        __gridInteractiveListeners?: {
+          handleMouseEnter: (e: Event) => void;
+          handleMouseLeave: (e: Event) => void;
+          interactiveElements: NodeListOf<Element>;
+        };
+      }
+    ).__gridInteractiveListeners = { handleMouseEnter, handleMouseLeave, interactiveElements };
 
     animate();
   };
@@ -154,8 +163,15 @@ export const createGridBackgroundController = (
 
     // Only add cells if not over an interactive element
     if (!isOverInteractiveElement) {
-      // Simple approach: just add cell at current position
-      cellManager.addCell(x, y);
+      // Skip path animation on first mouse move (prevents line from top-left on page load)
+      if (isFirstMouseMove) {
+        cellManager.addCell(x, y);
+        isFirstMouseMove = false;
+      } else {
+        // Add cells along the path from previous to current position
+        // This prevents skipping cells during fast cursor movement
+        cellManager.addCellsAlongPath(prevPos.x, prevPos.y, x, y);
+      }
     }
 
     // Always check for dot collection regardless of interactive elements
@@ -163,7 +179,7 @@ export const createGridBackgroundController = (
       // Create collection effect (flash the cell)
       const dot = gameManager.getDot();
       if (dot) {
-        const cells = cellManager.getCells() as Map<string, any>;
+        const cells = cellManager.getCells() as Map<string, CellState>;
         const cellKey = getCellKey(dot.x, dot.y);
 
         // Add intense flash at collection point
@@ -182,6 +198,14 @@ export const createGridBackgroundController = (
     previousMousePos = newPos;
   };
 
+  const handleMouseLeave = (): void => {
+    // Clear all cells when cursor leaves the document
+    cellManager.clear();
+    cellManager.clearHoverCell();
+    // Reset first mouse move flag so no path animation occurs on re-enter
+    isFirstMouseMove = true;
+  };
+
   const resize = (width: number, height: number): void => {
     canvas.width = width;
     canvas.height = height;
@@ -194,13 +218,29 @@ export const createGridBackgroundController = (
     cellManager.clear();
 
     // Clean up interactive element listeners
-    const listeners = (window as any).__gridInteractiveListeners;
+    const listeners = (
+      window as unknown as {
+        __gridInteractiveListeners?: {
+          handleMouseEnter: (e: Event) => void;
+          handleMouseLeave: (e: Event) => void;
+          interactiveElements: NodeListOf<Element>;
+        };
+      }
+    ).__gridInteractiveListeners;
     if (listeners) {
       listeners.interactiveElements.forEach((element: Element) => {
         element.removeEventListener('mouseenter', listeners.handleMouseEnter);
         element.removeEventListener('mouseleave', listeners.handleMouseLeave);
       });
-      delete (window as any).__gridInteractiveListeners;
+      delete (
+        window as unknown as {
+          __gridInteractiveListeners?: {
+            handleMouseEnter: (e: Event) => void;
+            handleMouseLeave: (e: Event) => void;
+            interactiveElements: NodeListOf<Element>;
+          };
+        }
+      ).__gridInteractiveListeners;
     }
   };
 
@@ -208,6 +248,7 @@ export const createGridBackgroundController = (
     start,
     stop,
     handleMouseMove,
+    handleMouseLeave,
     resize,
     destroy,
   };

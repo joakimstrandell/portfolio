@@ -63,8 +63,14 @@ export default function GridBackground({
       controller.handleMouseMove(e.clientX, e.clientY);
     };
 
+    // Handle mouse leave (when cursor leaves the document)
+    const handleMouseLeave = () => {
+      controller.handleMouseLeave();
+    };
+
     window.addEventListener('resize', handleResize);
     window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
 
     // Start animation
     controller.start();
@@ -73,6 +79,7 @@ export default function GridBackground({
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       controller.destroy();
     };
   }, [cellSize, fadeRate, maxCells, enableGame, dotColor, onScoreChange]);

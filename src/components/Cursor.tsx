@@ -4,23 +4,45 @@ import gsap from 'gsap';
 
 export function CustomCursor() {
   const ref = useRef<HTMLDivElement>(null);
-  const pos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+  const pos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const el = ref.current!;
     const state = pos.current;
 
-    // Smooth follow
+    // Initialize position to center of screen as fallback
+    state.x = window.innerWidth / 2;
+    state.y = window.innerHeight / 2;
+
+    // Hide cursor initially
+    gsap.set(el, { opacity: 0 });
+
+    // Track if this is the first mouse move
+    let isFirstMove = true;
+
     const move = (e: MouseEvent) => {
-      gsap.to(state, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0,
-        ease: 'power3.out',
-        onUpdate: () => {
-          gsap.set(el, { x: state.x - 2, y: state.y - 2 });
-        },
-      });
+      if (isFirstMove) {
+        // First mouse move - show cursor at actual position
+        state.x = e.clientX;
+        state.y = e.clientY;
+        gsap.set(el, {
+          x: state.x - 2,
+          y: state.y - 2,
+          opacity: 1,
+        });
+        isFirstMove = false;
+      } else {
+        // Subsequent moves - instant follow
+        gsap.to(state, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0,
+          ease: 'power3.out',
+          onUpdate: () => {
+            gsap.set(el, { x: state.x - 2, y: state.y - 2 });
+          },
+        });
+      }
     };
 
     window.addEventListener('pointermove', move);
@@ -69,7 +91,7 @@ export function CustomCursor() {
   return (
     <div
       ref={ref}
-      className="bg-accent pointer-events-none fixed top-0 left-0 z-[9999] h-1 w-1 rounded-full mix-blend-difference transition-transform duration-200 ease-out"
+      className="bg-accent pointer-events-none fixed top-0 left-0 z-[9999] h-1 w-1 rounded-full mix-blend-difference"
     />
   );
 }

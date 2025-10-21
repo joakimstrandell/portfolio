@@ -25,6 +25,7 @@ export const createGridBackgroundController = (
   let previousMousePos = { x: 0, y: 0 };
   let canvasWidth = canvas.width;
   let canvasHeight = canvas.height;
+  let isOverInteractiveElement = false;
 
   // Helper to get cell key from position
   const getCellKey = (x: number, y: number): string => `${Math.floor(x / cellSize)},${Math.floor(y / cellSize)}`;
@@ -73,6 +74,62 @@ export const createGridBackgroundController = (
       gameManager.spawnDot(canvasWidth, canvasHeight);
     }
 
+    // Set up mouse enter/leave listeners for interactive elements
+    const handleMouseEnter = (e: Event) => {
+      const target = e.target as Element;
+      if (
+        target &&
+        (target.tagName === 'BUTTON' ||
+          target.tagName === 'A' ||
+          target.tagName === 'INPUT' ||
+          target.tagName === 'SELECT' ||
+          target.tagName === 'TEXTAREA' ||
+          getComputedStyle(target).cursor === 'pointer' ||
+          target.closest('button') ||
+          target.closest('a') ||
+          target.closest('input') ||
+          target.closest('select') ||
+          target.closest('textarea') ||
+          (target.hasAttribute('role') && target.getAttribute('role') === 'button'))
+      ) {
+        isOverInteractiveElement = true;
+        cellManager.clearHoverCell();
+      }
+    };
+
+    const handleMouseLeave = (e: Event) => {
+      const target = e.target as Element;
+      if (
+        target &&
+        (target.tagName === 'BUTTON' ||
+          target.tagName === 'A' ||
+          target.tagName === 'INPUT' ||
+          target.tagName === 'SELECT' ||
+          target.tagName === 'TEXTAREA' ||
+          getComputedStyle(target).cursor === 'pointer' ||
+          target.closest('button') ||
+          target.closest('a') ||
+          target.closest('input') ||
+          target.closest('select') ||
+          target.closest('textarea') ||
+          (target.hasAttribute('role') && target.getAttribute('role') === 'button'))
+      ) {
+        isOverInteractiveElement = false;
+      }
+    };
+
+    // Add listeners to all interactive elements
+    const interactiveElements = document.querySelectorAll(
+      'button, a, input, select, textarea, [role="button"], [style*="cursor: pointer"]',
+    );
+    interactiveElements.forEach((element) => {
+      element.addEventListener('mouseenter', handleMouseEnter);
+      element.addEventListener('mouseleave', handleMouseLeave);
+    });
+
+    // Store references for cleanup
+    (window as any).__gridInteractiveListeners = { handleMouseEnter, handleMouseLeave, interactiveElements };
+
     animate();
   };
 
@@ -88,41 +145,38 @@ export const createGridBackgroundController = (
     const newPos = { x, y };
     const prevPos = previousMousePos;
 
-    // Calculate distance between previous and new position
-    const distance = Math.sqrt(Math.pow(newPos.x - prevPos.x, 2) + Math.pow(newPos.y - prevPos.y, 2));
+    // Only update hover cell if not over an interactive element
+    if (!isOverInteractiveElement) {
+      cellManager.setHoverCell(x, y);
+    } else {
+      cellManager.clearHoverCell();
+    }
 
-    if (distance > 0) {
-      // Calculate how many cells to add based on distance
-      const steps = Math.max(1, Math.ceil(distance / (cellSize / 2)));
+    // Only add cells if not over an interactive element
+    if (!isOverInteractiveElement) {
+      // Simple approach: just add cell at current position
+      cellManager.addCell(x, y);
+    }
 
-      for (let i = 0; i <= steps; i++) {
-        const t = i / steps;
-        const interpolatedX = prevPos.x + (newPos.x - prevPos.x) * t;
-        const interpolatedY = prevPos.y + (newPos.y - prevPos.y) * t;
+    // Always check for dot collection regardless of interactive elements
+    if (gameManager.isEnabled() && gameManager.checkCollection(x, y)) {
+      // Create collection effect (flash the cell)
+      const dot = gameManager.getDot();
+      if (dot) {
+        const cells = cellManager.getCells() as Map<string, any>;
+        const cellKey = getCellKey(dot.x, dot.y);
 
-        cellManager.addCell(interpolatedX, interpolatedY);
-
-        // Check for dot collection along the path
-        if (gameManager.isEnabled() && gameManager.checkCollection(interpolatedX, interpolatedY)) {
-          // Create collection effect (flash the cell)
-          const dot = gameManager.getDot();
-          if (dot) {
-            const cells = cellManager.getCells() as Map<string, any>;
-            const cellKey = getCellKey(dot.x, dot.y);
-
-            // Add intense flash at collection point
-            cells.set(cellKey, {
-              x: Math.floor(dot.x / cellSize) * cellSize,
-              y: Math.floor(dot.y / cellSize) * cellSize,
-              intensity: 2.0, // Extra bright for flash effect
-              timestamp: Date.now(),
-            });
-          }
-
-          // Spawn new dot
-          gameManager.spawnDot(canvasWidth, canvasHeight);
-        }
+        // Add intense flash at collection point
+        cells.set(cellKey, {
+          x: Math.floor(dot.x / cellSize) * cellSize,
+          y: Math.floor(dot.y / cellSize) * cellSize,
+          intensity: 2.0, // Extra bright for flash effect
+          timestamp: Date.now(),
+        });
       }
+
+      // Spawn new dot
+      gameManager.spawnDot(canvasWidth, canvasHeight);
     }
 
     previousMousePos = newPos;
@@ -138,6 +192,16 @@ export const createGridBackgroundController = (
   const destroy = (): void => {
     stop();
     cellManager.clear();
+
+    // Clean up interactive element listeners
+    const listeners = (window as any).__gridInteractiveListeners;
+    if (listeners) {
+      listeners.interactiveElements.forEach((element: Element) => {
+        element.removeEventListener('mouseenter', listeners.handleMouseEnter);
+        element.removeEventListener('mouseleave', listeners.handleMouseLeave);
+      });
+      delete (window as any).__gridInteractiveListeners;
+    }
   };
 
   return {

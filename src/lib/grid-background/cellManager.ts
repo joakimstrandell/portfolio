@@ -2,6 +2,7 @@ import type { CellState, CellManager } from './types';
 
 export const createCellManager = (maxCells: number, cellSize: number): CellManager => {
   const cells = new Map<string, CellState>();
+  let currentHoverCellKey: string | null = null;
 
   const getCellKey = (x: number, y: number): string => `${Math.floor(x / cellSize)},${Math.floor(y / cellSize)}`;
 
@@ -43,9 +44,14 @@ export const createCellManager = (maxCells: number, cellSize: number): CellManag
     const cellsToRemove: string[] = [];
 
     cells.forEach((cell, key) => {
-      cell.intensity -= fadeRate;
-      if (cell.intensity <= 0) {
-        cellsToRemove.push(key);
+      // Keep hovered cell at full intensity
+      if (key === currentHoverCellKey) {
+        cell.intensity = 1.0;
+      } else {
+        cell.intensity -= fadeRate;
+        if (cell.intensity <= 0) {
+          cellsToRemove.push(key);
+        }
       }
     });
 
@@ -59,10 +65,20 @@ export const createCellManager = (maxCells: number, cellSize: number): CellManag
     cells.clear();
   };
 
+  const setHoverCell = (x: number, y: number): void => {
+    currentHoverCellKey = getCellKey(x, y);
+  };
+
+  const clearHoverCell = (): void => {
+    currentHoverCellKey = null;
+  };
+
   return {
     addCell,
     updateCells,
     getCells,
     clear,
+    setHoverCell,
+    clearHoverCell,
   };
 };

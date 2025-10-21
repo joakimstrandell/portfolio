@@ -40,6 +40,8 @@ export interface CellManager {
   updateCells: (fadeRate: number) => void;
   getCells: () => ReadonlyMap<string, CellState>;
   clear: () => void;
+  setHoverCell: (x: number, y: number) => void;
+  clearHoverCell: () => void;
 }
 
 export interface GameManager {

@@ -19,6 +19,7 @@ interface CursorPosition {
 function useCursorPosition() {
   const pos = useRef<CursorPosition>({ x: 0, y: 0 });
   const isFirstMove = useRef(true);
+  const isVisible = useRef(true);
 
   const handleMove = (e: MouseEvent) => {
     const state = pos.current;
@@ -26,9 +27,10 @@ function useCursorPosition() {
     state.x = e.clientX;
     state.y = e.clientY;
 
-    // First mouse move
-    if (isFirstMove.current) {
+    // First mouse move or re-entering after leaving
+    if (isFirstMove.current || !isVisible.current) {
       isFirstMove.current = false;
+      isVisible.current = true;
       return { isFirstMove: true, x: state.x, y: state.y };
     }
 
@@ -36,7 +38,15 @@ function useCursorPosition() {
     return { isFirstMove: false, x: state.x, y: state.y };
   };
 
-  return { handleMove };
+  const handleLeave = () => {
+    isVisible.current = false;
+  };
+
+  const handleEnter = () => {
+    isVisible.current = true;
+  };
+
+  return { handleMove, handleLeave, handleEnter, isVisible, pos };
 }
 
 // Custom hook for cursor animations
@@ -71,13 +81,34 @@ function useCursorAnimations(elementRef: React.RefObject<HTMLDivElement | null>)
     }
   };
 
-  return { animateToPosition };
+  const hideCursor = () => {
+    const el = elementRef.current;
+    if (!el) return;
+    gsap.to(el, { opacity: 0, duration: 0.2 });
+  };
+
+  const showCursor = (x: number, y: number) => {
+    const el = elementRef.current;
+    if (!el) return;
+    gsap.set(el, {
+      x: x - CURSOR_OFFSET,
+      y: y - CURSOR_OFFSET,
+      opacity: 1,
+    });
+  };
+
+  return { animateToPosition, hideCursor, showCursor };
 }
 
 // Custom hook for mouse tracking and animation
 function useCursorTracking(
   handleMove: (e: MouseEvent) => { isFirstMove: boolean; x: number; y: number },
   animateToPosition: (x: number, y: number, isFirstMove: boolean) => void,
+  handleLeave: () => void,
+  handleEnter: () => void,
+  hideCursor: () => void,
+  showCursor: (x: number, y: number) => void,
+  pos: React.RefObject<CursorPosition>,
 ) {
   useEffect(() => {
     const moveHandler = (e: MouseEvent) => {
@@ -85,12 +116,29 @@ function useCursorTracking(
       animateToPosition(x, y, isFirstMove);
     };
 
+    const leaveHandler = () => {
+      handleLeave();
+      hideCursor();
+    };
+
+    const enterHandler = () => {
+      handleEnter();
+      // Show cursor at the stored position
+      if (pos.current) {
+        showCursor(pos.current.x, pos.current.y);
+      }
+    };
+
     window.addEventListener('pointermove', moveHandler);
+    document.addEventListener('mouseleave', leaveHandler);
+    document.addEventListener('mouseenter', enterHandler);
 
     return () => {
       window.removeEventListener('pointermove', moveHandler);
+      document.removeEventListener('mouseleave', leaveHandler);
+      document.removeEventListener('mouseenter', enterHandler);
     };
-  }, [handleMove, animateToPosition]);
+  }, [handleMove, animateToPosition, handleLeave, handleEnter, hideCursor, showCursor, pos]);
 }
 
 // Custom hook for hover/focus interactions
@@ -213,16 +261,16 @@ function useCursorInteractions(elementRef: React.RefObject<HTMLDivElement | null
 
 export function CustomCursor() {
   const ref = useRef<HTMLDivElement>(null);
-  const { handleMove } = useCursorPosition();
-  const { animateToPosition } = useCursorAnimations(ref);
+  const { handleMove, handleLeave, handleEnter, pos } = useCursorPosition();
+  const { animateToPosition, hideCursor, showCursor } = useCursorAnimations(ref);
 
-  useCursorTracking(handleMove, animateToPosition);
+  useCursorTracking(handleMove, animateToPosition, handleLeave, handleEnter, hideCursor, showCursor, pos);
   useCursorInteractions(ref);
 
   return (
     <div
       ref={ref}
-      className="bg-accent pointer-events-none fixed top-0 left-0 z-[9999] h-1 w-1 rounded-full mix-blend-difference"
+      className="bg-accent pointer-events-none fixed top-0 left-0 z-[9999] h-1 w-1 rounded-full opacity-0 mix-blend-difference"
     />
   );
 }

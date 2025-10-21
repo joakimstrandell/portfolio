@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import HeaderNavigation from '@/components/HeaderNavigation';
 import GridBackground from '@/components/GridBackground';
+import { CustomCursor } from '@/components/Cursor';
 
 const robotoMono = Roboto_Mono({
   variable: '--font-roboto-mono',
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={`${robotoMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <GridBackground enableGame={true} />
+          <CustomCursor />
           <HeaderNavigation />
           {children}
         </ThemeProvider>

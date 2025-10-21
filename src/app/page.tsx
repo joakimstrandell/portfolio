@@ -1,5 +1,6 @@
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
+import { TileButton } from '@/components/TileButton';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -28,6 +29,7 @@ export default function Home() {
                   View work
                 </Button>
               </Link>
+              <TileButton fromCursor={true}>Center ripple</TileButton>
             </div>
           </AnimateContent>
         </div>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
@@ -44,21 +43,44 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   }) {
-  const Comp = asChild ? Slot : 'button';
+  if (asChild) {
+    const child = React.Children.only(children) as React.ReactElement<{
+      className?: string;
+      children?: React.ReactNode;
+    }>;
+    const mergedClassName = cn(buttonVariants({ variant, size, className }), child.props.className);
+
+    return React.cloneElement(
+      child,
+      {
+        ...props,
+        className: mergedClassName,
+      },
+      <ButtonContent>{child.props.children}</ButtonContent>,
+    );
+  }
 
   return (
-    <Comp data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props}>
+    <button data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props}>
+      <ButtonContent>{children}</ButtonContent>
+    </button>
+  );
+}
+
+function ButtonContent({ children }: { children: React.ReactNode }) {
+  return (
+    <>
       <span className="absolute inset-y-0 left-0 flex w-2 flex-col justify-between border-l border-inherit opacity-50 transition-all duration-300 ease-in-out group-hover:w-full group-hover:opacity-100">
         <span className="block w-full border-t-1 border-inherit" />
         <span className="block w-full border-b-1 border-inherit" />
       </span>
-      {children}
+      <span className="relative z-10">{children}</span>
       <span className="absolute inset-y-0 right-0 flex w-2 flex-col justify-between border-r border-inherit opacity-50 transition-all duration-300 ease-in-out group-hover:w-full group-hover:opacity-100">
         <span className="block w-full border-t-1 border-inherit" />
         <span className="block w-full border-b-1 border-inherit" />
       </span>
       <span className="absolute inset-0 block border border-inherit opacity-10" />
-    </Comp>
+    </>
   );
 }
 

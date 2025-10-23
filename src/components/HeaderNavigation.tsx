@@ -8,11 +8,13 @@ import Navigation from '@/components/Navigation';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { cn } from '@/lib/utils';
 
+const THRESHOLD = 84;
+
 export default function HeaderNavigation() {
   const { isAtTop, scrollY } = useScrollDirection();
   const [isHovering, setIsHovering] = useState(false);
 
-  const shouldShowFullNav = isAtTop || isHovering || scrollY < 84;
+  const shouldShowFullNav = isAtTop || isHovering || scrollY < THRESHOLD;
 
   return (
     <>
@@ -55,7 +57,12 @@ export default function HeaderNavigation() {
           </div>
         </div>
       </div>
-      <div className="from-background fixed top-0 left-0 z-10 h-38 w-full bg-gradient-to-b to-transparent" />
+      <div
+        className={cn(
+          'from-background fixed top-0 left-0 z-10 h-38 w-full bg-gradient-to-b to-transparent transition-opacity duration-200 ease-in-out',
+          scrollY > THRESHOLD / 2 ? 'opacity-100' : 'opacity-0',
+        )}
+      />
     </>
   );
 }

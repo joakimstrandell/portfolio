@@ -21,14 +21,14 @@ export default function Home() {
           </AnimateContent>
           <AnimateContent>
             <div className="mt-8 flex items-center gap-8">
-              <Link href="/about">
-                <Button size="lg">Read more</Button>
-              </Link>
-              <Link href="/work">
-                <Button size="lg" variant="outline">
-                  View work
-                </Button>
-              </Link>
+              <Button size="lg" asChild>
+                <Link href="/about">Read more</Link>
+              </Button>
+
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/work">View work</Link>
+              </Button>
+
               <TileButton fromCursor={true}>Center ripple</TileButton>
             </div>
           </AnimateContent>

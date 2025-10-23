@@ -1,7 +1,14 @@
 import type { CellState, DotState } from './types';
 
 /**
- * Draw the grid lines on the canvas
+ * Draws the static grid lines on the canvas
+ * Creates a subtle grid pattern using the foreground color
+ *
+ * @param ctx Canvas 2D rendering context
+ * @param width Canvas width
+ * @param height Canvas height
+ * @param cellSize Size of each grid cell in pixels
+ * @param foregroundColor Color for the grid lines (usually from CSS custom property)
  */
 export const drawGrid = (
   ctx: CanvasRenderingContext2D,
@@ -32,7 +39,14 @@ export const drawGrid = (
 };
 
 /**
- * Draw all active cells with their current intensity
+ * Draws all active cells with their current intensity values
+ * Each cell's opacity is determined by its intensity (0.0 to 1.0)
+ * Cells are drawn with slight padding for better visual effect
+ *
+ * @param ctx Canvas 2D rendering context
+ * @param cells Map of cell keys to their state objects
+ * @param cellSize Size of each grid cell in pixels
+ * @param foregroundColor Base color for the cells (usually from CSS custom property)
  */
 export const drawCells = (
   ctx: CanvasRenderingContext2D,
@@ -56,7 +70,14 @@ export const drawCells = (
 };
 
 /**
- * Draw the collectible dot with pulse animation
+ * Draws the collectible dot with pulse animation and glow effect
+ * The dot pulses in size and has a radial gradient glow
+ * Used in game mode for visual feedback
+ *
+ * @param ctx Canvas 2D rendering context
+ * @param dot Dot state object containing position and animation data
+ * @param cellSize Size of each grid cell in pixels
+ * @param dotColor Color for the dot (can be customized)
  */
 export const drawDot = (ctx: CanvasRenderingContext2D, dot: DotState, cellSize: number, dotColor: string): void => {
   // Calculate pulse scale
@@ -89,7 +110,12 @@ export const drawDot = (ctx: CanvasRenderingContext2D, dot: DotState, cellSize: 
 };
 
 /**
- * Clear the entire canvas
+ * Clears the entire canvas to prepare for the next frame
+ * Should be called at the beginning of each animation frame
+ *
+ * @param ctx Canvas 2D rendering context
+ * @param width Canvas width
+ * @param height Canvas height
  */
 export const clearCanvas = (ctx: CanvasRenderingContext2D, width: number, height: number): void => {
   ctx.clearRect(0, 0, width, height);

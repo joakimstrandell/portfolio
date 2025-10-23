@@ -60,7 +60,7 @@ export default function GridBackground({
 
     // Handle mouse move
     const handleMouseMove = (e: MouseEvent) => {
-      controller.handleMouseMove(e.clientX, e.clientY);
+      controller.handleMouseMove(e);
     };
 
     // Handle mouse leave (when cursor leaves the document)

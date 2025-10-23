@@ -4,6 +4,14 @@ import { createGameManager } from './gameManager';
 import { drawGrid, drawCells, drawDot, clearCanvas } from './gridRenderer';
 import { getCssVariable, getRGB } from '@/lib/utils';
 
+/**
+ * Creates the main controller for the grid background animation
+ * Handles mouse events, animation loop, and coordinates between managers
+ *
+ * @param canvas HTML canvas element to render on
+ * @param config Configuration options for the grid background
+ * @returns GridBackgroundController interface
+ */
 export const createGridBackgroundController = (
   canvas: HTMLCanvasElement,
   config: GridBackgroundConfig,
@@ -15,133 +23,85 @@ export const createGridBackgroundController = (
     throw new Error('Failed to get canvas 2D context');
   }
 
-  // Create managers
+  // Create managers for different aspects of the animation
   const cellManager = createCellManager(maxCells, cellSize);
   const gameManager = createGameManager(cellSize, enableGame, onScoreChange);
 
-  // State
+  // Animation state
   let animationFrameId: number | null = null;
   let isRunning = false;
   let previousMousePos = { x: 0, y: 0 };
   let canvasWidth = canvas.width;
   let canvasHeight = canvas.height;
-  let isOverInteractiveElement = false;
-  let isFirstMouseMove = true;
+  let isFirstMouseMove = true; // Prevents initial path animation from top-left
 
-  // Helper to get cell key from position
+  /**
+   * Converts screen coordinates to a unique cell key
+   * @param x Screen x coordinate
+   * @param y Screen y coordinate
+   * @returns String key in format "col,row"
+   */
   const getCellKey = (x: number, y: number): string => `${Math.floor(x / cellSize)},${Math.floor(y / cellSize)}`;
 
-  // Animation loop
+  /**
+   * Main animation loop that runs at 60fps
+   * Updates cell states, handles game logic, and redraws the canvas
+   */
   const animate = () => {
     if (!isRunning) return;
 
-    // Update cell intensities
+    // Update cell intensities (fade out over time)
     cellManager.updateCells(fadeRate);
 
-    // Update game animation
+    // Update game animation (dot pulsing, etc.)
     if (gameManager.isEnabled()) {
       gameManager.updateAnimation();
     }
 
-    // Clear and redraw
+    // Clear canvas for fresh frame
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
-    // Get foreground color from CSS variable
+    // Get foreground color from CSS custom property
     const foregroundRGB = getRGB(getCssVariable('--accent')) || 'rgb(0, 0, 0)';
 
-    // Draw grid
+    // Draw static grid lines
     drawGrid(ctx, canvasWidth, canvasHeight, cellSize, foregroundRGB);
 
-    // Draw active cells
+    // Draw active cells with their current intensities
     drawCells(ctx, cellManager.getCells(), cellSize, foregroundRGB);
 
-    // Draw collectible dot if game is active
+    // Draw collectible dot if game mode is enabled
     const dot = gameManager.getDot();
     if (gameManager.isEnabled() && dot) {
       const resolvedDotColor = dotColor || getRGB(getCssVariable('--accent')) || 'rgba(255, 0, 0, 1)';
       drawDot(ctx, dot, cellSize, resolvedDotColor);
     }
 
+    // Schedule next frame
     animationFrameId = requestAnimationFrame(animate);
   };
 
+  /**
+   * Starts the animation and sets up event listeners
+   * Initializes game mode if enabled and sets up interactive element detection
+   */
   const start = (): void => {
     if (isRunning) return;
 
     isRunning = true;
 
-    // Spawn initial dot if game is enabled
+    // Spawn initial collectible dot if game mode is enabled
     if (gameManager.isEnabled() && !gameManager.getDot()) {
       gameManager.spawnDot(canvasWidth, canvasHeight);
     }
 
-    // Set up mouse enter/leave listeners for interactive elements
-    const handleMouseEnter = (e: Event) => {
-      const target = e.target as Element;
-      if (
-        target &&
-        (target.tagName === 'BUTTON' ||
-          target.tagName === 'A' ||
-          target.tagName === 'INPUT' ||
-          target.tagName === 'SELECT' ||
-          target.tagName === 'TEXTAREA' ||
-          getComputedStyle(target).cursor === 'pointer' ||
-          target.closest('button') ||
-          target.closest('a') ||
-          target.closest('input') ||
-          target.closest('select') ||
-          target.closest('textarea') ||
-          (target.hasAttribute('role') && target.getAttribute('role') === 'button'))
-      ) {
-        isOverInteractiveElement = true;
-        cellManager.clearHoverCell();
-      }
-    };
-
-    const handleMouseLeave = (e: Event) => {
-      const target = e.target as Element;
-      if (
-        target &&
-        (target.tagName === 'BUTTON' ||
-          target.tagName === 'A' ||
-          target.tagName === 'INPUT' ||
-          target.tagName === 'SELECT' ||
-          target.tagName === 'TEXTAREA' ||
-          getComputedStyle(target).cursor === 'pointer' ||
-          target.closest('button') ||
-          target.closest('a') ||
-          target.closest('input') ||
-          target.closest('select') ||
-          target.closest('textarea') ||
-          (target.hasAttribute('role') && target.getAttribute('role') === 'button'))
-      ) {
-        isOverInteractiveElement = false;
-      }
-    };
-
-    // Add listeners to all interactive elements
-    const interactiveElements = document.querySelectorAll(
-      'button, a, input, select, textarea, [role="button"], [style*="cursor: pointer"]',
-    );
-    interactiveElements.forEach((element) => {
-      element.addEventListener('mouseenter', handleMouseEnter);
-      element.addEventListener('mouseleave', handleMouseLeave);
-    });
-
-    // Store references for cleanup
-    (
-      window as unknown as {
-        __gridInteractiveListeners?: {
-          handleMouseEnter: (e: Event) => void;
-          handleMouseLeave: (e: Event) => void;
-          interactiveElements: NodeListOf<Element>;
-        };
-      }
-    ).__gridInteractiveListeners = { handleMouseEnter, handleMouseLeave, interactiveElements };
-
+    // Start the animation loop
     animate();
   };
 
+  /**
+   * Stops the animation loop
+   */
   const stop = (): void => {
     isRunning = false;
     if (animationFrameId !== null) {
@@ -150,19 +110,44 @@ export const createGridBackgroundController = (
     }
   };
 
-  const handleMouseMove = (x: number, y: number): void => {
+  /**
+   * Handles mouse movement events
+   * Updates hover cell and adds cells along the cursor path
+   * Prevents path animation on first move and when over interactive elements
+   *
+   * @param e Mouse event containing coordinates and target element
+   */
+  const handleMouseMove = (e: MouseEvent): void => {
+    const x = e.clientX;
+    const y = e.clientY;
     const newPos = { x, y };
     const prevPos = previousMousePos;
 
+    // Check if mouse is over an interactive element
+    const target = e.target as Element;
+    const isOverInteractive =
+      target &&
+      (target.tagName === 'BUTTON' ||
+        target.tagName === 'A' ||
+        target.tagName === 'INPUT' ||
+        target.tagName === 'SELECT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.closest('button') ||
+        target.closest('a') ||
+        target.closest('input') ||
+        target.closest('select') ||
+        target.closest('textarea') ||
+        (target.hasAttribute('role') && target.getAttribute('role') === 'button'));
+
     // Only update hover cell if not over an interactive element
-    if (!isOverInteractiveElement) {
+    if (!isOverInteractive) {
       cellManager.setHoverCell(x, y);
     } else {
       cellManager.clearHoverCell();
     }
 
     // Only add cells if not over an interactive element
-    if (!isOverInteractiveElement) {
+    if (!isOverInteractive) {
       // Skip path animation on first mouse move (prevents line from top-left on page load)
       if (isFirstMouseMove) {
         cellManager.addCell(x, y);
@@ -198,6 +183,10 @@ export const createGridBackgroundController = (
     previousMousePos = newPos;
   };
 
+  /**
+   * Handles mouse leaving the document
+   * Clears all cells and resets state for clean re-entry
+   */
   const handleMouseLeave = (): void => {
     // Clear all cells when cursor leaves the document
     cellManager.clear();
@@ -206,6 +195,11 @@ export const createGridBackgroundController = (
     isFirstMouseMove = true;
   };
 
+  /**
+   * Resizes the canvas and updates internal dimensions
+   * @param width New canvas width
+   * @param height New canvas height
+   */
   const resize = (width: number, height: number): void => {
     canvas.width = width;
     canvas.height = height;
@@ -213,35 +207,13 @@ export const createGridBackgroundController = (
     canvasHeight = height;
   };
 
+  /**
+   * Destroys the controller and cleans up all resources
+   * Stops animation, clears cells, and removes event listeners
+   */
   const destroy = (): void => {
     stop();
     cellManager.clear();
-
-    // Clean up interactive element listeners
-    const listeners = (
-      window as unknown as {
-        __gridInteractiveListeners?: {
-          handleMouseEnter: (e: Event) => void;
-          handleMouseLeave: (e: Event) => void;
-          interactiveElements: NodeListOf<Element>;
-        };
-      }
-    ).__gridInteractiveListeners;
-    if (listeners) {
-      listeners.interactiveElements.forEach((element: Element) => {
-        element.removeEventListener('mouseenter', listeners.handleMouseEnter);
-        element.removeEventListener('mouseleave', listeners.handleMouseLeave);
-      });
-      delete (
-        window as unknown as {
-          __gridInteractiveListeners?: {
-            handleMouseEnter: (e: Event) => void;
-            handleMouseLeave: (e: Event) => void;
-            interactiveElements: NodeListOf<Element>;
-          };
-        }
-      ).__gridInteractiveListeners;
-    }
   };
 
   return {

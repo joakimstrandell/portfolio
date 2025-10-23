@@ -4,7 +4,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import HeaderNavigation from '@/components/HeaderNavigation';
 import GridBackground from '@/components/GridBackground';
-import { CustomCursor } from '@/components/Cursor';
+import { CustomCursor } from '@/components/CustomCursor';
 
 const robotoMono = Roboto_Mono({
   variable: '--font-roboto-mono',

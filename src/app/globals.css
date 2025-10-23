@@ -84,9 +84,9 @@ body {
   cursor: none !important;
 }
 
-/* body * {
+body * {
   cursor: none !important;
-} */
+}
 
 .dark {
   --background: oklch(0.145 0 0);

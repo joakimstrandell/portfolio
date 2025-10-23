@@ -3,9 +3,10 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 // Constants
-const CURSOR_OFFSET = 2;
-const ACTIVATE_SCALE = 10;
+const CURSOR_OFFSET = 10;
+const ACTIVATE_SCALE = 2.5;
 const ACTIVATE_DURATION = 0.25;
+const ACTIVATE_BORDER_RADIUS = 9999;
 const EASING = 'power3.out';
 const INTERACTIVE_SELECTORS = "a, button, [data-cursor='active']";
 
@@ -153,6 +154,7 @@ function useCursorInteractions(elementRef: React.RefObject<HTMLDivElement | null
     // Set up the animation timeline
     tl.to(el, {
       scale: ACTIVATE_SCALE,
+      borderRadius: ACTIVATE_BORDER_RADIUS,
       backgroundColor: 'var(--accent)',
       duration: ACTIVATE_DURATION,
       ease: EASING,
@@ -270,7 +272,7 @@ export function CustomCursor() {
   return (
     <div
       ref={ref}
-      className="bg-accent pointer-events-none fixed top-0 left-0 z-[9999] h-1 w-1 rounded-full opacity-0 mix-blend-difference"
+      className="border-accent pointer-events-none fixed top-0 left-0 z-[9999] h-5 w-5 border-1 opacity-0 mix-blend-difference"
     />
   );
 }

@@ -26,8 +26,8 @@ export function TileButton({
   children = 'Hover me',
   rows = 3,
   cols = 6,
-  gap = 1,
-  colorClass = 'bg-sky-500',
+  gap = 0,
+  colorClass = 'bg-accent',
   from = 'center',
   fromCursor = false,
   each = 0.02,
@@ -61,6 +61,9 @@ export function TileButton({
 
     const q = gsap.utils.selector(grid);
     const $tiles = q('[data-tile="1"]');
+
+    // Initial state
+    gsap.set($tiles, { opacity: 0, scale: 0.95 });
 
     // Function to calculate tile index from cursor position
     const getTileIndexFromCursor = (clientX: number, clientY: number) => {
@@ -98,9 +101,9 @@ export function TileButton({
 
     const onEnter = (event?: PointerEvent | FocusEvent) => {
       // Kill previous timeline
-      // if (currentTimeline) {
-      //   currentTimeline.clear();
-      // }
+      if (currentTimeline) {
+        currentTimeline.clear();
+      }
 
       let fromPosition: number | 'start' | 'center' | 'edges' | 'random' | 'end' = from;
 
@@ -131,6 +134,7 @@ export function TileButton({
       el.removeEventListener('pointerleave', onLeave);
       el.removeEventListener('focus', onEnter);
       el.removeEventListener('blur', onLeave);
+
       if (currentTimeline) {
         currentTimeline.kill();
       }
@@ -159,7 +163,7 @@ export function TileButton({
               'm-0 block h-full w-full p-0',
               colorClass,
               tileRadiusClass,
-              'scale-100 opacity-0', // initial
+              'scale-95 opacity-0', // initial
             ].join(' ')}
           />
         ))}

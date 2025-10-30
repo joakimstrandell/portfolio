@@ -3,6 +3,7 @@
 import { useEffect, useRef, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { cn } from '@/lib/utils';
 
 interface AnimateContentProps {
   children: ReactNode;
@@ -121,8 +122,8 @@ export default function AnimateContent({
   };
 
   return (
-    <section ref={sectionRef} className={`${className} ${getInitialClass()}`} data-animate-content>
+    <span ref={sectionRef} className={cn('block', className, getInitialClass())} data-animate-content>
       {children}
-    </section>
+    </span>
   );
 }

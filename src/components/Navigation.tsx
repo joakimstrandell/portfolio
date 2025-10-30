@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Navigation() {
   return (
@@ -12,6 +13,7 @@ export default function Navigation() {
         <Navigation.Item href="/work">Work</Navigation.Item>
         <Navigation.Item href="/blog">Blog</Navigation.Item>
         <Navigation.Item href="/contact">Contact</Navigation.Item>
+        <ThemeToggle />
       </ul>
     </nav>
   );

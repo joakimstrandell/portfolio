@@ -39,18 +39,20 @@ export function createCustomCursor(cursorElement: HTMLDivElement, options?: Cust
 
   // Centralized show/hide helpers to avoid tween conflicts
   function showCursorAt(x: number, y: number) {
-    gsap.killTweensOf(cursorElement);
+    // Only kill opacity tweens to avoid interrupting hover timeline (scale, radius, bg)
+    gsap.killTweensOf(cursorElement, 'opacity');
     gsap.set(cursorElement, {
       x: x - opts.offset,
       y: y - opts.offset,
     });
-    gsap.to(cursorElement, { opacity: 1, duration: 0.15, ease: opts.easing });
+    gsap.to(cursorElement, { opacity: 1, duration: 0.15, ease: opts.easing, overwrite: 'auto' });
     isVisible = true;
   }
 
   function hideCursor() {
-    gsap.killTweensOf(cursorElement);
-    gsap.to(cursorElement, { opacity: 0, duration: 0.15, ease: opts.easing });
+    // Only kill opacity tweens
+    gsap.killTweensOf(cursorElement, 'opacity');
+    gsap.to(cursorElement, { opacity: 0, duration: 0.15, ease: opts.easing, overwrite: 'auto' });
     isVisible = false;
   }
 

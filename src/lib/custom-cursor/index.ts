@@ -32,9 +32,27 @@ export function createCustomCursor(cursorElement: HTMLDivElement, options?: Cust
   let isHovering = false;
   let isClicking = false;
   let clickTimeout: number | null = null;
+  let isVisible = false;
 
   // initial hidden
   gsap.set(cursorElement, { opacity: 0 });
+
+  // Centralized show/hide helpers to avoid tween conflicts
+  function showCursorAt(x: number, y: number) {
+    gsap.killTweensOf(cursorElement);
+    gsap.set(cursorElement, {
+      x: x - opts.offset,
+      y: y - opts.offset,
+    });
+    gsap.to(cursorElement, { opacity: 1, duration: 0.15, ease: opts.easing });
+    isVisible = true;
+  }
+
+  function hideCursor() {
+    gsap.killTweensOf(cursorElement);
+    gsap.to(cursorElement, { opacity: 0, duration: 0.15, ease: opts.easing });
+    isVisible = false;
+  }
 
   // Hover activation timeline
   const hoverTimeline = gsap.timeline({ paused: true }).to(cursorElement, {
@@ -72,11 +90,7 @@ export function createCustomCursor(cursorElement: HTMLDivElement, options?: Cust
 
     if (firstMove) {
       firstMove = false;
-      gsap.set(cursorElement, {
-        x: lastX - opts.offset,
-        y: lastY - opts.offset,
-        opacity: 1,
-      });
+      showCursorAt(lastX, lastY);
       return;
     }
 
@@ -86,12 +100,18 @@ export function createCustomCursor(cursorElement: HTMLDivElement, options?: Cust
       duration: 0,
       ease: opts.easing,
     });
+
+    // If for any reason we are hidden but the pointer is moving inside, reshow
+    if (!isVisible) {
+      showCursorAt(lastX, lastY);
+    }
   };
 
-  const onLeave = () => {
-    gsap.to(cursorElement, { opacity: 0, duration: 0.2 });
+  // Boundary aware leave using document-level pointerleave
+  const onPointerLeaveDoc = () => {
+    hideCursor();
 
-    // Reset hover state when mouse leaves document
+    // Reset hover state when pointer leaves window
     if (isHovering) {
       isHovering = false;
       hoverTimeline.reverse();
@@ -106,15 +126,6 @@ export function createCustomCursor(cursorElement: HTMLDivElement, options?: Cust
       }
       clickTimeline.reverse();
     }
-  };
-
-  const onEnter = () => {
-    // show at last known position
-    gsap.set(cursorElement, {
-      x: lastX - opts.offset,
-      y: lastY - opts.offset,
-      opacity: 1,
-    });
   };
 
   // Pointer down/up handlers for click effect
@@ -149,18 +160,35 @@ export function createCustomCursor(cursorElement: HTMLDivElement, options?: Cust
 
   // Global listeners
   window.addEventListener('pointermove', onPointerMove, { passive: true });
-  document.addEventListener('mouseleave', onLeave);
-  document.addEventListener('mouseenter', onEnter);
+  document.addEventListener('pointerleave', onPointerLeaveDoc);
   document.addEventListener('pointerdown', onPointerDown);
   document.addEventListener('pointerup', onPointerUp);
+
+  // Keep state consistent when tab visibility changes
+  const onVisibilityChange = () => {
+    if (document.visibilityState === 'hidden') {
+      hideCursor();
+    } else {
+      showCursorAt(lastX, lastY);
+    }
+  };
+  document.addEventListener('visibilitychange', onVisibilityChange);
+
+  // Fallbacks for window focus changes
+  const onWindowBlur = () => hideCursor();
+  const onWindowFocus = () => showCursorAt(lastX, lastY);
+  window.addEventListener('blur', onWindowBlur);
+  window.addEventListener('focus', onWindowFocus);
 
   return {
     destroy: () => {
       window.removeEventListener('pointermove', onPointerMove);
-      document.removeEventListener('mouseleave', onLeave);
-      document.removeEventListener('mouseenter', onEnter);
+      document.removeEventListener('pointerleave', onPointerLeaveDoc);
       document.removeEventListener('pointerdown', onPointerDown);
       document.removeEventListener('pointerup', onPointerUp);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('blur', onWindowBlur);
+      window.removeEventListener('focus', onWindowFocus);
       if (clickTimeout) {
         clearTimeout(clickTimeout);
       }

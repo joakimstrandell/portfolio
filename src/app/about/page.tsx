@@ -41,7 +41,7 @@ export default function About() {
           </AnimateContent>
         </PageContent>
       </Page>
-      <Page className="bg-accent/5">
+      <Page className="bg-foreground/4">
         <AnimateContent>
           <PageContent>
             <AnimateContent className="prose dark:prose-invert">

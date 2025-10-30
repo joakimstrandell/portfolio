@@ -8,7 +8,7 @@ import Navigation from '@/components/Navigation';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { cn } from '@/lib/utils';
 
-const THRESHOLD = 84;
+const THRESHOLD = 30;
 
 export default function HeaderNavigation() {
   const { isAtTop, scrollY } = useScrollDirection();
@@ -44,14 +44,10 @@ export default function HeaderNavigation() {
 
           {/* Full Navigation that slides out */}
           <div
-            className={cn(
-              'bg-background/70 flex h-8 items-center rounded px-4',
-              'transition-all duration-300 ease-in-out',
-              {
-                'translate-x-0 opacity-100': shouldShowFullNav,
-                'translate-x-full opacity-0': !shouldShowFullNav,
-              },
-            )}
+            className={cn('flex h-8 items-center rounded px-4', 'transition-all duration-300 ease-in-out', {
+              'translate-x-0 opacity-100': shouldShowFullNav,
+              'translate-x-full opacity-0': !shouldShowFullNav,
+            })}
           >
             <Navigation />
           </div>
@@ -59,8 +55,8 @@ export default function HeaderNavigation() {
       </div>
       <div
         className={cn(
-          'from-background fixed top-0 left-0 z-10 h-38 w-full bg-gradient-to-b to-transparent transition-opacity duration-200 ease-in-out',
-          scrollY > THRESHOLD / 2 ? 'opacity-100' : 'opacity-0',
+          'from-background fixed top-0 left-0 z-10 h-36 w-full bg-gradient-to-b to-transparent transition-opacity duration-200 ease-in-out',
+          scrollY > THRESHOLD ? 'opacity-100' : 'opacity-0',
         )}
       />
     </>

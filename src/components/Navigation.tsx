@@ -3,17 +3,14 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Navigation() {
   return (
     <nav>
       <ul className="flex gap-6 text-sm leading-none">
         <Navigation.Item href="/about">About</Navigation.Item>
-        <Navigation.Item href="/work">Work</Navigation.Item>
-        <Navigation.Item href="/blog">Blog</Navigation.Item>
+        <Navigation.Item href="/notes">Notes</Navigation.Item>
         <Navigation.Item href="/contact">Contact</Navigation.Item>
-        <ThemeToggle />
       </ul>
     </nav>
   );

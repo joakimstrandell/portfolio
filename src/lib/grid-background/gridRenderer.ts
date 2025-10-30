@@ -19,7 +19,7 @@ export const drawGrid = (
 ): void => {
   ctx.strokeStyle = foregroundColor;
   ctx.lineWidth = 0.5;
-  ctx.globalAlpha = 0.15;
+  ctx.globalAlpha = 0.1;
 
   // Draw vertical lines
   for (let x = 0; x <= width; x += cellSize) {
@@ -58,7 +58,7 @@ export const drawCells = (
 
   cells.forEach((cell) => {
     // Parse RGB from color string and apply intensity-based alpha
-    const alpha = cell.intensity * 0.2;
+    const alpha = cell.intensity * 0.3;
     const colorWithAlpha = foregroundColor.replace(/rgb\(([^)]+)\)/, `rgba($1, ${alpha})`);
 
     ctx.fillStyle = colorWithAlpha;

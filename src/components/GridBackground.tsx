@@ -109,7 +109,7 @@ export default function GridBackground({
   return (
     <div className="relative h-full w-full">
       <canvas ref={canvasRef} className={`fixed inset-0 z-0 opacity-60 ${enableGame ? '' : 'pointer-events-none'}`} />
-      <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.3)_80%,rgba(0,0,0,0.5)_100%)]" />
+      {/* <div className="pointer-events-none fixed inset-0 z-[1] bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.3)_80%,rgba(0,0,0,0.5)_100%)]" /> */}
     </div>
   );
 }

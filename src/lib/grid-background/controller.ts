@@ -62,18 +62,19 @@ export const createGridBackgroundController = (
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
     // Get foreground color from CSS custom property
-    const foregroundRGB = getRGB(getCssVariable('--accent')) || 'rgb(0, 0, 0)';
+    const foregroundRGB = getRGB(getCssVariable('--foreground')) || 'rgb(0, 0, 0)';
+    const accentRGB = getRGB(getCssVariable('--accent')) || 'rgba(255, 0, 0, 1)';
 
     // Draw static grid lines
     drawGrid(ctx, canvasWidth, canvasHeight, cellSize, foregroundRGB);
 
     // Draw active cells with their current intensities
-    drawCells(ctx, cellManager.getCells(), cellSize, foregroundRGB);
+    drawCells(ctx, cellManager.getCells(), cellSize, accentRGB);
 
     // Draw collectible dot if game mode is enabled
     const dot = gameManager.getDot();
     if (gameManager.isEnabled() && dot) {
-      const resolvedDotColor = dotColor || getRGB(getCssVariable('--accent')) || 'rgba(255, 0, 0, 1)';
+      const resolvedDotColor = dotColor || accentRGB;
       drawDot(ctx, dot, cellSize, resolvedDotColor);
     }
 

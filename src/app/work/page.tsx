@@ -6,10 +6,10 @@ export default function Blog() {
     <Page>
       <PageContent>
         <AnimateContent className="prose dark:prose-invert">
-          <h1>Notes</h1>
+          <h1>Work</h1>
           <p>
-            A collection of experiments, tools, ideas, and insights — things I’ve built or learned while designing and
-            developing digital products.
+            A collection of projects, ideas, and insights — things I’ve built or learned while designing and developing
+            digital products.
           </p>
         </AnimateContent>
       </PageContent>

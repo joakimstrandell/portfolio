@@ -9,7 +9,7 @@ export default function Navigation() {
     <nav>
       <ul className="flex gap-6 text-sm leading-none">
         <Navigation.Item href="/about">About</Navigation.Item>
-        <Navigation.Item href="/notes">Notes</Navigation.Item>
+        <Navigation.Item href="/work">Work</Navigation.Item>
         <Navigation.Item href="/contact">Contact</Navigation.Item>
       </ul>
     </nav>

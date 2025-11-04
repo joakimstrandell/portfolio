@@ -1,16 +1,37 @@
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 import { Experience } from './-experience';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { BookOpenText, BookOpenTextIcon, DownloadIcon, GlassesIcon, ListIcon } from 'lucide-react';
 
 export default function About() {
   return (
     <>
-      <Page>
+      <Page className="min-h-screen">
         <PageContent className="space-y-6">
           <AnimateContent className="prose dark:prose-invert">
             <h1>Joakim Strandell</h1>
           </AnimateContent>
-          <AnimateContent className="prose dark:prose-invert font-extrabold">
+          <AnimateContent className="prose prose-lg dark:prose-invert">
+            <p>
+              As a product engineer, I work across the entire product lifecycle — combining a deep understanding of user
+              needs and product strategy with hands-on design and engineering expertise to ensure every product I build
+              is both delightful to use and grounded in a solid technical foundation.
+            </p>
+          </AnimateContent>
+          <AnimateContent className="prose prose dark:prose-invert">
+            <ul>
+              <li>20+ years as a UX/UI designer and full-stack developer</li>
+              <li>Led design system and frontend architecture initiatives</li>
+              <li>Worked with early-stage startups and large enterprises</li>
+            </ul>
+            <p>
+              Over the past two decades, my roles have spanned product management, user research, interface design,
+              system architecture, and full-stack development — often bridging them into a unified approach.
+            </p>
+          </AnimateContent>
+          {/* <AnimateContent className="prose prose-lg dark:prose-invert">
             <p>
               As a <span className="text-accent">product engineer</span> bridging{' '}
               <span className="text-accent">UX/UI design</span> and{' '}
@@ -35,25 +56,55 @@ export default function About() {
               shared best practices.
             </p>
             <p>
-              Let’s connect if you want to discuss digital product design, frontend architecture, or building
-              high-performing teams!
+              <span className="text-accent">Keep scrolling</span> to learn more about my experience and expertise, or
+              just skip to the bottom and{' '}
+              <Link href="/about#cv" className="inline-flex items-center gap-2 text-sm">
+                download my CV and cover letter
+              </Link>
             </p>
+          </AnimateContent> */}
+          <AnimateContent className="mt-10">
+            <div className="flex items-center gap-8">
+              <Button size="lg" asChild>
+                <Link href="/about#experience">My experience</Link>
+              </Button>
+
+              <Button size="lg" variant="outline" asChild>
+                <Link href="/about#cv">Download CV</Link>
+              </Button>
+            </div>
           </AnimateContent>
         </PageContent>
       </Page>
-      <Page className="bg-foreground/4">
-        <AnimateContent>
-          <PageContent>
-            <AnimateContent className="prose dark:prose-invert">
-              <h1>Experience</h1>
-            </AnimateContent>
+      <Page id="experience" className="bg-foreground/4">
+        <PageContent>
+          <AnimateContent className="prose dark:prose-invert">
+            <h1>Experience</h1>
+            <p>
+              Over the past two decades, I’ve worked with everything from early-stage startups to large enterprises. My
+              roles have spanned <span className="text-accent">product management</span>,{' '}
+              <span className="text-accent">user research</span>, <span className="text-accent">interface design</span>,{' '}
+              <span className="text-accent">system architecture</span>, and{' '}
+              <span className="text-accent">full-stack development</span> — often bridging them into a unified approach.
+            </p>
+            <p>
+              In recent years, I’ve focused on uniting user-centered design principles with frontend engineering —
+              working closely with product teams to design thoughtful experiences, build scalable frontend
+              infrastructures and developer tooling, and bring clarity between design and code through documentation and
+              shared best practices.
+            </p>
+          </AnimateContent>
+          <AnimateContent>
             <Experience
               title="Stockholm Exergi"
               period="2018-2025"
               type="Contract"
               time="7 years"
               role="UX/UI Designer and Frontend Developer"
-              description="As a long-term consultant for Stockholm Exergi’s Intelligy Solution Platform, I led initiatives spanning UX/UI design, frontend development and infrastructure. I helped transition multiple products from a Python/Django-based interface to a modern React architecture, and later focused on building scalable frontend systems – including design systems, shared libraries, developer tooling, and documentation – to improve consistency and efficiency across applications and teams."
+              description="As a long-term consultant for Stockholm Exergi’s Intelligy Solution Platform, I led initiatives spanning UX/UI design, frontend development and infrastructure. I helped transition multiple products from a Python/Django-based interface to a modern React architecture, and later focused on building scalable frontend systems – including design systems, shared libraries, developer tooling, and documentation – to improve consistency and efficiency across applications and teams. In recent years, I’ve focused on uniting user-centered design principles with frontend engineering —
+              working closely with product teams to design thoughtful experiences, build scalable frontend
+              infrastructures and developer tooling, and bring clarity between design and code through documentation and
+              shared best practices."
               skills={['React', 'TypeScript', 'Design Systems', 'Frontend Development', 'Developer Tooling']}
             >
               <p>
@@ -91,8 +142,8 @@ export default function About() {
                 and product portfolio expanded.
               </p>
             </Experience>
-          </PageContent>
-        </AnimateContent>
+          </AnimateContent>
+        </PageContent>
       </Page>
       <AnimateContent animationType="fadeIn">
         <Page className="min-h-0">
@@ -138,6 +189,26 @@ export default function About() {
           </PageContent>
         </Page>
       </AnimateContent>
+      <Page>
+        <PageContent>
+          <AnimateContent>
+            <h2>Education</h2>
+            <p>
+              I’ve always liked building things. As a kid it was boats, soapbox cars, and questionable DIY cigarettes.
+              Later it became websites, apps, and digital products. The tools changed, but the curiosity stayed the
+              same.
+            </p>
+            <p>
+              In my twenties I started my first company, built a few SaaS tools before “SaaS” was even a thing, and
+              later co-founded a small digital studio that ended up working with brands like H&M, MTV, and BMW.
+            </p>
+            <p>
+              More than two decades later, I’m still doing what I’ve always done — designing and building things that
+              people love using.
+            </p>
+          </AnimateContent>
+        </PageContent>
+      </Page>
     </>
   );
 }

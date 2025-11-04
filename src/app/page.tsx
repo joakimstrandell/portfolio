@@ -1,6 +1,5 @@
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
-import { TileButton } from '@/components/TileButton';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -8,27 +7,35 @@ export default function Home() {
   return (
     <Page className="min-h-screen">
       <PageContent>
-        <AnimateContent className="prose dark:prose-invert">
-          <h1>Hi! My name is Joakim</h1>
+        {/* <AnimateContent className="prose prose-lg dark:prose-invert">
+          <h1>Joakim Strandell</h1>
         </AnimateContent>
+        <AnimateContent className="prose prose-xl dark:prose-invert">
+          <p className="max-w-[58ch]">
+            I'm a <span className="text-accent">product engineer</span> bridging{' '}
+            <span className="text-accent">design</span> and <span className="text-accent">development</span>. I build
+            scalable, user-centered web applications that balance thoughtful design with solid engineering.
+          </p>
+        </AnimateContent> */}
         <AnimateContent className="prose prose-lg dark:prose-invert">
-          <p>
-            I’m a <span className="text-accent">product engineer</span>, bridging{' '}
-            <span className="text-accent">design</span> and <span className="text-accent">development</span> <br />
-            to build scalable, user-centered web applications.
+          <h1>I'm a Product Engineer</h1>
+        </AnimateContent>
+        <AnimateContent className="prose prose-xl dark:prose-invert">
+          <p className="max-w-[58ch]">
+            Bridging <span className="text-accent">UX/UI design</span> and{' '}
+            <span className="text-accent">full-stack development</span> to build scalable, user-centered web
+            applications that balance thoughtful design with solid engineering.
           </p>
         </AnimateContent>
         <AnimateContent className="mt-10">
           <div className="flex items-center gap-8">
             <Button size="lg" asChild>
-              <Link href="/about">Read more</Link>
+              <Link href="/about">About me</Link>
             </Button>
 
             <Button size="lg" variant="outline" asChild>
-              <Link href="/work">View work</Link>
+              <Link href="/notes">View work</Link>
             </Button>
-
-            {/* <TileButton fromCursor={true}>Center ripple</TileButton> */}
           </div>
         </AnimateContent>
       </PageContent>

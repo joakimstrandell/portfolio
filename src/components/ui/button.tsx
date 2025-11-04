@@ -17,8 +17,8 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-7 px-4 py-2 has-[>svg]:px-3',
-        sm: 'h-6 gap-1.5 px-3 has-[>svg]:px-2.5',
+        default: 'h-10 px-4 py-2 has-[>svg]:px-3',
+        sm: 'h-8 gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-12 px-6 has-[>svg]:px-4 text-md',
         icon: 'size-9',
         'icon-sm': 'size-8',
@@ -74,7 +74,7 @@ function ButtonContent({ children }: { children: React.ReactNode }) {
         <span className="block w-full border-t-1 border-inherit" />
         <span className="block w-full border-b-1 border-inherit" />
       </span>
-      <span className="relative z-10">{children}</span>
+      <span className="relative z-10 flex items-center gap-3">{children}</span>
       <span className="absolute inset-y-0 right-0 flex w-2 flex-col justify-between border-r border-inherit opacity-50 transition-all duration-300 ease-in-out group-hover:w-full group-hover:opacity-100">
         <span className="block w-full border-t-1 border-inherit" />
         <span className="block w-full border-b-1 border-inherit" />

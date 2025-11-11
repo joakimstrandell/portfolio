@@ -5,6 +5,10 @@ import { ThemeProvider } from '@/components/theme-provider';
 import HeaderNavigation from '@/components/HeaderNavigation';
 import GridBackground from '@/components/GridBackground';
 import { CustomCursor } from '@/components/CustomCursor';
+import { GameStateProvider } from '@/components/GameStateProvider';
+import ToggleGameButton from '@/components/ToggleGameButton';
+import GameContentWrapper from '@/components/GameContentWrapper';
+import GameOverModal from '@/components/GameOverModal';
 
 const robotoMono = Roboto_Mono({
   variable: '--font-roboto-mono',
@@ -25,12 +29,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-          <GridBackground enableGame={false} />
+        <GameStateProvider>
+          <GridBackground />
+          <ToggleGameButton />
           <CustomCursor />
+          <GameOverModal />
           <HeaderNavigation />
-          {children}
-        </ThemeProvider>
+          <GameContentWrapper>{children}</GameContentWrapper>
+        </GameStateProvider>
       </body>
     </html>
   );

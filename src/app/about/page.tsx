@@ -4,74 +4,86 @@ import { Experience } from './-experience';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { BookOpenText, BookOpenTextIcon, DownloadIcon, GlassesIcon, ListIcon } from 'lucide-react';
+import Image from 'next/image';
 
 export default function About() {
   return (
     <>
-      <Page className="min-h-screen">
-        <PageContent className="space-y-6">
-          <AnimateContent className="prose dark:prose-invert">
-            <h1>Joakim Strandell</h1>
-          </AnimateContent>
-          <AnimateContent className="prose prose-lg dark:prose-invert">
-            <p>
-              As a product engineer, I work across the entire product lifecycle — combining a deep understanding of user
-              needs and product strategy with hands-on design and engineering expertise to ensure every product I build
-              is both delightful to use and grounded in a solid technical foundation.
-            </p>
-          </AnimateContent>
-          <AnimateContent className="prose prose dark:prose-invert">
-            <ul>
-              <li>20+ years as a UX/UI designer and full-stack developer</li>
-              <li>Led design system and frontend architecture initiatives</li>
-              <li>Worked with early-stage startups and large enterprises</li>
-            </ul>
-            <p>
-              Over the past two decades, my roles have spanned product management, user research, interface design,
-              system architecture, and full-stack development — often bridging them into a unified approach.
-            </p>
-          </AnimateContent>
-          {/* <AnimateContent className="prose prose-lg dark:prose-invert">
-            <p>
-              As a <span className="text-accent">product engineer</span> bridging{' '}
-              <span className="text-accent">UX/UI design</span> and{' '}
-              <span className="text-accent">full-stack development</span>, I work across the entire product lifecycle —
-              combining a deep understanding of user needs and product strategy with hands-on design and engineering
-              expertise to ensure every product I build is both delightful to use and grounded in a solid technical
-              foundation.
-            </p>
-          </AnimateContent>
-          <AnimateContent className="prose dark:prose-invert">
-            <p>
-              Over the past two decades, I’ve worked with everything from early-stage startups to large enterprises. My
-              roles have spanned <span className="text-accent">product management</span>,{' '}
-              <span className="text-accent">user research</span>, <span className="text-accent">interface design</span>,{' '}
-              <span className="text-accent">system architecture</span>, and{' '}
-              <span className="text-accent">full-stack development</span> — often bridging them into a unified approach.
-            </p>
-            <p>
-              In recent years, I’ve focused on uniting user-centered design principles with frontend engineering —
-              working closely with product teams to design thoughtful experiences, build scalable frontend
-              infrastructures and developer tooling, and bring clarity between design and code through documentation and
-              shared best practices.
-            </p>
-            <p>
-              <span className="text-accent">Keep scrolling</span> to learn more about my experience and expertise, or
-              just skip to the bottom and{' '}
-              <Link href="/about#cv" className="inline-flex items-center gap-2 text-sm">
-                download my CV and cover letter
-              </Link>
-            </p>
-          </AnimateContent> */}
-          <AnimateContent className="mt-10">
-            <div className="flex items-center gap-8">
-              <Button size="lg" asChild>
-                <Link href="/about#experience">My experience</Link>
-              </Button>
+      <Page className="dark min-h-screen">
+        <PageContent className="max-w-7xl">
+          <div className="flex items-center justify-between">
+            <div className="space-y-6">
+              <AnimateContent className="prose dark:prose-invert">
+                <h1>Joakim Strandell</h1>
+                <p className="text-muted-foreground -mt-6">Product Engineer — UX/UI Designer & Full-stack Developer</p>
+              </AnimateContent>
+              <AnimateContent className="prose prose-lg dark:prose-invert">
+                <p>
+                  As a product engineer, I work across the entire product lifecycle — combining a deep understanding of
+                  user needs and product strategy with hands-on design and engineering expertise.
+                </p>
+                <p>
+                  Over the past two decades, I’ve worked with everything from early-stage startups to large enterprises.
+                  My roles have spanned <span className="text-accent">user research</span>,{' '}
+                  <span className="text-accent">interface design</span>,{' '}
+                  <span className="text-accent">system architecture</span>,{' '}
+                  <span className="text-accent">frontend development</span> and{' '}
+                  <span className="text-accent">backend development</span> — often bridging them into a unified
+                  approach.
+                </p>
+                <p>
+                  Lets chat if you want to discuss digital product design, full-stack architecture, or building
+                  high-performing teams!
+                </p>
+              </AnimateContent>
+              <AnimateContent className="mt-12">
+                <div className="flex items-center gap-8">
+                  <Button size="lg" asChild>
+                    <Link href="/about#experience">My experience</Link>
+                  </Button>
 
-              <Button size="lg" variant="outline" asChild>
-                <Link href="/about#cv">Download CV</Link>
-              </Button>
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/about#cv">Download CV</Link>
+                  </Button>
+                </div>
+              </AnimateContent>
+            </div>
+            <AnimateContent
+              animationType="slideLeft"
+              className="flex items-center justify-center overflow-hidden rounded-full"
+            >
+              <Image src="/joakim-sketch.png" alt="Old man laptop" width={350} height={350} />
+            </AnimateContent>
+          </div>
+        </PageContent>
+      </Page>
+      <Page className="bg-white">
+        <PageContent className="grid max-w-7xl grid-cols-3 gap-4">
+          <blockquote>
+            What truly drives me is building products that are beautifull, intuitive and delivers real value to users.
+          </blockquote>
+          <AnimateContent>
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="h-48 w-48 overflow-hidden">
+                <Image src="/old-man-laptop.png" alt="Old man laptop" width={300} height={300} />
+              </div>
+              <p className="prose prose-lg mt-4">20+ years as a UX/UI designer and full-stack developer</p>
+            </div>
+          </AnimateContent>
+          <AnimateContent>
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <div className="h-48 w-48 overflow-hidden">
+                <Image src="/old-man-whiteboard.png" alt="Old man laptop" width={300} height={300} />
+              </div>
+              <p className="prose prose-lg mt-4">Led design system and frontend architecture initiatives</p>
+            </div>
+          </AnimateContent>
+          <AnimateContent>
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <div className="h-48 w-48 overflow-hidden">
+                <Image src="/old-man-laptop.png" alt="Old man laptop" width={300} height={300} />
+              </div>
+              <p className="prose prose-lg mt-4">Worked with early-stage startups and large enterprises</p>
             </div>
           </AnimateContent>
         </PageContent>
@@ -84,8 +96,9 @@ export default function About() {
               Over the past two decades, I’ve worked with everything from early-stage startups to large enterprises. My
               roles have spanned <span className="text-accent">product management</span>,{' '}
               <span className="text-accent">user research</span>, <span className="text-accent">interface design</span>,{' '}
-              <span className="text-accent">system architecture</span>, and{' '}
-              <span className="text-accent">full-stack development</span> — often bridging them into a unified approach.
+              <span className="text-accent">system architecture</span>,{' '}
+              <span className="text-accent">frontend development</span> and{' '}
+              <span className="text-accent">backend development</span> — often bridging them into a unified approach.
             </p>
             <p>
               In recent years, I’ve focused on uniting user-centered design principles with frontend engineering —

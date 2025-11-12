@@ -31,13 +31,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
         <GameStateProvider>
-          <Grid>
-            <ToggleGameButton />
-            <CustomCursor />
-            <GameOverModal />
-            <HeaderNavigation />
-            <GameContentWrapper>{children}</GameContentWrapper>
-          </Grid>
+          <ToggleGameButton />
+          <CustomCursor />
+          <GameOverModal />
+          <HeaderNavigation />
+          <GameContentWrapper>{children}</GameContentWrapper>
         </GameStateProvider>
       </body>
     </html>

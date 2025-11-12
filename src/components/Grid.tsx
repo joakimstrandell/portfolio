@@ -167,7 +167,7 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
   }, []);
 
   return (
-    <div ref={containerRef} className={cn('relative h-full w-full', className)}>
+    <div ref={containerRef} className={cn('relative flex h-full w-full flex-1 flex-col justify-center', className)}>
       <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true" />
       {children}
     </div>

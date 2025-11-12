@@ -10,25 +10,28 @@ import { Grid } from '@/components/Grid';
 export default function About() {
   return (
     <>
-      <Page className="dark min-h-screen">
-        <Grid className="bg-amber-100">
+      <Page>
+        <Grid className="bg-background flex-1">
           <PageContent className="max-w-7xl">
             <div className="flex items-center justify-between">
               <div className="space-y-6">
                 <AnimateContent className="prose dark:prose-invert">
                   <h1>Joakim Strandell</h1>
-                  <p className="text-muted-foreground -mt-6">
-                    Product Engineer — UX/UI Designer & Full-stack Developer
-                  </p>
+                  <p className="text-muted-foreground -mt-6">Bridging UX/UI Design & Full-stack Development</p>
                 </AnimateContent>
                 <AnimateContent className="prose prose-lg dark:prose-invert">
+                  {/* <p className="max-w-[58ch]">
+                    Bridging <span className="text-accent">UX/UI design</span> and{' '}
+                    <span className="text-accent">full-stack development</span> to build scalable, user-centered web
+                    applications that balance thoughtful design with solid engineering.
+                  </p> */}
                   <p>
                     As a product engineer, I work across the entire product lifecycle — combining a deep understanding
                     of user needs and product strategy with hands-on design and engineering expertise.
                   </p>
                   <p>
-                    Over the past two decades, I’ve worked with everything from early-stage startups to large
-                    enterprises. My roles have spanned <span className="text-accent">user research</span>,{' '}
+                    Over the past two decades, I’ve worked with everything from startups to large enterprises. My roles
+                    have spanned <span className="text-accent">user research</span>,{' '}
                     <span className="text-accent">interface design</span>,{' '}
                     <span className="text-accent">system architecture</span>,{' '}
                     <span className="text-accent">frontend development</span> and{' '}
@@ -56,13 +59,12 @@ export default function About() {
                 animationType="slideLeft"
                 className="flex items-center justify-center overflow-hidden rounded-full"
               >
-                <Image src="/joakim-sketch.png" alt="Old man laptop" width={350} height={350} />
+                <Image src="/joakim-sketch.png" alt="Old man laptop" width={320} height={320} />
               </AnimateContent>
             </div>
           </PageContent>
         </Grid>
-      </Page>
-      <Page className="bg-white">
+
         <PageContent className="grid max-w-7xl grid-cols-3 gap-4">
           <blockquote>
             What truly drives me is building products that are beautifull, intuitive and delivers real value to users.
@@ -92,8 +94,6 @@ export default function About() {
             </div>
           </AnimateContent>
         </PageContent>
-      </Page>
-      <Page id="experience" className="bg-foreground/4">
         <PageContent>
           <AnimateContent className="prose dark:prose-invert">
             <h1>Experience</h1>
@@ -162,9 +162,7 @@ export default function About() {
             </Experience>
           </AnimateContent>
         </PageContent>
-      </Page>
-      <AnimateContent animationType="fadeIn">
-        <Page className="min-h-0">
+        <AnimateContent animationType="fadeIn">
           <PageContent className="mt-12">
             <AnimateContent>
               <h2>Skills</h2>
@@ -205,9 +203,8 @@ export default function About() {
               </p>
             </AnimateContent>
           </PageContent>
-        </Page>
-      </AnimateContent>
-      <Page>
+        </AnimateContent>
+
         <PageContent>
           <AnimateContent>
             <h2>Education</h2>

@@ -20,10 +20,7 @@ export interface GridControllerConfig {
  * @param config Configuration options for the grid
  * @returns GridController interface
  */
-export const createGridController = (
-  canvas: HTMLCanvasElement,
-  config: GridControllerConfig,
-): GridController => {
+export const createGridController = (canvas: HTMLCanvasElement, config: GridControllerConfig): GridController => {
   const { cellSize = 24, fadeRate = 0.015, maxCells = 200 } = config;
 
   const ctx = canvas.getContext('2d');
@@ -41,6 +38,8 @@ export const createGridController = (
   let canvasWidth = canvas.width;
   let canvasHeight = canvas.height;
   let isFirstMouseMove = true; // Prevents initial path animation from top-left
+  let currentFadeRate = fadeRate; // Current fade rate (can be temporarily increased)
+  const fastFadeRate = 0.15; // Fast fade rate when entering interactive elements
 
   /**
    * Converts screen coordinates to a unique cell key
@@ -58,7 +57,13 @@ export const createGridController = (
     if (!isRunning) return;
 
     // Update cell intensities (fade out over time)
-    cellManager.updateCells(fadeRate);
+    // Use current fade rate (may be temporarily increased for fast fade)
+    cellManager.updateCells(currentFadeRate);
+
+    // Gradually return to normal fade rate after fast fade
+    if (currentFadeRate > fadeRate) {
+      currentFadeRate = Math.max(fadeRate, currentFadeRate * 0.95);
+    }
 
     // Clear canvas for fresh frame
     clearCanvas(ctx, canvasWidth, canvasHeight);
@@ -150,6 +155,23 @@ export const createGridController = (
     cellManager.clearHoverCell();
     // Reset first mouse move flag so no path animation occurs on re-enter
     isFirstMouseMove = true;
+    // Reset fade rate to normal
+    currentFadeRate = fadeRate;
+  };
+
+  /**
+   * Triggers fast fade out of all cells
+   * Useful when cursor enters an interactive element
+   * Clears all cells and resets trace state so grid starts fresh when cursor returns
+   */
+  const triggerFastFade = (): void => {
+    // Clear all cells immediately
+    cellManager.clear();
+    cellManager.clearHoverCell();
+    // Reset first mouse move flag so trace doesn't animate when cursor returns
+    isFirstMouseMove = true;
+    // Set fast fade rate (cells will fade out quickly if any remain)
+    currentFadeRate = fastFadeRate;
   };
 
   /**
@@ -178,8 +200,8 @@ export const createGridController = (
     stop,
     handleMouseMove,
     handleMouseLeave,
+    triggerFastFade,
     resize,
     destroy,
   };
 };
-

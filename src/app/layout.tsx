@@ -9,6 +9,7 @@ import { GameStateProvider } from '@/components/GameStateProvider';
 import ToggleGameButton from '@/components/ToggleGameButton';
 import GameContentWrapper from '@/components/GameContentWrapper';
 import GameOverModal from '@/components/GameOverModal';
+import { Grid } from '@/components/Grid';
 
 const robotoMono = Roboto_Mono({
   variable: '--font-roboto-mono',
@@ -30,12 +31,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
         <GameStateProvider>
-          <GridBackground />
-          <ToggleGameButton />
-          <CustomCursor />
-          <GameOverModal />
-          <HeaderNavigation />
-          <GameContentWrapper>{children}</GameContentWrapper>
+          <Grid>
+            <ToggleGameButton />
+            <CustomCursor />
+            <GameOverModal />
+            <HeaderNavigation />
+            <GameContentWrapper>{children}</GameContentWrapper>
+          </Grid>
         </GameStateProvider>
       </body>
     </html>

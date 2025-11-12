@@ -59,9 +59,10 @@ export interface GridController {
   handleMouseMove: (x: number, y: number, isOverInteractive?: boolean) => void;
   /** Handles mouse leaving the canvas */
   handleMouseLeave: () => void;
+  /** Triggers fast fade out of all cells */
+  triggerFastFade: () => void;
   /** Resizes the canvas and updates internal dimensions */
   resize: (width: number, height: number) => void;
   /** Destroys the controller and cleans up all resources */
   destroy: () => void;
 }
-

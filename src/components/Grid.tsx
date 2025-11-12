@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { createGridController } from '@/lib/grid/controller';
 import type { GridController } from '@/lib/grid/types';
 import { cn } from '@/lib/utils';
@@ -23,21 +23,30 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
   // Subscribe to interactive state changes (stored in ref to avoid re-renders)
   const isOverInteractive = useInteractiveState();
   const isOverInteractiveRef = useRef(isOverInteractive);
+  const prevIsOverInteractiveRef = useRef(isOverInteractive);
 
-  // Keep ref in sync with hook value
+  // Keep ref in sync with hook value and trigger fast fade when entering interactive element
   useEffect(() => {
     isOverInteractiveRef.current = isOverInteractive;
+
+    // Trigger fast fade when cursor enters an interactive element
+    if (isOverInteractive && !prevIsOverInteractiveRef.current && controllerRef.current) {
+      controllerRef.current.triggerFastFade();
+    }
+
+    prevIsOverInteractiveRef.current = isOverInteractive;
   }, [isOverInteractive]);
 
-  // Update grid based on current mouse position relative to canvas
-  const updateGridFromMousePosition = (clientX: number, clientY: number) => {
-    if (!controllerRef.current || !canvasRef.current) return;
+  // Update grid based on current mouse position relative to container
+  // Memoized to prevent recreation on every render
+  const updateGridFromMousePosition = useCallback((clientX: number, clientY: number) => {
+    if (!controllerRef.current || !containerRef.current) return;
 
-    const rect = canvasRef.current.getBoundingClientRect();
+    const rect = containerRef.current.getBoundingClientRect();
 
-    // Check if mouse is over the canvas
+    // Check if mouse is over the grid container (which includes child elements)
     if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
-      // Calculate canvas-relative coordinates
+      // Calculate container-relative coordinates
       const x = clientX - rect.left;
       const y = clientY - rect.top;
 
@@ -45,7 +54,7 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
       controllerRef.current.handleMouseMove(x, y, isOverInteractiveRef.current);
       lastMousePosRef.current = { x: clientX, y: clientY };
     }
-  };
+  }, []);
 
   // Initialize controller and handle canvas sizing
   useEffect(() => {
@@ -106,7 +115,7 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
       updateGridFromMousePosition(e.clientX, e.clientY);
     };
 
-    // Handle scroll - update grid if cursor is over canvas
+    // Handle scroll - update grid if cursor is over container
     const handleScroll = () => {
       if (lastMousePosRef.current) {
         updateGridFromMousePosition(lastMousePosRef.current.x, lastMousePosRef.current.y);
@@ -121,8 +130,9 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
       lastMousePosRef.current = null;
     };
 
-    document.addEventListener('mousemove', handleDocumentMouseMove);
-    window.addEventListener('scroll', handleScroll, true); // Use capture phase to catch all scrolls
+    // Use passive listeners for better performance
+    document.addEventListener('mousemove', handleDocumentMouseMove, { passive: true });
+    window.addEventListener('scroll', handleScroll, { passive: true, capture: true });
     document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
@@ -130,29 +140,35 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
       window.removeEventListener('scroll', handleScroll, true);
       document.removeEventListener('mouseleave', handleMouseLeave);
     };
+  }, [updateGridFromMousePosition]);
+
+  // Track when the mouse leaves the entire grid container (including over child elements)
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleContainerMouseLeave = (e: MouseEvent) => {
+      // Only handle if it's actually leaving the container, not just moving between children
+      if (e.relatedTarget && container.contains(e.relatedTarget as Node)) {
+        return;
+      }
+
+      if (controllerRef.current) {
+        controllerRef.current.handleMouseLeave();
+      }
+      lastMousePosRef.current = null;
+    };
+
+    container.addEventListener('mouseleave', handleContainerMouseLeave);
+
+    return () => {
+      container.removeEventListener('mouseleave', handleContainerMouseLeave);
+    };
   }, []);
-
-  // Handle mouse move on canvas - use canvas-relative coordinates
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    updateGridFromMousePosition(e.clientX, e.clientY);
-  };
-
-  // Handle mouse leave canvas
-  const handleMouseLeave = () => {
-    if (controllerRef.current) {
-      controllerRef.current.handleMouseLeave();
-    }
-    lastMousePosRef.current = null;
-  };
 
   return (
     <div ref={containerRef} className={cn('relative h-full w-full', className)}>
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 h-full w-full"
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-      />
+      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true" />
       {children}
     </div>
   );

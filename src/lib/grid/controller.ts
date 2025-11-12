@@ -107,10 +107,17 @@ export const createGridController = (
    *
    * @param x Canvas-relative x coordinate
    * @param y Canvas-relative y coordinate
+   * @param isOverInteractive Optional flag indicating if cursor is over an interactive element
    */
-  const handleMouseMove = (x: number, y: number): void => {
+  const handleMouseMove = (x: number, y: number, isOverInteractive = false): void => {
     // Ensure coordinates are within canvas bounds
     if (x < 0 || x > canvasWidth || y < 0 || y > canvasHeight) {
+      return;
+    }
+
+    // Skip cell updates if cursor is over an interactive element
+    if (isOverInteractive) {
+      cellManager.clearHoverCell();
       return;
     }
 

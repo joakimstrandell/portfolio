@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import { createGridController } from '@/lib/grid/controller';
 import type { GridController } from '@/lib/grid/types';
 import { cn } from '@/lib/utils';
+import { useInteractiveState } from '@/hooks/useInteractiveState';
 
 interface GridProps {
   cellSize?: number;
@@ -19,6 +20,15 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
   const controllerRef = useRef<GridController | null>(null);
   const lastMousePosRef = useRef<{ x: number; y: number } | null>(null);
 
+  // Subscribe to interactive state changes (stored in ref to avoid re-renders)
+  const isOverInteractive = useInteractiveState();
+  const isOverInteractiveRef = useRef(isOverInteractive);
+
+  // Keep ref in sync with hook value
+  useEffect(() => {
+    isOverInteractiveRef.current = isOverInteractive;
+  }, [isOverInteractive]);
+
   // Update grid based on current mouse position relative to canvas
   const updateGridFromMousePosition = (clientX: number, clientY: number) => {
     if (!controllerRef.current || !canvasRef.current) return;
@@ -31,7 +41,8 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
       const x = clientX - rect.left;
       const y = clientY - rect.top;
 
-      controllerRef.current.handleMouseMove(x, y);
+      // Pass interactive state to controller (using ref to avoid function call overhead)
+      controllerRef.current.handleMouseMove(x, y, isOverInteractiveRef.current);
       lastMousePosRef.current = { x: clientX, y: clientY };
     }
   };

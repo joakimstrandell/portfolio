@@ -56,7 +56,7 @@ export interface GridController {
   /** Stops the animation loop */
   stop: () => void;
   /** Handles mouse movement events */
-  handleMouseMove: (x: number, y: number) => void;
+  handleMouseMove: (x: number, y: number, isOverInteractive?: boolean) => void;
   /** Handles mouse leaving the canvas */
   handleMouseLeave: () => void;
   /** Resizes the canvas and updates internal dimensions */

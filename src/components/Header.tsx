@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useLayoutEffect, useState } from 'react';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import Signature from '@/components/Signature';
@@ -12,16 +12,28 @@ const THRESHOLD = 30;
 
 export function Header() {
   const { isAtTop, scrollY } = useScrollDirection();
-  const [isHovering, setIsHovering] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const shouldShowFullNav = isAtTop || isHovering || scrollY < THRESHOLD;
+  const toggleMenu = useCallback(
+    (open: boolean) => {
+      console.log('toggleMenu', open);
+      const shouldShowFullNav = isAtTop || scrollY < THRESHOLD || open;
+      setIsMenuOpen(shouldShowFullNav);
+    },
+    [isAtTop, scrollY, setIsMenuOpen],
+  );
+
+  useLayoutEffect(() => {
+    toggleMenu(false);
+  }, [scrollY, toggleMenu]);
 
   return (
-    <header className="pointer-events-none sticky top-0 z-20 h-36">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-20 h-36">
       <div
         className="relative z-10 flex items-center justify-between gap-6 p-6 pr-4"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseEnter={() => toggleMenu(true)}
+        onTouchStart={() => toggleMenu(true)}
+        onMouseLeave={() => toggleMenu(false)}
       >
         <Link href="/" className="pointer-events-auto">
           <div className="bg-accent flex h-12 w-12 items-end justify-end p-1">
@@ -33,8 +45,8 @@ export function Header() {
           {/* Menu Icon that slides in */}
           <div
             className={cn('absolute right-0 transition-all duration-300 ease-in-out', {
-              'translate-x-16 opacity-0': shouldShowFullNav,
-              'translate-x-0 opacity-100': !shouldShowFullNav,
+              'translate-x-16 opacity-0': isMenuOpen,
+              'translate-x-0 opacity-100': !isMenuOpen,
             })}
           >
             <button className="hover:bg-accent/10 pointer-events-auto p-2" aria-label="Menu">
@@ -48,8 +60,8 @@ export function Header() {
               'pointer-events-auto flex h-8 items-center rounded px-4',
               'transition-all duration-300 ease-in-out',
               {
-                'translate-x-0 opacity-100': shouldShowFullNav,
-                'translate-x-full opacity-0': !shouldShowFullNav,
+                'translate-x-0 opacity-100': isMenuOpen,
+                'translate-x-full opacity-0': !isMenuOpen,
               },
             )}
           >

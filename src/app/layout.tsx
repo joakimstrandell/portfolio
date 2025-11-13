@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: 'Joakim Strandell - Product Engineer',
   description:
     'Joakim Strandell is a product engineer with a passion for building scalable, user-centered web applications.',
+  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
 };
 
 export default function RootLayout({

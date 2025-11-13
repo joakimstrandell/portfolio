@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 
 export function Page({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
-    <main className={cn('-mt-36 flex min-h-screen flex-col gap-7', className)} id={id}>
+    <main className={cn('flex min-h-screen flex-col gap-7', className)} id={id}>
       {children}
     </main>
   );

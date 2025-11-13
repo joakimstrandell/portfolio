@@ -1,14 +1,13 @@
 import AnimateContent from '@/components/AnimateContent';
 import { Particles } from '@/components/Particles';
 import { Page, PageContent } from '@/components/page';
-import { Grid } from '@/components/Grid';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
   return (
-    <Page className="min-h-screen">
+    <Page className="justify-center">
       <PageContent className="pointer-events-none relative z-10 max-w-xl md:max-w-6xl">
         <AnimateContent className="prose dark:prose-invert font-bold">
           <h1 className="max-w-[48ch]">I&apos;m a Product Engineer</h1>
@@ -32,17 +31,17 @@ export default function Home() {
           </div>
         </AnimateContent>
       </PageContent>
-
-      <AnimateContent
+      <div
         className={cn(
-          'fixed right-0 z-0 hidden items-center justify-center overflow-hidden',
+          'absolute inset-y-0 right-0 z-0 hidden overflow-hidden',
           'h-screen max-h-[1000px] w-screen min-w-[700px]',
           'md:flex',
         )}
-        animationType="slideLeft"
       >
-        <Particles className="relative -right-1/3 lg:-right-1/4" />
-      </AnimateContent>
+        <AnimateContent className="flex h-full w-full items-center justify-center" animationType="slideLeft">
+          <Particles className="relative -right-1/3 min-h-[800px] lg:-right-1/4" />
+        </AnimateContent>
+      </div>
     </Page>
   );
 }

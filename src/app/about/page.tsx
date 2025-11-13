@@ -3,9 +3,7 @@ import { Page, PageContent } from '@/components/page';
 import { Experience } from './-experience';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { BookOpenText, BookOpenTextIcon, DownloadIcon, GlassesIcon, ListIcon } from 'lucide-react';
 import Image from 'next/image';
-import { Grid } from '@/components/Grid';
 
 export default function About() {
   return (

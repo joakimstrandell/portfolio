@@ -1,14 +1,8 @@
 import type { Metadata } from 'next';
 import { Roboto_Mono } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
-import HeaderNavigation from '@/components/HeaderNavigation';
-import GridBackground from '@/components/GridBackground';
+import { Header } from '@/components/Header';
 import { CustomCursor } from '@/components/CustomCursor';
-import { GameStateProvider } from '@/components/GameStateProvider';
-import ToggleGameButton from '@/components/ToggleGameButton';
-import GameContentWrapper from '@/components/GameContentWrapper';
-import GameOverModal from '@/components/GameOverModal';
 import { Grid } from '@/components/Grid';
 
 const robotoMono = Roboto_Mono({
@@ -31,13 +25,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
         <Grid className="min-h-screen">
-          <GameStateProvider>
-            <ToggleGameButton />
-            <CustomCursor />
-            <GameOverModal />
-            <HeaderNavigation />
-            <GameContentWrapper>{children}</GameContentWrapper>
-          </GameStateProvider>
+          <CustomCursor />
+          <Header />
+          {children}
         </Grid>
       </body>
     </html>

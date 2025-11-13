@@ -11,59 +11,57 @@ export default function About() {
   return (
     <>
       <Page>
-        <Grid className="bg-background flex-1">
-          <PageContent className="max-w-7xl">
-            <div className="flex items-center justify-between">
-              <div className="space-y-6">
-                <AnimateContent className="prose dark:prose-invert">
-                  <h1>Joakim Strandell</h1>
-                  <p className="text-muted-foreground -mt-6">Bridging UX/UI Design & Full-stack Development</p>
-                </AnimateContent>
-                <AnimateContent className="prose prose-lg dark:prose-invert">
-                  {/* <p className="max-w-[58ch]">
+        <PageContent className="max-w-7xl">
+          <div className="flex items-center justify-between">
+            <div className="space-y-6">
+              <AnimateContent className="prose dark:prose-invert">
+                <h1>Joakim Strandell</h1>
+                <p className="text-muted-foreground -mt-6">Bridging UX/UI Design & Full-stack Development</p>
+              </AnimateContent>
+              <AnimateContent className="prose prose-lg dark:prose-invert">
+                {/* <p className="max-w-[58ch]">
                     Bridging <span className="text-accent">UX/UI design</span> and{' '}
                     <span className="text-accent">full-stack development</span> to build scalable, user-centered web
                     applications that balance thoughtful design with solid engineering.
                   </p> */}
-                  <p>
-                    As a product engineer, I work across the entire product lifecycle — combining a deep understanding
-                    of user needs and product strategy with hands-on design and engineering expertise.
-                  </p>
-                  <p>
-                    Over the past two decades, I’ve worked with everything from startups to large enterprises. My roles
-                    have spanned <span className="text-accent">user research</span>,{' '}
-                    <span className="text-accent">interface design</span>,{' '}
-                    <span className="text-accent">system architecture</span>,{' '}
-                    <span className="text-accent">frontend development</span> and{' '}
-                    <span className="text-accent">backend development</span> — often bridging them into a unified
-                    approach.
-                  </p>
-                  <p>
-                    Lets chat if you want to discuss digital product design, full-stack architecture, or building
-                    high-performing teams!
-                  </p>
-                </AnimateContent>
-                <AnimateContent className="mt-12">
-                  <div className="flex items-center gap-8">
-                    <Button size="lg" asChild>
-                      <Link href="/about#experience">My experience</Link>
-                    </Button>
+                <p>
+                  As a product engineer, I work across the entire product lifecycle — combining a deep understanding of
+                  user needs and product strategy with hands-on design and engineering expertise.
+                </p>
+                <p>
+                  Over the past two decades, I’ve worked with everything from startups to large enterprises. My roles
+                  have spanned <span className="text-accent">user research</span>,{' '}
+                  <span className="text-accent">interface design</span>,{' '}
+                  <span className="text-accent">system architecture</span>,{' '}
+                  <span className="text-accent">frontend development</span> and{' '}
+                  <span className="text-accent">backend development</span> — often bridging them into a unified
+                  approach.
+                </p>
+                <p>
+                  Lets chat if you want to discuss digital product design, full-stack architecture, or building
+                  high-performing teams!
+                </p>
+              </AnimateContent>
+              <AnimateContent className="mt-12">
+                <div className="flex items-center gap-8">
+                  <Button size="lg" asChild>
+                    <Link href="/about#experience">My experience</Link>
+                  </Button>
 
-                    <Button size="lg" variant="outline" asChild>
-                      <Link href="/about#cv">Download CV</Link>
-                    </Button>
-                  </div>
-                </AnimateContent>
-              </div>
-              <AnimateContent
-                animationType="slideLeft"
-                className="flex items-center justify-center overflow-hidden rounded-full"
-              >
-                <Image src="/joakim-sketch.png" alt="Old man laptop" width={320} height={320} />
+                  <Button size="lg" variant="outline" asChild>
+                    <Link href="/about#cv">Download CV</Link>
+                  </Button>
+                </div>
               </AnimateContent>
             </div>
-          </PageContent>
-        </Grid>
+            <AnimateContent
+              animationType="slideLeft"
+              className="flex items-center justify-center overflow-hidden rounded-full"
+            >
+              <Image src="/joakim-sketch.png" alt="Old man laptop" width={320} height={320} />
+            </AnimateContent>
+          </div>
+        </PageContent>
 
         <PageContent className="grid max-w-7xl grid-cols-3 gap-4">
           <blockquote>

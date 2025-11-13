@@ -30,13 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${robotoMono.variable} antialiased`}>
-        <GameStateProvider>
-          <ToggleGameButton />
-          <CustomCursor />
-          <GameOverModal />
-          <HeaderNavigation />
-          <GameContentWrapper>{children}</GameContentWrapper>
-        </GameStateProvider>
+        <Grid className="min-h-screen">
+          <GameStateProvider>
+            <ToggleGameButton />
+            <CustomCursor />
+            <GameOverModal />
+            <HeaderNavigation />
+            <GameContentWrapper>{children}</GameContentWrapper>
+          </GameStateProvider>
+        </Grid>
       </body>
     </html>
   );

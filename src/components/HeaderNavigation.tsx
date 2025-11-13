@@ -19,7 +19,7 @@ export default function HeaderNavigation() {
   return (
     <>
       <div
-        className="fixed inset-x-0 top-0 z-20 flex items-center justify-between gap-6 p-6 pr-4"
+        className="sticky inset-x-0 top-0 z-20 flex items-center justify-between gap-6 p-6 pr-4"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >

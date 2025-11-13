@@ -417,7 +417,7 @@ function ParticlesScene({
       <OrbitControls
         ref={controlsRef}
         makeDefault
-        enableZoom={true}
+        enableZoom={false}
         minDistance={0.8} // Allow closer zoom
         maxDistance={3} // Restrict max distance for a tighter view
         enablePan={false}
@@ -458,21 +458,19 @@ export function Particles({
   const actualFunnelColor = funnelColor || color;
 
   return (
-    <div className={cn('fixed h-screen w-screen opacity-50', className)}>
-      <AnimateContent animationType="slideLeft" className="h-full w-full">
-        <Canvas shadows>
-          <ParticlesScene
-            particleCount={particleCount}
-            spawnHeight={spawnHeight}
-            despawnHeight={despawnHeight}
-            particleSize={particleSize}
-            color={color}
-            funnelColor={actualFunnelColor}
-            wireframeFunnel={wireframeFunnel}
-            gravity={gravity}
-          />
-        </Canvas>
-      </AnimateContent>
+    <div className={cn('h-full w-full', className)}>
+      <Canvas shadows>
+        <ParticlesScene
+          particleCount={particleCount}
+          spawnHeight={spawnHeight}
+          despawnHeight={despawnHeight}
+          particleSize={particleSize}
+          color={color}
+          funnelColor={actualFunnelColor}
+          wireframeFunnel={wireframeFunnel}
+          gravity={gravity}
+        />
+      </Canvas>
     </div>
   );
 }

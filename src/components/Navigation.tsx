@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import { Button } from './ui/button';
 
 export default function Navigation() {
   return (
     <nav>
-      <ul className="flex gap-6 text-sm leading-none">
+      <ul className="flex gap-0 text-sm leading-none">
         <Navigation.Item href="/about">About</Navigation.Item>
         <Navigation.Item href="/work">Work</Navigation.Item>
         <Navigation.Item href="/contact">Contact</Navigation.Item>
@@ -28,7 +29,9 @@ Navigation.Item = function NavigationItem({ href, children }: { href: string; ch
       })}
     >
       <Link href={href} className="p-1">
-        {children}
+        <Button size="sm" variant="ghost">
+          {children}
+        </Button>
       </Link>
     </li>
   );

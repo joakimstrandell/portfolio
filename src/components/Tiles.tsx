@@ -1,8 +1,9 @@
 'use client';
+import { cn } from '@/lib/utils';
 import gsap from 'gsap';
 import React from 'react';
 
-export type TileButtonProps = {
+export type TilesProps = {
   children?: React.ReactNode;
   rows?: number; // default 3
   cols?: number; // default 6
@@ -13,7 +14,7 @@ export type TileButtonProps = {
   each?: number; // seconds between tiles
   tileRadiusClass?: string;
   className?: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+} & React.ButtonHTMLAttributes<HTMLSpanElement>;
 
 function calculateGridDimensions(containerWidth: number, containerHeight: number, cellSize: number, gap: number) {
   const cols = Math.max(1, Math.floor(containerWidth / (cellSize + gap)));
@@ -22,11 +23,11 @@ function calculateGridDimensions(containerWidth: number, containerHeight: number
   return { rows, cols, total };
 }
 
-export function TileButton({
+export function Tiles({
   children = 'Hover me',
   rows = 3,
   cols = 6,
-  gap = 0,
+  gap = 1,
   colorClass = 'bg-accent',
   from = 'center',
   fromCursor = false,
@@ -34,8 +35,8 @@ export function TileButton({
   tileRadiusClass = 'none',
   className = '',
   ...rest
-}: TileButtonProps) {
-  const ref = React.useRef<HTMLButtonElement>(null);
+}: TilesProps) {
+  const ref = React.useRef<HTMLSpanElement>(null);
   const tilesRef = React.useRef<HTMLSpanElement>(null);
 
   const [gridDimensions, setGridDimensions] = React.useState({ rows, cols, total: rows * cols });
@@ -90,7 +91,7 @@ export function TileButton({
     const createTimeline = (fromPosition: number | 'start' | 'center' | 'edges' | 'random' | 'end') => {
       const tl = gsap.timeline({ paused: true, defaults: { duration: 0.22, ease: 'power1.out' } });
       tl.to($tiles, {
-        opacity: 0.95,
+        opacity: 0.5,
         scale: 1,
         stagger: { grid: [gridDimensions.rows, gridDimensions.cols], from: fromPosition, each },
       });
@@ -142,18 +143,19 @@ export function TileButton({
   }, [gridDimensions.rows, gridDimensions.cols, gap, from, fromCursor, each]);
 
   return (
-    <button
+    <span
       ref={ref}
-      className={[
-        'relative inline-grid place-items-center select-none',
-        'isolate overflow-hidden rounded-xl border px-4 py-3',
-        'border-slate-600 bg-slate-900 text-white/95 shadow-sm',
+      className={cn(
+        'group relative inline-grid place-items-center select-none',
+        'isolate overflow-hidden',
         'focus-visible:ring-2 focus-visible:ring-sky-400/60 focus-visible:outline-none',
         className,
-      ].join(' ')}
+      )}
       {...rest}
     >
-      <span className="relative z-10 font-semibold tracking-[-0.01em]">{children}</span>
+      <span className="group-hover:text-accent-foreground relative z-10 tracking-[-0.01em] transition-colors duration-300">
+        {children}
+      </span>
       <span ref={tilesRef} aria-hidden className="pointer-events-none absolute inset-0">
         {Array.from({ length: gridDimensions.total }, (_, i) => (
           <i
@@ -168,6 +170,6 @@ export function TileButton({
           />
         ))}
       </span>
-    </button>
+    </span>
   );
 }

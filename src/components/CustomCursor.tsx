@@ -15,7 +15,7 @@ export function CustomCursor() {
   return (
     <div
       ref={cursorRef}
-      className="border-accent pointer-events-none fixed top-0 left-0 z-[9999] h-5 w-5 border-1 opacity-0 mix-blend-difference"
+      className="border-accent pointer-events-none fixed top-0 left-0 z-[9999] h-5 w-5 border-1 opacity-5 mix-blend-multiply"
     />
   );
 }

@@ -1,7 +1,7 @@
-import type { GridController, CellState } from './types';
+import type { GridController } from './types';
 import { createCellManager } from '../grid-background/cellManager';
 import { drawGrid, drawCells, clearCanvas } from '../grid-background/gridRenderer';
-import { getCssVariable, getRGB } from '@/lib/utils';
+import { getCssVariable, getRGB } from '../utils';
 
 /**
  * Configuration for the grid controller
@@ -42,14 +42,6 @@ export const createGridController = (canvas: HTMLCanvasElement, config: GridCont
   const fastFadeRate = 0.15; // Fast fade rate when entering interactive elements
 
   /**
-   * Converts screen coordinates to a unique cell key
-   * @param x Canvas x coordinate
-   * @param y Canvas y coordinate
-   * @returns String key in format "col,row"
-   */
-  const getCellKey = (x: number, y: number): string => `${Math.floor(x / cellSize)},${Math.floor(y / cellSize)}`;
-
-  /**
    * Main animation loop that runs at 60fps
    * Updates cell states and redraws the canvas
    */
@@ -65,18 +57,17 @@ export const createGridController = (canvas: HTMLCanvasElement, config: GridCont
       currentFadeRate = Math.max(fadeRate, currentFadeRate * 0.95);
     }
 
+    const foregroundColor = getRGB(getCssVariable('--foreground')) || 'rgb(0, 0, 0)';
+    const accentColor = getRGB(getCssVariable('--accent')) || 'rgb(0, 0, 0)';
+
     // Clear canvas for fresh frame
     clearCanvas(ctx, canvasWidth, canvasHeight);
 
-    // Get foreground color from CSS custom property
-    const foregroundRGB = getRGB(getCssVariable('--foreground')) || 'rgb(0, 0, 0)';
-    const accentRGB = getRGB(getCssVariable('--accent')) || 'rgba(255, 0, 0, 1)';
-
     // Draw static grid lines
-    drawGrid(ctx, canvasWidth, canvasHeight, cellSize, foregroundRGB);
+    drawGrid(ctx, canvasWidth, canvasHeight, cellSize, foregroundColor);
 
     // Draw active cells with their current intensities
-    drawCells(ctx, cellManager.getCells(), cellSize, accentRGB);
+    drawCells(ctx, cellManager.getCells(), cellSize, accentColor);
 
     // Schedule next frame
     animationFrameId = requestAnimationFrame(animate);

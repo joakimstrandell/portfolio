@@ -14,7 +14,7 @@ export default function About() {
             <div className="space-y-6">
               <AnimateContent className="prose dark:prose-invert">
                 <h1>Joakim Strandell</h1>
-                <p className="text-muted-foreground -mt-6">Bridging UX/UI Design & Full-stack Development</p>
+                <p className="text-muted-foreground -mt-6">UX/UI Designer & Fullstack Engineer</p>
               </AnimateContent>
               <AnimateContent className="prose prose-lg dark:prose-invert">
                 {/* <p className="max-w-[58ch]">
@@ -23,8 +23,8 @@ export default function About() {
                     applications that balance thoughtful design with solid engineering.
                   </p> */}
                 <p>
-                  As a product engineer, I work across the entire product lifecycle — combining a deep understanding of
-                  user needs and product strategy with hands-on design and engineering expertise.
+                  As a designer and engineer, I work across the entire product lifecycle — combining a deep
+                  understanding of user needs and product strategy with hands-on design and engineering expertise.
                 </p>
                 <p>
                   Over the past two decades, I’ve worked with everything from startups to large enterprises. My roles

@@ -8,15 +8,15 @@ import { cn } from '@/lib/utils';
 export default function Home() {
   return (
     <Page className="justify-center">
-      <PageContent className="pointer-events-none relative z-10 max-w-xl md:max-w-6xl">
+      <PageContent className="pointer-events-none relative z-10 max-w-2xl md:max-w-6xl">
         <AnimateContent className="prose dark:prose-invert font-bold">
-          <h1 className="max-w-[48ch]">I&apos;m a Product Engineer</h1>
+          <h1 className="pointer-events-auto max-w-[48ch]">Designer & Engineer</h1>
         </AnimateContent>
         <AnimateContent className="prose-xl dark:prose-invert">
-          <p className="max-w-[42ch] lg:max-w-[48ch]">
+          <p className="pointer-events-auto max-w-[48ch] lg:max-w-[48ch]">
             I help teams align <span className="text-accent-foreground">design</span> and{' '}
-            <span className="text-accent">engineering</span> to build intuitive, scalable products that deliver real
-            value to users.
+            <span className="text-accent-foreground">engineering</span> to build intuitive, scalable products that
+            deliver real value to users.
           </p>
         </AnimateContent>
         <AnimateContent className="mt-10">

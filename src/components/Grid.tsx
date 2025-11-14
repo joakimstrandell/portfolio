@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { createGridController } from '@/lib/grid/controller';
 import type { GridController } from '@/lib/grid/types';
-import { cn } from '@/lib/utils';
+import { cn, getCssVariable, getRGB } from '@/lib/utils';
 import { useInteractiveState } from '@/hooks/useInteractiveState';
 
 interface GridProps {
@@ -12,6 +12,7 @@ interface GridProps {
   maxCells?: number;
   className?: string;
   children?: React.ReactNode;
+  variant?: 'dark' | 'light';
 }
 
 export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, className = '', children }: GridProps) {

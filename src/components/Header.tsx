@@ -16,7 +16,6 @@ export function Header() {
 
   const toggleMenu = useCallback(
     (open: boolean) => {
-      console.log('toggleMenu', open);
       const shouldShowFullNav = isAtTop || scrollY < THRESHOLD || open;
       setIsMenuOpen(shouldShowFullNav);
     },
@@ -29,19 +28,19 @@ export function Header() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-20 h-36">
-      <div
-        className="relative z-10 flex items-center justify-between gap-6 p-6 pr-4"
-        onMouseEnter={() => toggleMenu(true)}
-        onTouchStart={() => toggleMenu(true)}
-        onMouseLeave={() => toggleMenu(false)}
-      >
+      <div className="relative z-10 flex items-center justify-between gap-6 p-6 pr-4">
         <Link href="/" className="pointer-events-auto">
           <div className="bg-accent flex h-12 w-12 items-end justify-end p-1">
             <Signature className="h-6" />
           </div>
         </Link>
 
-        <div className="relative flex h-8 items-center overflow-hidden">
+        <div
+          className="relative flex items-center overflow-hidden"
+          onMouseEnter={() => toggleMenu(true)}
+          onTouchStart={() => toggleMenu(true)}
+          // onMouseOut={() => toggleMenu(false)}
+        >
           {/* Menu Icon that slides in */}
           <div
             className={cn('absolute right-0 transition-all duration-300 ease-in-out', {
@@ -49,7 +48,10 @@ export function Header() {
               'translate-x-0 opacity-100': !isMenuOpen,
             })}
           >
-            <button className="hover:bg-accent/10 pointer-events-auto p-2" aria-label="Menu">
+            <button
+              className={cn('hover:bg-accent/10 pointer-events-auto p-2', isMenuOpen && 'hidden')}
+              aria-label="Menu"
+            >
               <Menu className="h-8 w-8" />
             </button>
           </div>
@@ -57,7 +59,7 @@ export function Header() {
           {/* Full Navigation that slides out */}
           <div
             className={cn(
-              'pointer-events-auto flex h-8 items-center rounded px-4',
+              'pointer-events-auto flex items-center rounded px-4',
               'transition-all duration-300 ease-in-out',
               {
                 'translate-x-0 opacity-100': isMenuOpen,

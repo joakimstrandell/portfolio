@@ -5,6 +5,7 @@
  * is over an interactive element. Uses a single document-level event listener
  * for optimal performance.
  */
+import { isTouchDevice } from '@/lib/utils';
 
 type Subscriber = (isOverInteractive: boolean) => void;
 
@@ -78,6 +79,12 @@ class InteractiveStateManager {
    */
   private initialize() {
     if (this.isInitialized) return;
+
+    // Don't initialize on touch devices
+    if (isTouchDevice()) {
+      this.isInitialized = true;
+      return;
+    }
 
     // Use capture phase for better performance and to catch events early
     document.addEventListener('mousemove', this.handleMouseMove, { passive: true, capture: true });

@@ -28,7 +28,7 @@ export function Header() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-20 h-36">
-      <div className="relative z-10 flex items-center justify-between gap-6 p-6 pr-4">
+      <div className="relative z-10 flex items-center justify-between gap-6 p-6 pr-0">
         <Link href="/" className="pointer-events-auto">
           <div className="bg-accent flex h-12 w-12 items-end justify-end p-1">
             <Signature className="h-6" />
@@ -60,7 +60,7 @@ export function Header() {
           <div
             className={cn(
               'pointer-events-auto flex items-center rounded px-4',
-              'transition-all duration-300 ease-in-out',
+              '-mr-2 transition-all duration-300 ease-in-out',
               {
                 'translate-x-0 opacity-100': isMenuOpen,
                 'translate-x-full opacity-0': !isMenuOpen,

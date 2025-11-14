@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Roboto_Mono } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/Header';
@@ -14,7 +14,14 @@ export const metadata: Metadata = {
   title: 'Joakim Strandell - Product Engineer',
   description:
     'Joakim Strandell is a product engineer with a passion for building scalable, user-centered web applications.',
-  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+};
+
+export const viewport: Viewport = {
+  themeColor: '#000000',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { createGridController } from '@/lib/grid/controller';
 import type { GridController } from '@/lib/grid/types';
-import { cn, getCssVariable, getRGB } from '@/lib/utils';
+import { cn, getCssVariable, getRGB, isTouchDevice } from '@/lib/utils';
 import { useInteractiveState } from '@/hooks/useInteractiveState';
 
 interface GridProps {
@@ -111,6 +111,11 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
 
   // Track mouse position globally and handle scroll events
   useEffect(() => {
+    // Skip attaching mouse events if on touch device
+    if (isTouchDevice()) {
+      return;
+    }
+
     // Handle mouse move anywhere on the document
     const handleDocumentMouseMove = (e: MouseEvent) => {
       updateGridFromMousePosition(e.clientX, e.clientY);
@@ -147,6 +152,11 @@ export function Grid({ cellSize = 24, fadeRate = 0.045, maxCells = 200, classNam
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Skip attaching mouse events if on touch device
+    if (isTouchDevice()) {
+      return;
+    }
 
     const handleContainerMouseLeave = (e: MouseEvent) => {
       // Only handle if it's actually leaving the container, not just moving between children

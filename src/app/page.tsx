@@ -26,7 +26,7 @@ export default function Home() {
             </Button>
 
             <Button size="lg" variant="outline" asChild className="pointer-events-auto">
-              <Link href="/notes">View work</Link>
+              <Link href="/work">View work</Link>
             </Button>
           </div>
         </AnimateContent>

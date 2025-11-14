@@ -12,7 +12,7 @@ const THRESHOLD = 30;
 
 export function Header() {
   const { isAtTop, scrollY } = useScrollDirection();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   const toggleMenu = useCallback(
     (open: boolean) => {

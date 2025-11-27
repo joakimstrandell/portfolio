@@ -5,12 +5,13 @@ import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { Button } from './ui/button';
 
-export default function Navigation() {
+export function Navigation() {
   return (
     <nav>
       <ul className="flex gap-0 text-sm leading-none">
-        <Navigation.Item href="/about">About</Navigation.Item>
         <Navigation.Item href="/work">Work</Navigation.Item>
+        {/* <Navigation.Item href="/services">Services</Navigation.Item> */}
+        <Navigation.Item href="/about">About</Navigation.Item>
         <Navigation.Item href="/contact">Contact</Navigation.Item>
       </ul>
     </nav>

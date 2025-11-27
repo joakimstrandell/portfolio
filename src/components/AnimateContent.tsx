@@ -122,8 +122,8 @@ export default function AnimateContent({
   };
 
   return (
-    <span ref={sectionRef} className={cn('block', className, getInitialClass())} data-animate-content>
+    <div ref={sectionRef} className={cn('block', className, getInitialClass())} data-animate-content>
       {children}
-    </span>
+    </div>
   );
 }

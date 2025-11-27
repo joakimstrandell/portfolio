@@ -1,43 +1,36 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 
 const StackedPanes = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const panesRef = useRef<HTMLDivElement[]>([]);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Check if mobile device
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Gradient configurations for each pane
-  const panes = [
-    {
-      gradient: 'from-engineering-500/40 via-engineering-500/20 to-engineering-500/10',
-      delay: 0.2,
-    },
-    {
-      gradient: 'from-design-500/40 via-design-500/20 to-design-500/10',
-      delay: 0,
-    },
-    {
-      gradient: 'from-strategy-500/40 via-strategy-500/20 to-strategy-500/10',
-      delay: 0.6,
-    },
-  ];
+  const panes = useMemo(
+    () => [
+      {
+        gradient: 'from-engineering-500/40 via-engineering-500/20 to-engineering-500/10',
+        delay: 0.2,
+      },
+      {
+        gradient: 'from-design-500/40 via-design-500/20 to-design-500/10',
+        delay: 0,
+      },
+      {
+        gradient: 'from-strategy-500/40 via-strategy-500/20 to-strategy-500/10',
+        delay: 0.6,
+      },
+    ],
+    [],
+  );
 
   useEffect(() => {
+    const currentPanes = panesRef.current;
+
     // Continuous floating animation
-    panesRef.current.forEach((pane, index) => {
+    currentPanes.forEach((pane, index) => {
       if (pane) {
         // Initial position setup with stagger - stacked bottom to top
         gsap.set(pane, {
@@ -60,28 +53,17 @@ const StackedPanes = () => {
           delay: panes[index].delay,
           force3D: true,
         });
-
-        // // Subtle rotation animation
-        // gsap.to(pane, {
-        //   rotateY: -5 + (index % 2 === 0 ? 2 : -2),
-        //   duration: 3 + index * 0.5,
-        //   repeat: -1,
-        //   yoyo: true,
-        //   ease: 'sine.inOut',
-        //   delay: panes[index].delay,
-        //   force3D: true,
-        // });
       }
     });
 
     return () => {
-      gsap.killTweensOf(panesRef.current);
+      gsap.killTweensOf(currentPanes);
     };
-  }, []);
+  }, [panes]);
 
   // Mouse movement tilt effect
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current || isMobile) return;
+    if (!containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -103,7 +85,6 @@ const StackedPanes = () => {
   };
 
   const handleMouseLeave = () => {
-    setIsHovered(false);
     if (containerRef.current) {
       gsap.to(containerRef.current, {
         rotateY: 0,
@@ -116,20 +97,10 @@ const StackedPanes = () => {
   };
 
   return (
-    <div
-      className="relative h-[400px] w-[320px] md:h-[500px] md:w-[400px]"
-      style={{
-        perspective: '1000px',
-        perspectiveOrigin: '50% 70%',
-      }}
-    >
+    <div className="relative h-[400px] w-[320px] perspective-[1000px] perspective-origin-[50%_70%] md:h-[500px] md:w-[400px]">
       <div
         ref={containerRef}
-        className="relative h-full w-full"
-        style={{
-          transformStyle: 'preserve-3d',
-        }}
-        onMouseEnter={() => !isMobile && setIsHovered(true)}
+        className="relative h-full w-full will-change-transform transform-3d"
         onMouseLeave={handleMouseLeave}
         onMouseMove={handleMouseMove}
       >
@@ -139,11 +110,7 @@ const StackedPanes = () => {
             ref={(el) => {
               if (el) panesRef.current[index] = el;
             }}
-            className={`absolute top-1/2 left-1/2 h-[280px] w-[240px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-gradient-to-br backdrop-blur-sm md:h-[340px] md:w-[280px] ${pane.gradient}`}
-            style={{
-              transformStyle: 'preserve-3d',
-              willChange: 'transform',
-            }}
+            className={`absolute top-1/2 left-1/2 h-[280px] w-[240px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl bg-gradient-to-br backdrop-blur-sm will-change-transform transform-3d md:h-[340px] md:w-[280px] ${pane.gradient}`}
           ></div>
         ))}
       </div>

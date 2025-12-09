@@ -30,8 +30,8 @@ export function Header() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-20 h-36">
       <div className="relative z-10 flex items-center justify-between gap-6 p-6 pr-0">
         <Link href="/" className="pointer-events-auto">
-          <div className="bg-accent flex h-12 w-12 items-end justify-end p-1 mix-blend-difference">
-            <Signature className="fill-accent-foreground h-6" />
+          <div className="bg-strategy-300 flex h-12 w-12 items-end justify-end p-1 mix-blend-difference">
+            <Signature className="fill-strategy-950 h-6" />
           </div>
         </Link>
 
@@ -43,7 +43,7 @@ export function Header() {
         >
           {/* Menu Icon that slides in */}
           <div
-            className={cn('absolute right-0 transition-all duration-300 ease-in-out', {
+            className={cn('absolute right-0 p-2 transition-all duration-300 ease-in-out', {
               'translate-x-16 opacity-0': isMenuOpen,
               'translate-x-0 opacity-100': !isMenuOpen,
             })}
@@ -52,7 +52,7 @@ export function Header() {
               className={cn('hover:bg-accent/10 pointer-events-auto p-2', isMenuOpen && 'hidden')}
               aria-label="Menu"
             >
-              <Menu className="bg-accent h-8 w-8 mix-blend-difference" />
+              <Menu className="h-8 w-8 mix-blend-difference" />
             </button>
           </div>
 

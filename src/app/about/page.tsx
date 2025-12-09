@@ -15,7 +15,7 @@ export default function About() {
               <AnimateContent className="prose">
                 <h1>Joakim Strandell</h1>
                 <p className="text-muted-foreground -mt-6 text-sm">
-                  Product Engineer with 20+ years in UX/UI Design and Full-Stack Engineering
+                  20+ years in UX/UI Design and Fullstack Engineering
                 </p>
               </AnimateContent>
               <AnimateContent className="prose dark:prose-invert">
@@ -31,11 +31,11 @@ export default function About() {
                 </p>
                 <p>
                   For the last decade working as a consultant, I’ve operated at the intersection of UX/UI Design and
-                  Full-Stack Engineering.
+                  Fullstack Engineering.
                 </p>
                 <p>
                   Most recently, I spent 7 years with Stockholm Exergi, designing consistent user experiences and
-                  transitioning their platform to a modern, type-safe React architecture.
+                  transitioning their platform to a modern, type-safe React architecture and API layer.
                 </p>
               </AnimateContent>
               <AnimateContent className="mt-12">
@@ -63,42 +63,52 @@ export default function About() {
             <PageContent className="max-w-6xl space-y-8">
               <div className="prose">
                 <h2>My Philosophy</h2>
+                <p className="text-lg font-bold">Great products are built in the overlap.</p>
                 <p>
-                  I’ve believe in uniting human-centered design principles with full-stack engineering — keeping humans
-                  at the center for the entire product lifecycle. Be it the users of the product or the people building
-                  it, I believe in creating a seamless experience for everyone.
-                  {/* working closely
-                  with product teams to design thoughtful experiences, architect application infrastructures with
-                  exceptional developer experience, and bring clarity between design and code through team collaboration
-                  and shared best practices. */}
+                  For too long, design and engineering have lived in separate rooms. Designers dream up interfaces that
+                  are hard to build, and engineers build systems that are hard to use.
+                </p>
+
+                <p>
+                  I believe the best work happens when those walls come down. By combining UX strategy with fullstack
+                  engineering, I remove the friction of the &quot;hand-off.&quot; I don&apos;t just hand over a design
+                  file and hope for the best; I write the code that brings it to life.
+                </p>
+
+                <p>
+                  This approach allows for rapid iteration and pragmatic decision-making. We can fix design flaws in the
+                  code and fix technical limitations in the design. The result is a product that feels cohesive,
+                  performs beautifully, and ships on time.
                 </p>
               </div>
-              <div className="grid grid-cols-3 gap-12">
-                <div className="prose">
-                  <h3>01. Design First</h3>
-                  <p>
-                    The best designs are the ones that are built with the user in mind, and where every stakeholder is
-                    involved in the process.
-                  </p>
+              <AnimateContent>
+                <div className="grid grid-cols-3 gap-12">
+                  <div className="prose">
+                    <h3>Pragmatic Craftsmanship</h3>{' '}
+                    <p>
+                      I believe in the space between detail and pragmatism. Great software needs to feel polished and
+                      substantial, but it also needs to ship. I focus my energy on the 20% of details that provide 80%
+                      of the value, ensuring the product feels premium without getting stuck in the weeds.
+                    </p>
+                  </div>
+                  <div className="prose">
+                    <h3>Zero-Loss Translation</h3>
+                    <p>
+                      The biggest risks in product development happen during the hand-off. Because I speak both
+                      languages, design and code, nothing gets lost in translation. I build what I design, ensuring the
+                      final product matches the initial vision down to the last pixel.
+                    </p>
+                  </div>
+                  <div className="prose">
+                    <h3>Built to Last</h3>
+                    <p>
+                      Software shouldn&apos;t just be functional; it should be maintainable and humane. I treat code
+                      like a craft, building robust architectures and intuitive interfaces that respect the users time
+                      and the developerss sanity.
+                    </p>
+                  </div>
                 </div>
-                <div className="prose">
-                  <h3>02. Rigor Matters</h3>
-                  <p>
-                    Besides solid engineering practices, i believe good DX is the foundation of a successful product. I
-                    believe in Type Safety, Automation. Whether it is using Zod for validation or auto-generating API
-                    SDKs from OpenAPI specs, I build infrastructure that prevents bugs before they happen. I believe in
-                    Type Safety and Automation. Whether it is using Zod for validation or auto-generating API SDKs from
-                    OpenAPI specs, I build infrastructure that prevents bugs before they happen.
-                  </p>
-                </div>
-                <div className="prose">
-                  <h3>03. User-Centric Engineering</h3>
-                  <p>
-                    At the end of the day, code must solve a problem. Whether I was streamlining production for Printees
-                    or visualizing energy loads for Stockholm Exergi, my focus is always on the user's success.
-                  </p>
-                </div>
-              </div>
+              </AnimateContent>
             </PageContent>
           </div>
         </AnimateContent>
@@ -174,15 +184,16 @@ export default function About() {
                   <p>
                     I rely on a modern, type-safe stack that prioritizes developer experience and long-term
                     maintainability. My go-to architecture leverages React 18+ and TypeScript, using TanStack Query for
-                    robust server state data management and Zod for end-to-end validation.
+                    robust server state data management and Zod for end-to-end validation. I am a JavaScrip first kind
+                    of developer, but I am also comfortable with other server side languages like Python and PHP.
                   </p>
                   <div className="grid grid-cols-3 gap-4">
                     <div className="prose">
-                      <h4>Core & Infrastructure</h4>
+                      <h4>Design</h4>
                       <ul>
                         <li>Miro</li>
-                        <li>Figma</li>
-                        <li>Affinity</li>
+                        <li>Sketch & Figma</li>
+                        <li>Affinity & Adobe</li>
                       </ul>
                     </div>
                     <div className="prose">

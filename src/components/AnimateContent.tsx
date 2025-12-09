@@ -28,7 +28,7 @@ export default function AnimateContent({
   scrub = true,
   sequenceDelay = 0.1,
 }: AnimateContentProps) {
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Register the ScrollTrigger plugin

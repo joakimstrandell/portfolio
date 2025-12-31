@@ -4,19 +4,28 @@ import { Experience } from './-experience';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Footer } from '@/components/Footer';
 
 export default function About() {
   return (
     <>
       <Page>
         <PageContent className="max-w-6xl">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-center justify-between lg:flex-row">
             <div className="space-y-6">
-              <AnimateContent className="prose">
-                <h1>Joakim Strandell</h1>
-                <p className="text-muted-foreground -mt-6 text-sm">
-                  20+ years in UX/UI Design and Fullstack Engineering
-                </p>
+              <AnimateContent>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="prose">
+                    <h1>Joakim Strandell</h1>
+
+                    <p className="text-muted-foreground -mt-6 text-sm">
+                      20+ years in UX/UI Design and Fullstack Engineering
+                    </p>
+                  </div>
+                  <div className="hidden overflow-hidden rounded-full border-2 border-black/10 sm:block lg:hidden">
+                    <Image src="/joakim-sketch-transparent.png" alt="Joakim Strandell" width={100} height={100} />
+                  </div>
+                </div>
               </AnimateContent>
               <AnimateContent className="prose dark:prose-invert">
                 <h2>From Soapbox Cars to Enterprise Products</h2>
@@ -45,22 +54,22 @@ export default function About() {
                   </Button>
 
                   <Button size="lg" variant="outline" asChild>
-                    <Link href="/about#cv">CV as PDF</Link>
+                    <a href="/CV - Joakim Strandell.pdf">CV as PDF</a>
                   </Button>
                 </div>
               </AnimateContent>
             </div>
             <AnimateContent
               animationType="slideLeft"
-              className="border-foreground/10 flex items-center justify-center overflow-hidden rounded-full border-8 bg-white/20"
+              className="border-foreground/10 hidden items-center justify-center overflow-hidden rounded-full border-8 bg-white/20 lg:flex"
             >
               <Image src="/joakim-sketch-transparent.png" alt="Old man laptop" width={320} height={320} />
             </AnimateContent>
           </div>
         </PageContent>
         <AnimateContent>
-          <div className="relative border-t-8 border-b-8 border-black/10 bg-white/50">
-            <PageContent className="max-w-6xl space-y-8">
+          <div id="philosophy" className="relative border-t-8 border-b-8 border-black/10 bg-white/50">
+            <PageContent className="space-y-8">
               <div className="prose">
                 <h2>My Philosophy</h2>
                 <p className="text-lg font-bold">Great products are built in the overlap.</p>
@@ -72,7 +81,7 @@ export default function About() {
                 <p>
                   I believe the best work happens when those walls come down. By combining UX strategy with fullstack
                   engineering, I remove the friction of the &quot;hand-off.&quot; I don&apos;t just hand over a design
-                  file and hope for the best; I write the code that brings it to life.
+                  file and hope for the best; I can write the code that brings it to life.
                 </p>
 
                 <p>
@@ -81,44 +90,16 @@ export default function About() {
                   performs beautifully, and ships on time.
                 </p>
               </div>
-              <AnimateContent>
-                <div className="grid grid-cols-3 gap-12">
-                  <div className="prose">
-                    <h3>Pragmatic Craftsmanship</h3>{' '}
-                    <p>
-                      I believe in the space between detail and pragmatism. Great software needs to feel polished and
-                      substantial, but it also needs to ship. I focus my energy on the 20% of details that provide 80%
-                      of the value, ensuring the product feels premium without getting stuck in the weeds.
-                    </p>
-                  </div>
-                  <div className="prose">
-                    <h3>Zero-Loss Translation</h3>
-                    <p>
-                      The biggest risks in product development happen during the hand-off. Because I speak both
-                      languages, design and code, nothing gets lost in translation. I build what I design, ensuring the
-                      final product matches the initial vision down to the last pixel.
-                    </p>
-                  </div>
-                  <div className="prose">
-                    <h3>Built to Last</h3>
-                    <p>
-                      Software shouldn&apos;t just be functional; it should be maintainable and humane. I treat code
-                      like a craft, building robust architectures and intuitive interfaces that respect the users time
-                      and the developerss sanity.
-                    </p>
-                  </div>
-                </div>
-              </AnimateContent>
             </PageContent>
           </div>
         </AnimateContent>
 
-        <PageContent>
+        <PageContent id="experience">
           <AnimateContent className="prose dark:prose-invert">
             <h1>Experience</h1>
             <hr className="border-foreground -mt-4 border-2" />
             <p>
-              In recent years, I’ve focused on uniting user-centered design principles with frontend engineering —
+              In recent years, I’ve focused on uniting human-centered design principles with frontend engineering —
               working closely with product teams to design thoughtful experiences, build scalable frontend
               infrastructures and developer tooling, and bring clarity between design and code through documentation and
               shared best practices.
@@ -172,70 +153,89 @@ export default function About() {
                 and product portfolio expanded.
               </p>
             </Experience>
+            <div className="prose">
+              <br />
+              <h2>More coming soon...</h2>
+              <p>
+                For now you can download my CV as a PDF <a href="/CV - Joakim Strandell.pdf">here</a>.
+              </p>
+            </div>
           </AnimateContent>
         </PageContent>
 
         <AnimateContent>
-          <div className="relative border-t-8 border-b-8 border-black/10 bg-white/50">
+          <div id="stack" className="relative border-t-8 border-b-8 border-black/10 bg-white/50">
             <PageContent className="max-w-6xl">
               <AnimateContent>
                 <div className="prose">
-                  <h2>Technical Stack</h2>
+                  <h2>My Work Stack</h2>
                   <p>
-                    I rely on a modern, type-safe stack that prioritizes developer experience and long-term
-                    maintainability. My go-to architecture leverages React 18+ and TypeScript, using TanStack Query for
-                    robust server state data management and Zod for end-to-end validation. I am a JavaScrip first kind
-                    of developer, but I am also comfortable with other server side languages like Python and PHP.
+                    As both a designer and developer, I try to stick to what is considered the best practices in the
+                    design and development world. Even though the latest and greatest is always tempting, I like to
+                    focus on what delivers the best results for the project at hand.
                   </p>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="prose">
-                      <h4>Design</h4>
-                      <ul>
-                        <li>Miro</li>
-                        <li>Sketch & Figma</li>
-                        <li>Affinity & Adobe</li>
-                      </ul>
-                    </div>
-                    <div className="prose">
-                      <h4>Frontend</h4>
-                      <ul>
-                        <li>React</li>
-                        <li>Next.js</li>
-                        <li>Tailwind CSS</li>
-                        <li>TypeScript</li>
-                        <li>Shadcn UI</li>
-                      </ul>
-                    </div>
-                    <div className="prose">
-                      <h4>Backend</h4>
-                      <ul>
-                        <li>Node.js</li>
-                        <li>Express</li>
-                        <li>PostgreSQL</li>
-                      </ul>
-                    </div>
-                    <div className="prose">
-                      <h4>Tools</h4>
-                      <ul>
-                        <li>Git</li>
-                        <li>Docker</li>
-                        <li>CI/CD</li>
-                      </ul>
-                    </div>
-                    <div className="prose">
-                      <h4>Tools</h4>
-                      <ul>
-                        <li>Git</li>
-                        <li>Docker</li>
-                        <li>CI/CD</li>
-                      </ul>
-                    </div>
-                  </div>
+                  {/* <p>
+                    As a designer I use a pen and paper to sketch my ideas...
+                  </p>
+                  <p>
+                    As a developer I rely on a modern, type-safe stack that prioritizes developer experience and
+                    long-term maintainability. My go-to architecture leverages React 18+ and TypeScript, using TanStack
+                    Query for robust server state data management and Zod for end-to-end validation. I am an experienced
+                    JavaScrip developer, but I am also comfortable with other server side languages like Python and PHP.
+                  </p> */}
+                  <p>
+                    Within all areas of my work I use AI where it makes sense to do so. I believe there is no substitute
+                    (yet) for human creativity and problem solving, but AI can help with the repetitive and routine
+                    tasks, act as a second pair of eyes, and speed up the process.
+                  </p>
+                </div>
+              </AnimateContent>
+              <AnimateContent className="mt-12">
+                <div className="[&>a]:bg-strategy-500/20 [&>a]:text-strategy-950 space-y-2 space-x-2 [&>a]:inline-block [&>a]:rounded-md [&>a]:p-2">
+                  <a href="https://www.ideou.com/blogs/inspiration/what-is-human-centered-design">
+                    Human-Centered Design
+                  </a>
+                  <a href="https://medium.com/@MargaretKagundu/from-pencils-to-pixels-the-power-of-paper-sketching-in-ui-ux-design-afa66c2f7abf/">
+                    Pen and Paper
+                  </a>
+                  <a href="https://www.whimsical.com/">Whimsical</a>
+                  <a href="https://miro.com">Miro</a>
+                  <a href="https://www.figma.com/">Figma</a>
+                  <a href="https://www.sketch.com/">Sketch</a>
+                  <a href="https://www.adobe.com/">Adobe</a>
+                  <a href="https://www.affinity.com/">Affinity</a>
+                  <a href="https://www.typescriptlang.org/">TypeScript</a>
+                  <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">JavaScript</a>
+                  <a href="https://react.dev/">React</a>
+                  <a href="https://nextjs.org/">Next.js</a>
+                  <a href="https://tailwindcss.com/">Tailwind CSS</a>
+                  <a href="https://www.shadcn.com/">Shadcn UI</a>
+                  <a href="https://tanstack.com/">Tanstack</a>
+                  <a href="https://www.zod.dev/">Zod</a>
+                  <a href="https://redux.js.org/">Redux</a>
+                  <a href="https://nodejs.org/">Node.js</a>
+                  <a href="https://www.python.org/">Python</a>
+                  <a href="https://www.django.com/">Django</a>
+                  <a href="https://www.openapis.org/">OpenAPI</a>
+                  <a href="https://www.postgresql.org/">PostgreSQL</a>
+                  <a href="https://www.mysql.com/">MySQL</a>
+                  <a href="https://www.mongodb.com/">MongoDB</a>
+                  <a href="https://www.docker.com/">Docker</a>
+                  <a href="https://www.git-scm.com/">Git</a>
+                  <a href="https://www.github.com/">GitHub</a>
+                  <a href="https://www.gitlab.com/">GitLab</a>
+                  <a href="https://www.cursor.com/">Cursor</a>
+                  <a href="https://www.claude.ai/">Claude</a>
+                  <a href="https://www.gemini.com/">Gemini</a>
+                  <a href="https://www.atlassian.com/software/jira">Jira</a>
+                  <a href="https://www.microsoft.com/en-us/microsoft-365">Microsoft 365</a>
+                  <a href="https://www.notion.com/">Notion</a>
                 </div>
               </AnimateContent>
             </PageContent>
           </div>
         </AnimateContent>
+        <Footer />
       </Page>
     </>
   );

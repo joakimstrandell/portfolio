@@ -157,4 +157,8 @@ body * {
       @apply mt-3;
     }
   }
+
+  .footer-link {
+    @apply hover:text-foreground block py-1 text-gray-600 underline-offset-4 hover:underline;
+  }
 }

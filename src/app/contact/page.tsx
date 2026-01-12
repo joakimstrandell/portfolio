@@ -9,20 +9,21 @@ export default function Contact() {
       <PageContent>
         <AnimateContent className="prose dark:prose-invert">
           <h1>Contact</h1>
-          <p className="bg-strategy-500/20 font text-strategy-950 rounded-sm p-4 text-lg">
-            🎉 I am currently available for new opportunities.
+          <p className="font flex items-center rounded-sm border border-green-200 bg-green-100/50 p-4 text-green-950">
+            <span className="mr-4 inline-block aspect-square h-4 rounded-full bg-green-500" />I am currently available
+            for new opportunities.
           </p>
           <p>
-            Let’s connect if you want to discuss digital design, engineering, or how we can build products people love!
-            I also like to talk about the weather, and how AI will take my job (spoiler: it won&apos;t).
+            Ready to ship? Whether you need a specific design system audit or a fullstack product engineer, let’s
+            discuss how we can build scalable software together.
           </p>
           <p>
-            Call me at <Link href="tel:+46707294379">+46 70 729 43 79</Link> or send me an email at{' '}
+            Give me a call at <Link href="tel:+46707294379">+46 70 729 43 79</Link> or send me an email at{' '}
             <Link href="mailto:joakim@joakimstrandell.com">joakim@joakimstrandell.com</Link>.
           </p>
           <p>
-            You can find me on <Link href="https://x.com/joakimstrandell">X (Twitter)</Link> which I never use. Or{' '}
-            <Link href="https://linkedin.com/in/joakimstrandell">LinkedIn</Link> which I use when I have to.
+            You can also find me on <Link href="https://linkedin.com/in/joakimstrandell">LinkedIn</Link> and{' '}
+            <Link href="https://x.com/joakimstrandell">X (Twitter)</Link>.
           </p>
           <p>I am based in Stockholm, Sweden.</p>
         </AnimateContent>

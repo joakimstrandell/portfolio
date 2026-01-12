@@ -71,7 +71,7 @@ export default function Home() {
               </p>
             </div>
             <AnimateContent className="space-y-8">
-              <Accordion type="multiple" className="w-full" defaultValue={['item-1']}>
+              <Accordion type="multiple" className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger>
                     <div className="prose">
@@ -189,6 +189,9 @@ export default function Home() {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
+              <Button size="lg" asChild variant="outline" className="pointer-events-auto">
+                <Link href="/contact">Let&apos;s connect</Link>
+              </Button>
             </AnimateContent>
           </PageContent>
         </div>

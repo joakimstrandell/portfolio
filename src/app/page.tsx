@@ -32,7 +32,7 @@ export default function Home() {
             <h1 className="pointer-events-auto leading-9 md:leading-12">
               I help teams ship{' '}
               <span className="text-strategy-950 bg-strategy-500/20 inline-block pb-1 leading-none">ideas</span> faster
-              by bridging{' '}
+              by unifying{' '}
               <span className="bg-design-500/20 text-design-950 inline-block pb-1 leading-none">design</span> and{' '}
               <span className="bg-engineering-500/20 text-engineering-950 inline-block pb-1 leading-none">
                 engineering
@@ -42,8 +42,9 @@ export default function Home() {
           </AnimateContent>
           <AnimateContent className="prose dark:prose-invert pointer-events-auto md:max-w-[67ch] lg:max-w-[78ch]">
             <p className="prose-lg pointer-events-auto">
-              As a <strong>Product Designer and Engineer</strong>, I execute across the entire stack. From defining user
-              flows and designing user interfaces in Figma, to building and shipping production ready web applications.
+              With 20+ years of experience, I eliminate the friction between concept and code. I build scalable design
+              systems and robust fullstack architectures that allow teams to go from idea to production without the
+              translation loss.
             </p>
           </AnimateContent>
           <AnimateContent className="mt-2">
@@ -70,42 +71,45 @@ export default function Home() {
               </p>
             </div>
             <AnimateContent className="space-y-8">
-              <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+              <Accordion type="multiple" className="w-full" defaultValue={['item-1']}>
                 <AccordionItem value="item-1">
                   <AccordionTrigger>
                     <div className="prose">
-                      <h3>01. UX/UI Design</h3>
-                      <p className="-mt-2 text-lg font-normal">From user insights to high-fidelity UI.</p>
+                      <h3>01. UX/UI & Product Design</h3>
+                      <p className="-mt-2 text-lg font-normal">Designing for implementation, not just presentation.</p>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="text-foreground [&>li]:prose space-y-3 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
+                    <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
                       <li>
-                        <h4>Discovery</h4>
+                        <h4>Discovery & Strategy</h4>
                         <p>
-                          Talking to users and stakeholders to identify and define needs and requirements for creating a
-                          truely useful product.
+                          Partnering with stakeholders to define the &ldquo;right&rdquo; product. I focus on technical
+                          feasibility during the ideation phase to ensure complex requirements never compromise the user
+                          experience.
                         </p>
                       </li>
                       <li>
-                        <h4>Ideation</h4>
+                        <h4>Systematic Design</h4>
                         <p>
-                          Creating user flows, wireframes, and clickable prototypes to validate logic. Testing early
-                          concepts with users and stakeholders.
+                          I treat the codebase as the source of truth. While Figma is used for rapid ideation, I
+                          architect systems directly in code. This &quot;Zero-Loss&quot; approach is faster and ensures
+                          the approved design is exactly what ships to production.
                         </p>
                       </li>
                       <li>
-                        <h4>High Fidelity</h4>
+                        <h4>High-Fidelity Prototyping</h4>
                         <p>
-                          Crafting design systems, defining interaction patterns, tokens and states, and designing
-                          high-fidelity interfaces in Figma.
+                          Designing complex interaction patterns and states. I often skip static mockups for complex
+                          flows, prototyping directly in code to validate logic and feel immediately.
                         </p>
                       </li>
                       <li>
-                        <h4>Handoff</h4>
+                        <h4>Zero-Friction Integration</h4>
                         <p>
-                          Preparing detailed documentation, code samples, and structured design files and that are ready
-                          for immediate handoff.
+                          I eliminate the traditional &quot;handoff.&quot; Instead of delivering static files, I ship
+                          production-ready components. This closes the gap between design intent and engineering
+                          reality, preventing technical debt before it starts.
                         </p>
                       </li>
                     </ul>
@@ -114,32 +118,31 @@ export default function Home() {
                 <AccordionItem value="item-2">
                   <AccordionTrigger>
                     <div className="prose">
-                      <h3>02. Fullstack Development</h3>
-                      <p className="-mt-2 font-normal">Building the application from start to finish.</p>
+                      <h3>02. Fullstack Engineering</h3>
+                      <p className="-mt-2 font-normal">Vertical ownership from database to UI.</p>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="text-foreground [&>li]:prose space-y-3 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
+                    <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
                       <li>
-                        <h4>Frontend</h4>
+                        <h4>Modern Frontend</h4>
                         <p>
-                          Building complex, data-rich, and accessible interfaces with pixel-perfect precision, i.g in
-                          React. Handling complex state management with tools like Redux, TanStack Query and routing
-                          libraries.
+                          Building pixel-perfect, accessible interfaces in a modern frontend stack. I use
+                          component-driven architecture to ensure the UI is modular, testable, and strictly typed.
                         </p>
                       </li>
                       <li>
-                        <h4>Backend</h4>
+                        <h4>Robust Backend</h4>
                         <p>
-                          Implementing application and business logic, authentication, API routes, and database
-                          integrations (using tools like Supabase/PostgreSQL).
+                          Architecting scalable backend logic in a modern backend stack. I focus on performance and data
+                          integrity, ensuring the API layer serves the frontend efficiently.
                         </p>
                       </li>
                       <li>
-                        <h4>Integration</h4>
+                        <h4>Type-Safe Integration</h4>
                         <p>
-                          Connecting frontends to APIs and ensuring type safety across the stack. Defining API contracts
-                          and creating type-safe SDKs (i.g. OpenAPI/Zod).
+                          Bridging the gap with End-to-End Type Safety. I use TypeScript and tools like Zod and OpenAPI
+                          to generate strict contracts between the backend and frontend, eliminating runtime errors.
                         </p>
                       </li>
                     </ul>
@@ -148,30 +151,39 @@ export default function Home() {
                 <AccordionItem value="item-3">
                   <AccordionTrigger>
                     <div className="prose">
-                      <h3>03. Architecture & Tooling</h3>
-                      <p className="-mt-2 font-normal">Setting up a professional, scalable codebase.</p>
+                      <h3>03. Architecture & Developer Experience</h3>
+                      <p className="-mt-2 font-normal">Building the systems that build the product.</p>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <ul className="text-foreground [&>li]:prose space-y-3 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
+                    <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
                       <li>
-                        <h4>Repo Setup</h4>
+                        <h4>Monorepo Architecture</h4>
                         <p>
-                          Configuring Monorepos, linting, pre-commit hooks, and formatting (i.g. Prettier/ESLint) for
-                          code consistency.
+                          Setting up modern workspaces (e.g., Turborepo/Nx) that allow multiple applications and
+                          libraries to share logic efficiently while keeping build times fast.
                         </p>
                       </li>
                       <li>
-                        <h4>Design Systems</h4>
-                        <p>Translating Figma tokens into reusable, type-safe code components (i.g. Radix/Tailwind).</p>
+                        <h4>Design System Infrastructure</h4>
+                        <p>
+                          Bridging Figma and Code. I build shared UI libraries using primitives (like Radix UI) and
+                          styling engines (like Tailwind) to enforce consistency across the platform.
+                        </p>
                       </li>
                       <li>
-                        <h4>CI/CD</h4>
-                        <p>Setting up automated testing and deployment pipelines (i.g. Vercel/GitHub Actions).</p>
+                        <h4>Tooling & CI/CD</h4>
+                        <p>
+                          Automating quality. I configure ESLint, Prettier, and GitHub Actions pipelines to catch errors
+                          early and deploy with confidence.
+                        </p>
                       </li>
                       <li>
-                        <h4>Code Quality</h4>
-                        <p>Ensuring the codebase is maintainable and ready for team collaboration.</p>
+                        <h4>Maintainability</h4>
+                        <p>
+                          Writing code that is easy to delete and easy to extend. I prioritize clean abstractions and
+                          documentation so the team can move fast without breaking things.
+                        </p>
                       </li>
                     </ul>
                   </AccordionContent>

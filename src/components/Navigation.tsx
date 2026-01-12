@@ -29,10 +29,8 @@ Navigation.Item = function NavigationItem({ href, children }: { href: string; ch
         'text-muted-foreground': !isActive,
       })}
     >
-      <Link href={href} className="p-1">
-        <Button size="sm" variant="ghost">
-          {children}
-        </Button>
+      <Link href={href}>
+        <Button variant="ghost">{children}</Button>
       </Link>
     </li>
   );

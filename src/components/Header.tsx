@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import Signature from '@/components/Signature';
@@ -10,21 +10,50 @@ import { cn } from '@/lib/utils';
 
 const THRESHOLD = 30;
 
+const HOVER_DEBOUNCE_MS = 250;
+
 export function Header() {
   const { isAtTop, scrollY } = useScrollDirection();
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const isHoveredRef = useRef(false);
+  const isAtTopRef = useRef(isAtTop);
+  const scrollYRef = useRef(scrollY);
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  const toggleMenu = useCallback(
-    (open: boolean) => {
-      const shouldShowFullNav = isAtTop || scrollY < THRESHOLD || open;
-      setIsMenuOpen(shouldShowFullNav);
+  // Keep refs in sync
+  isAtTopRef.current = isAtTop;
+  scrollYRef.current = scrollY;
+
+  const updateMenuState = useCallback(() => {
+    const shouldShowFullNav = isAtTopRef.current || scrollYRef.current < THRESHOLD || isHoveredRef.current;
+    setIsMenuOpen(shouldShowFullNav);
+  }, []);
+
+  const handleHover = useCallback(
+    (hovered: boolean) => {
+      // Clear any pending debounce
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+        debounceTimerRef.current = null;
+      }
+
+      if (hovered) {
+        isHoveredRef.current = true;
+        updateMenuState();
+      } else {
+        // Debounce when leaving hover
+        debounceTimerRef.current = setTimeout(() => {
+          isHoveredRef.current = false;
+          updateMenuState();
+        }, HOVER_DEBOUNCE_MS);
+      }
     },
-    [isAtTop, scrollY, setIsMenuOpen],
+    [updateMenuState],
   );
 
   useLayoutEffect(() => {
-    toggleMenu(false);
-  }, [scrollY, toggleMenu]);
+    updateMenuState();
+  }, [scrollY, updateMenuState]);
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-20 h-36">
@@ -37,9 +66,9 @@ export function Header() {
 
         <div
           className="relative flex items-center overflow-hidden"
-          onMouseEnter={() => toggleMenu(true)}
-          onTouchStart={() => toggleMenu(true)}
-          // onMouseOut={() => toggleMenu(false)}
+          onMouseEnter={() => handleHover(true)}
+          onMouseLeave={() => handleHover(false)}
+          onTouchStart={() => handleHover(true)}
         >
           {/* Menu Icon that slides in */}
           <div
@@ -49,10 +78,10 @@ export function Header() {
             })}
           >
             <button
-              className={cn('hover:bg-accent/10 pointer-events-auto p-2', isMenuOpen && 'hidden')}
+              className={cn('text-foreground pointer-events-auto bg-white/90 p-2', isMenuOpen && 'hidden')}
               aria-label="Menu"
             >
-              <Menu className="h-8 w-8 mix-blend-difference" />
+              <Menu className="h-8 w-8" />
             </button>
           </div>
 
@@ -60,10 +89,11 @@ export function Header() {
           <div
             className={cn(
               'pointer-events-auto flex items-center rounded px-4 mix-blend-difference',
-              '-mr-2 transition-all duration-300 ease-in-out',
+              '-mr-2 rounded transition-all duration-300 ease-in-out',
               {
                 'translate-x-0 opacity-100': isMenuOpen,
                 'translate-x-full opacity-0': !isMenuOpen,
+                'bg-white/90': isMenuOpen && !isAtTop,
               },
             )}
           >

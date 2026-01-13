@@ -74,20 +74,22 @@ export default function About() {
                 <h2>My Philosophy</h2>
                 <p className="text-lg font-bold">Great products are built in the overlap.</p>
                 <p>
-                  For too long, design and engineering have lived in separate rooms. Designers dream up interfaces that
-                  are hard to build, and engineers build systems that are hard to use.
+                  For too long, design and engineering have lived in separate realities. Designers perfect static images
+                  that are impossible to maintain, and developers are left to interpret the intent. The result is
+                  &quot;drift&quot;—a gap between what was approved and what actually ships.
                 </p>
 
                 <p>
-                  I believe the best work happens when those walls come down. By combining UX strategy with fullstack
-                  engineering, I remove the friction of the &quot;hand-off.&quot; I don&apos;t just hand over a design
-                  file and hope for the best; I can write the code that brings it to life.
+                  I believe the best work happens when we remove that friction. I treat Code as the Source of Truth.
+                  Instead of maintaining heavy, static design libraries, I architect systems where design tokens and
+                  variables map 1:1 to production code.
                 </p>
 
                 <p>
-                  This approach allows for rapid iteration and pragmatic decision-making. We can fix design flaws in the
-                  code and fix technical limitations in the design. The result is a product that feels cohesive,
-                  performs beautifully, and ships on time.
+                  This &quot;Code-First&quot; approach eliminates the traditional &quot;hand-off.&quot; We don&apos;t
+                  just hope for the best; we prototype in the browser to validate logic, physics, and accessibility
+                  immediately. This ensures a Zero-Loss process where the product you design is exactly the product you
+                  build—cohesive, scalable, and shipped on time.
                 </p>
               </div>
             </PageContent>
@@ -97,8 +99,7 @@ export default function About() {
         <PageContent id="experience">
           <AnimateContent className="prose dark:prose-invert">
             <h1>Experience</h1>
-            <hr className="border-foreground -mt-4 border-2" />
-            <p>
+            <p className="-mt-4">
               In recent years, I’ve focused on uniting human-centered design principles with frontend engineering —
               working closely with product teams to design thoughtful experiences, build scalable frontend
               infrastructures and developer tooling, and bring clarity between design and code through documentation and
@@ -164,7 +165,7 @@ export default function About() {
         </PageContent>
 
         <AnimateContent>
-          <div id="stack" className="relative border-t-8 border-b-8 border-black/10 bg-white/50">
+          <div id="stack" className="relative border-t-8 border-black/10 bg-white/50">
             <PageContent className="max-w-6xl">
               <AnimateContent>
                 <div className="prose">

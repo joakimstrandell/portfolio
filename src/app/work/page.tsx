@@ -17,7 +17,6 @@ export default function Blog() {
             A collection of client projects, concepts, and thoughts — things I’ve built or learned while designing and
             developing digital products.
           </p>
-          <h2>Sorry, this page is still under construction.</h2>
           <Image
             src="/wip.jpeg"
             alt="Old man laptop"
@@ -26,10 +25,11 @@ export default function Blog() {
             width={1000}
             height={1000}
           />
+          <p>I am currently updating my portfolio to showcase selected cases within Product Design and Engineering.</p>
           <p>
-            Maybe this is not the best place to be right now. To be frank, this page is not even necessary. Sorry for
-            leading you down this path, you are a trooper. Check back in a few weeks for more content, and a happy new
-            year! For now you can check out my <Link href="/about">about</Link> page.
+            While the pixels are falling into place, please visit my <Link href="/about">about</Link> page for my
+            background, or connect with me on <Link href="https://linkedin.com/in/joakimstrandell">LinkedIn</Link> to
+            see my latest updates.
           </p>
           {/* <div className="mt-10 flex flex-col gap-8">
             {posts.map((post) => (

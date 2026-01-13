@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Roboto_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { Header } from '@/components/Header';
 import { CustomCursor } from '@/components/CustomCursor';
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Header />
           {children}
         </Grid>
+        <Analytics />
       </body>
     </html>
   );

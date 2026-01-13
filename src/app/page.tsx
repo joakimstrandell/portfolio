@@ -66,7 +66,7 @@ export default function Home() {
             <div className="prose max-w-[78ch]">
               <h2>How I Help You Succeed</h2>
               <p className="prose-lg">
-                I adapt quickly to your teams needs, and can parachute into any stage of development, or execute across
+                I adapt quickly to your team's needs and can parachute into any stage of development, or execute across
                 the entire product lifecycle.
               </p>
             </div>
@@ -84,9 +84,8 @@ export default function Home() {
                       <li>
                         <h4>Discovery & Strategy</h4>
                         <p>
-                          Partnering with stakeholders to define the &ldquo;right&rdquo; product. I focus on technical
-                          feasibility during the ideation phase to ensure complex requirements never compromise the user
-                          experience.
+                          Partnering with stakeholders to define the right product. I focus on technical feasibility
+                          during ideation to ensure complex requirements never compromise the user experience.
                         </p>
                       </li>
                       <li>
@@ -134,15 +133,15 @@ export default function Home() {
                       <li>
                         <h4>Robust Backend</h4>
                         <p>
-                          Architecting scalable backend logic in a modern backend stack. I focus on performance and data
+                          Architecting scalable backend logic in a modern stack. I focus on performance and data
                           integrity, ensuring the API layer serves the frontend efficiently.
                         </p>
                       </li>
                       <li>
                         <h4>Type-Safe Integration</h4>
                         <p>
-                          Bridging the gap with End-to-End Type Safety. I use TypeScript and tools like Zod and OpenAPI
-                          to generate strict contracts between the backend and frontend, eliminating runtime errors.
+                          Bridging the gap with end-to-end type safety. I use TypeScript and tools like Zod and OpenAPI
+                          to generate strict contracts between backend and frontend, eliminating runtime errors.
                         </p>
                       </li>
                     </ul>
@@ -167,7 +166,7 @@ export default function Home() {
                       <li>
                         <h4>Design System Infrastructure</h4>
                         <p>
-                          Bridging Figma and Code. I build shared UI libraries using primitives (like Radix UI) and
+                          Bridging Figma and code. I build shared UI libraries using primitives (like Radix UI) and
                           styling engines (like Tailwind) to enforce consistency across the platform.
                         </p>
                       </li>

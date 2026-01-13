@@ -66,8 +66,8 @@ export default function Home() {
             <div className="prose max-w-[78ch]">
               <h2>How I Help You Succeed</h2>
               <p className="prose-lg">
-                I adapt quickly to your team's needs and can parachute into any stage of development, or execute across
-                the entire product lifecycle.
+                I adapt quickly to your team&apos;s needs and can parachute into any stage of development, or execute
+                across the entire product lifecycle.
               </p>
             </div>
             <AnimateContent className="space-y-8">

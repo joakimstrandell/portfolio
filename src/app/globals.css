@@ -42,6 +42,10 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .dark {
   --background: oklch(0 0 0);
   --foreground: oklch(1 0 0);

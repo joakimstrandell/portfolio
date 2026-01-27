@@ -1,11 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const rootPkg = require('./package.json');
-const localOverrides = rootPkg.pnpm?.localOverrides || {};
-
 const josuiPath = path.resolve(__dirname, '../josui/packages');
-const useLocalPackages = fs.existsSync(josuiPath);
+const useLocalPackages = fs.existsSync(josuiPath) && !process.env.CI && !process.env.VERCEL;
+
+// Define local overrides here instead of package.json to avoid lockfile issues
+const localOverrides = {
+  '@josui/core': 'link:../josui/packages/core',
+  '@josui/core-web': 'link:../josui/packages/core-web',
+  '@josui/react': 'link:../josui/packages/react',
+  '@josui/tailwind': 'link:../josui/packages/tailwind',
+  '@josui/tokens': 'link:../josui/packages/tokens',
+};
 
 module.exports = {
   hooks: {

@@ -28,7 +28,7 @@ Personal portfolio site built with TanStack Start (file-based routing on Vite).
 ### Styling
 - Tailwind CSS v4 with `@tailwindcss/vite` plugin
 - Global styles in `src/styles/globals.css`
-- Custom colors: `strategy-*`, `design-*`, `engineering-*`
+- Custom colors: `primary-*`, `secondary-*`, `tertiary-*`
 
 ## Important Files
 
@@ -81,18 +81,18 @@ The `@josui/*` packages are published on npm but linked locally during developme
 
 **How it works:**
 - `package.json` specifies npm versions (`0.x`) in dependencies
-- `package.json` has `pnpm.localOverrides` with `link:` paths to `../josui/packages/*`
-- `.pnpmfile.cjs` checks if `../josui/packages` exists:
+- `.pnpmfile.cjs` defines the local link paths and checks if `../josui/packages` exists AND not in CI/Vercel:
   - **Locally**: applies the link overrides (symlinks to sibling repo)
-  - **CI/Vercel**: directory doesn't exist, installs from npm
+  - **CI/Vercel**: skips overrides, installs from npm
 
 **To add a new @josui package:**
-1. Add to `dependencies` with version `0.x`
-2. Add to `pnpm.localOverrides` with `link:../josui/packages/[name]`
+1. Add to `dependencies` in package.json with version `0.x`
+2. Add to `localOverrides` object in `.pnpmfile.cjs`
 
 ### Key packages
 - `@tanstack/react-router` - Routing
 - `@tanstack/react-start` - SSR framework
+- `nitro` - Server deployment (required for Vercel)
 - `gsap` - Animations
 - `@react-three/fiber` - 3D effects
 

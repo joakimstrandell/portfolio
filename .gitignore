@@ -13,9 +13,13 @@
 # testing
 /coverage
 
-# next.js
+# next.js (legacy)
 /.next/
 /out/
+
+# vinxi / tanstack start
+/.vinxi/
+/.output/
 
 # production
 /build
@@ -39,3 +43,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# yalc
+.yalc
+yalc.lock

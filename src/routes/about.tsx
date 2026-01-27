@@ -1,12 +1,21 @@
-import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent } from '@/components/page';
-import { Experience } from './-experience';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Footer } from '@/components/Footer';
+import { createFileRoute, Link } from '@tanstack/react-router'
+import AnimateContent from '@/components/AnimateContent'
+import { Page, PageContent } from '@/components/page'
+import { Experience } from '@/components/Experience'
+import { Button } from '@/components/ui/button'
+import { Footer } from '@/components/Footer'
 
-export default function About() {
+export const Route = createFileRoute('/about')({
+  component: About,
+  head: () => ({
+    meta: [
+      { title: 'About - Joakim Strandell' },
+      { name: 'description', content: 'Learn about Joakim Strandell, a product engineer with 20+ years of experience in UX/UI Design and Fullstack Engineering.' },
+    ],
+  }),
+})
+
+function About() {
   return (
     <>
       <Page>
@@ -23,23 +32,23 @@ export default function About() {
                     </p>
                   </div>
                   <div className="hidden overflow-hidden rounded-full border-2 border-black/10 sm:block lg:hidden">
-                    <Image src="/joakim-sketch-transparent.png" alt="Joakim Strandell" width={100} height={100} />
+                    <img src="/joakim-sketch-transparent.png" alt="Joakim Strandell" width={100} height={100} />
                   </div>
                 </div>
               </AnimateContent>
               <AnimateContent className="prose dark:prose-invert">
                 <h2>From Soapbox Cars to Enterprise Products</h2>
                 <p>
-                  I’ve always liked building things. As a kid it was boats, soapbox cars, and questionable DIY
+                  I've always liked building things. As a kid it was boats, soapbox cars, and questionable DIY
                   cigarettes. Later it became websites, apps, and digital products. The tools changed, but the curiosity
                   stayed the same.
                 </p>
                 <p>
-                  In my twenties I started my first company, built a few SaaS tools before “SaaS” was even a thing, and
+                  In my twenties I started my first company, built a few SaaS tools before "SaaS" was even a thing, and
                   later co-founded a small digital studio that ended up working with brands like H&M, MTV, and BMW.
                 </p>
                 <p>
-                  For the last decade working as a consultant, I’ve operated at the intersection of UX/UI Design and
+                  For the last decade working as a consultant, I've operated at the intersection of UX/UI Design and
                   Fullstack Engineering.
                 </p>
                 <p>
@@ -50,7 +59,7 @@ export default function About() {
               <AnimateContent className="mt-12">
                 <div className="flex items-center gap-8">
                   <Button size="lg" asChild>
-                    <Link href="/about#experience">My experience</Link>
+                    <Link to="/about" hash="experience">My experience</Link>
                   </Button>
 
                   <Button size="lg" variant="outline" asChild>
@@ -63,7 +72,7 @@ export default function About() {
               animationType="slideLeft"
               className="border-foreground/10 hidden items-center justify-center overflow-hidden rounded-full border-8 bg-white/20 lg:flex"
             >
-              <Image src="/joakim-sketch-transparent.png" alt="Old man laptop" width={320} height={320} />
+              <img src="/joakim-sketch-transparent.png" alt="Old man laptop" width={320} height={320} />
             </AnimateContent>
           </div>
         </PageContent>
@@ -100,7 +109,7 @@ export default function About() {
           <AnimateContent className="prose dark:prose-invert">
             <h1>Experience</h1>
             <p className="-mt-4">
-              In recent years, I’ve focused on uniting human-centered design principles with frontend engineering —
+              In recent years, I've focused on uniting human-centered design principles with frontend engineering —
               working closely with product teams to design thoughtful experiences, build scalable frontend
               infrastructures and developer tooling, and bring clarity between design and code through documentation and
               shared best practices.
@@ -113,7 +122,7 @@ export default function About() {
               type="Contract"
               time="7 years"
               role="UX/UI Designer and Frontend Developer"
-              description="As a long-term consultant for Stockholm Exergi’s Intelligy Solution Platform, I led initiatives spanning UX/UI design, frontend development and infrastructure. I helped transition multiple products from a Python/Django-based interface to a modern React architecture, and later focused on building scalable frontend systems – including design systems, shared libraries, developer tooling, and documentation – to improve consistency and efficiency across applications and teams. In recent years, I’ve focused on uniting user-centered design principles with frontend engineering —
+              description="As a long-term consultant for Stockholm Exergi's Intelligy Solution Platform, I led initiatives spanning UX/UI design, frontend development and infrastructure. I helped transition multiple products from a Python/Django-based interface to a modern React architecture, and later focused on building scalable frontend systems – including design systems, shared libraries, developer tooling, and documentation – to improve consistency and efficiency across applications and teams. In recent years, I've focused on uniting user-centered design principles with frontend engineering —
               working closely with product teams to design thoughtful experiences, build scalable frontend
               infrastructures and developer tooling, and bring clarity between design and code through documentation and
               shared best practices."
@@ -175,15 +184,6 @@ export default function About() {
                     design and development world. Even though the latest and greatest is always tempting, I like to
                     focus on what delivers the best results for the project at hand.
                   </p>
-                  {/* <p>
-                    As a designer I use a pen and paper to sketch my ideas...
-                  </p>
-                  <p>
-                    As a developer I rely on a modern, type-safe stack that prioritizes developer experience and
-                    long-term maintainability. My go-to architecture leverages React 18+ and TypeScript, using TanStack
-                    Query for robust server state data management and Zod for end-to-end validation. I am an experienced
-                    JavaScrip developer, but I am also comfortable with other server side languages like Python and PHP.
-                  </p> */}
                   <p>
                     Within all areas of my work I use AI where it makes sense to do so. I believe there is no substitute
                     (yet) for human creativity and problem solving, but AI can help with the repetitive and routine
@@ -239,5 +239,5 @@ export default function About() {
         <Footer />
       </Page>
     </>
-  );
+  )
 }

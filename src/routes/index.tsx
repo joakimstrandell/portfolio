@@ -1,16 +1,21 @@
-import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent } from '@/components/page';
-import { Button } from '@/components/ui/button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import Link from 'next/link';
-import StackedPanes from '@/components/StackedPanes';
-import { cn } from '@/lib/utils';
-import { Footer } from '@/components/Footer';
+import { createFileRoute, Link } from '@tanstack/react-router'
+import AnimateContent from '@/components/AnimateContent'
+import { Page, PageContent } from '@/components/page'
+import { Button } from '@josui/react'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import StackedPanes from '@/components/StackedPanes'
+import { cn } from '@/lib/utils'
+import { Footer } from '@/components/Footer'
+import { RotatingText } from '@/components/RotatingText'
 
-export default function Home() {
+export const Route = createFileRoute('/')({
+  component: Home,
+})
+
+function Home() {
   return (
     <Page className="justify-center">
-      <div className="relative flex min-h-[calc(100vh-155px)] flex-col">
+      <div className="relative flex min-h-[calc(100vh-60px)] flex-col">
         <div
           className={cn(
             'absolute inset-y-0 top-0 right-0 overflow-hidden',
@@ -50,26 +55,53 @@ export default function Home() {
           <AnimateContent className="mt-2">
             <div className="flex items-center gap-8">
               <Button size="lg" asChild className="pointer-events-auto">
-                <Link href="/work">View work</Link>
+                <Link to="/work">View work</Link>
               </Button>
 
               <Button size="lg" variant="outline" asChild className="pointer-events-auto">
-                <Link href="/about">Readme</Link>
+                <Link to="/about">Readme</Link>
               </Button>
             </div>
           </AnimateContent>
         </PageContent>
       </div>
-      <AnimateContent>
-        <div className="relative border-t-8 border-black/10 bg-white/50">
-          <PageContent className="space-y-8">
-            <div className="prose max-w-[78ch]">
-              <h2>How I Help You Succeed</h2>
-              <p className="prose-lg">
-                I adapt quickly to your team&apos;s needs and can parachute into any stage of development, or execute
-                across the entire product lifecycle.
+      <AnimateContent delay={0.2}>
+        <PageContent className="space-y-8 py-0">
+          <div className="prose prose-xl max-w-[78ch] text-center">
+            <h2>
+              How I Help You <RotatingText words={['Succeed', 'Scale', 'Innovate', 'Ship', 'Launch']} />
+            </h2>
+            <p>
+              I adapt quickly to your team&apos;s needs and can parachute into any stage of development, or execute
+              across the entire product lifecycle.
+            </p>
+          </div>
+          <AnimateContent>
+            <div className="prose mx-auto w-full max-w-7xl rounded-2xl border border-gray-100 bg-white">
+              <h2>Product Design & Design Systems</h2>
+              <p>Designing for implementation, not just presentation.</p>
+              <p className="mb-0 font-bold">Discovery & Strategy</p>
+              <p className="mt-0">
+                Partnering with stakeholders to define the right product. I focus on technical feasibility during
+                ideation to ensure complex requirements never compromise the user experience.
               </p>
+
+              <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
+                <li>
+                  <h4>Discovery & Strategy</h4>
+                  <p>
+                    Partnering with stakeholders to define the right product. I focus on technical feasibility during
+                    ideation to ensure complex requirements never compromise the user experience.
+                  </p>
+                </li>
+              </ul>
             </div>
+          </AnimateContent>
+        </PageContent>
+      </AnimateContent>
+      <AnimateContent>
+        <PageContent className="space-y-8">
+          <div className="mx-auto w-full max-w-7xl rounded-2xl border border-gray-100 bg-white">
             <AnimateContent className="space-y-8">
               <Accordion type="multiple" className="w-full">
                 <AccordionItem value="item-1">
@@ -86,6 +118,13 @@ export default function Home() {
                         <p>
                           Partnering with stakeholders to define the right product. I focus on technical feasibility
                           during ideation to ensure complex requirements never compromise the user experience.
+                        </p>
+                      </li>
+                      <li>
+                        <h4>High-Fidelity Prototyping</h4>
+                        <p>
+                          Designing complex interaction patterns and states. I often skip static mockups for complex
+                          flows, prototyping directly in code to validate logic and feel immediately.
                         </p>
                       </li>
                       <li>
@@ -189,13 +228,14 @@ export default function Home() {
                 </AccordionItem>
               </Accordion>
               <Button size="lg" asChild variant="outline" className="pointer-events-auto">
-                <Link href="/contact">Let&apos;s connect</Link>
+                <Link to="/contact">Let&apos;s connect</Link>
               </Button>
             </AnimateContent>
-          </PageContent>
-        </div>
+          </div>
+        </PageContent>
       </AnimateContent>
+
       <Footer />
     </Page>
-  );
+  )
 }

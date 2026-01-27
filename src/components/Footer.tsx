@@ -1,6 +1,6 @@
-import { PageContent } from './page';
-import Link from 'next/link';
-import AnimateContent from './AnimateContent';
+import { PageContent } from './page'
+import { Link } from '@tanstack/react-router'
+import AnimateContent from './AnimateContent'
 
 export function Footer() {
   return (
@@ -21,17 +21,17 @@ export function Footer() {
             <h4 className="mb-2 font-bold">Work</h4>
             <ul>
               <li>
-                <Link className="footer-link" href="/work?category=projects">
+                <Link className="footer-link" to="/work" search={{ category: 'projects' }}>
                   Projects
                 </Link>
               </li>
               <li>
-                <Link className="footer-link" href="/work?category=concepts">
+                <Link className="footer-link" to="/work" search={{ category: 'concepts' }}>
                   Concepts
                 </Link>
               </li>
               <li>
-                <Link className="footer-link" href="/work?category=thoughts">
+                <Link className="footer-link" to="/work" search={{ category: 'thoughts' }}>
                   Thoughts
                 </Link>
               </li>
@@ -41,29 +41,29 @@ export function Footer() {
             <h4 className="mb-2 font-bold">About</h4>
             <ul>
               <li>
-                <Link className="footer-link" href="/about">
+                <Link className="footer-link" to="/about">
                   Readme
                 </Link>
               </li>
               <li>
-                <Link className="footer-link" href="/about#philosophy">
+                <Link className="footer-link" to="/about" hash="philosophy">
                   Philosophy
                 </Link>
               </li>
               <li>
-                <Link className="footer-link" href="/about#experience">
+                <Link className="footer-link" to="/about" hash="experience">
                   Experience
                 </Link>
               </li>
               <li>
-                <Link className="footer-link" href="/about#stack">
+                <Link className="footer-link" to="/about" hash="stack">
                   Work Stack
                 </Link>
               </li>
               <li>
-                <Link className="footer-link" href="/CV - Joakim Strandell.pdf">
+                <a className="footer-link" href="/CV - Joakim Strandell.pdf">
                   CV as PDF
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -76,30 +76,24 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <Link className="footer-link" href="tel:+46707294379">
+                <a className="footer-link" href="tel:+46707294379">
                   +46 70 729 43 79
-                </Link>
+                </a>
               </li>
-              {/* <li>
-            <Link href="https://github.com/joakimstrandell">Github</Link>
-          </li>
-          <li>
-            <Link href="https://dribbble.com/joakim-strandell">Dribbble</Link>
-          </li> */}
               <li>
-                <Link className="footer-link" href="https://x.com/joakimstrandell">
+                <a className="footer-link" href="https://x.com/joakimstrandell">
                   X (Twitter)
-                </Link>
+                </a>
               </li>
               <li>
-                <Link className="footer-link" href="https://linkedin.com/in/joakimstrandell">
+                <a className="footer-link" href="https://linkedin.com/in/joakimstrandell">
                   LinkedIn
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
         </PageContent>
       </footer>
     </AnimateContent>
-  );
+  )
 }

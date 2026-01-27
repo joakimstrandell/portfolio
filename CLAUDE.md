@@ -11,7 +11,7 @@ Personal portfolio site built with TanStack Start (file-based routing on Vite).
 - **TanStack Start** over Next.js: Chosen to resolve Turbopack symlink issues with local `@josui/*` packages
 - **File-based routing**: Routes in `src/routes/` using `createFileRoute`
 - **No MDX**: Work posts are plain React components (simpler, no build complexity)
-- **Local packages**: `@josui/*` packages linked via `link:` protocol from sibling directory
+- **Local packages**: `@josui/*` packages linked locally in dev, installed from npm in CI (see below)
 
 ## File Conventions
 
@@ -38,6 +38,7 @@ Personal portfolio site built with TanStack Start (file-based routing on Vite).
 | `src/router.tsx` | Router setup with `getRouter` export |
 | `src/routeTree.gen.ts` | Auto-generated (don't edit manually) |
 | `tailwind.config.js` | Tailwind configuration |
+| `.pnpmfile.cjs` | Conditional local linking for @josui packages |
 
 ## Common Tasks
 
@@ -68,10 +69,26 @@ export const Route = createFileRoute('/page')({
 
 ## Dependencies
 
-### Local (linked)
+### @josui packages
+
+The `@josui/*` packages are published on npm but linked locally during development:
+
+- `@josui/core` - Core utilities
+- `@josui/core-web` - Web-specific core
 - `@josui/react` - UI components (Button, etc.)
 - `@josui/tailwind` - Tailwind preset
 - `@josui/tokens` - Design tokens
+
+**How it works:**
+- `package.json` specifies npm versions (`0.x`) in dependencies
+- `package.json` has `pnpm.localOverrides` with `link:` paths to `../josui/packages/*`
+- `.pnpmfile.cjs` checks if `../josui/packages` exists:
+  - **Locally**: applies the link overrides (symlinks to sibling repo)
+  - **CI/Vercel**: directory doesn't exist, installs from npm
+
+**To add a new @josui package:**
+1. Add to `dependencies` with version `0.x`
+2. Add to `pnpm.localOverrides` with `link:../josui/packages/[name]`
 
 ### Key packages
 - `@tanstack/react-router` - Routing

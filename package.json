@@ -13,11 +13,11 @@
   },
   "dependencies": {
     "@fontsource-variable/roboto-mono": "^5.2.5",
-    "@josui/core": "link:../josui/packages/core",
-    "@josui/core-web": "link:../josui/packages/core-web",
-    "@josui/react": "link:../josui/packages/react",
-    "@josui/tailwind": "link:../josui/packages/tailwind",
-    "@josui/tokens": "link:../josui/packages/tokens",
+    "@josui/core": "0.x",
+    "@josui/core-web": "0.x",
+    "@josui/react": "0.x",
+    "@josui/tailwind": "0.x",
+    "@josui/tokens": "0.x",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-slot": "^1.2.3",
     "@react-three/cannon": "^6.6.0",
@@ -36,6 +36,15 @@
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.1",
     "three": "^0.181.0"
+  },
+  "pnpm": {
+    "localOverrides": {
+      "@josui/core": "link:../josui/packages/core",
+      "@josui/core-web": "link:../josui/packages/core-web",
+      "@josui/react": "link:../josui/packages/react",
+      "@josui/tailwind": "link:../josui/packages/tailwind",
+      "@josui/tokens": "link:../josui/packages/tokens"
+    }
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

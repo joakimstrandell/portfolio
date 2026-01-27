@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio
+
+Personal portfolio site for Joakim Strandell, built with [TanStack Start](https://tanstack.com/start) and [Tailwind CSS](https://tailwindcss.com).
+
+## Tech Stack
+
+- **Framework:** TanStack Start (Vite + TanStack Router)
+- **Styling:** Tailwind CSS v4
+- **UI Components:** [@josui/react](../josui/packages/react) (local linked package)
+- **Animations:** GSAP with ScrollTrigger
+- **3D:** React Three Fiber (for visual effects)
+- **Font:** Roboto Mono (via Fontsource)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- pnpm
+- Local [@josui](../josui) monorepo (for linked packages)
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-## Learn More
+### Build
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Preview Production Build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm start
+```
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── components/       # Reusable React components
+│   ├── ui/          # Base UI components (Button, Accordion)
+│   ├── Header.tsx   # Site header with navigation
+│   ├── Footer.tsx   # Site footer
+│   ├── Grid.tsx     # Canvas-based grid background
+│   └── ...
+├── routes/          # TanStack Router file-based routes
+│   ├── __root.tsx   # Root layout
+│   ├── index.tsx    # Home page (/)
+│   ├── about.tsx    # About page (/about)
+│   ├── contact.tsx  # Contact page (/contact)
+│   └── work/
+│       └── index.tsx # Work listing (/work)
+├── styles/
+│   └── globals.css  # Global styles and Tailwind config
+├── hooks/           # Custom React hooks
+├── lib/             # Utility functions
+├── router.tsx       # Router configuration
+└── routeTree.gen.ts # Auto-generated route tree
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Local Package Dependencies
+
+This project uses locally linked packages from the `@josui` monorepo:
+
+```json
+{
+  "@josui/core": "link:../josui/packages/core",
+  "@josui/core-web": "link:../josui/packages/core-web",
+  "@josui/react": "link:../josui/packages/react",
+  "@josui/tailwind": "link:../josui/packages/tailwind",
+  "@josui/tokens": "link:../josui/packages/tokens"
+}
+```
+
+Ensure the josui monorepo is available at `../josui` relative to this project.
+
+## Scripts
+
+| Command       | Description               |
+| ------------- | ------------------------- |
+| `pnpm dev`    | Start development server  |
+| `pnpm build`  | Build for production      |
+| `pnpm start`  | Preview production build  |
+| `pnpm lint`   | Run ESLint                |
+| `pnpm format` | Format code with Prettier |

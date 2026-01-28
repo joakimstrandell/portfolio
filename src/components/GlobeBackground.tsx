@@ -1,145 +1,54 @@
 'use client';
 
-import { useRef, useMemo, type RefObject } from 'react';
+import { useRef, useMemo, useState, useEffect, useCallback, type RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import * as THREE from 'three';
 import { cn } from '@/lib/utils';
 
-function generateSpherePoints(count: number, radius: number, minDistance: number = 0.15): Float32Array {
-  const points: THREE.Vector3[] = [];
+// Import types only (no runtime cost) for TypeScript
+import type { ShaderMaterial, Group } from 'three';
 
-  let seed = 12345;
-  const seededRandom = () => {
-    seed = (seed * 1103515245 + 12345) & 0x7fffffff;
-    return seed / 0x7fffffff;
-  };
+// Dynamically import THREE to avoid blocking module load
+let THREE: typeof import('three') | null = null;
+const threePromise = import('three').then((mod) => {
+  THREE = mod;
+  return mod;
+});
 
-  const maxAttempts = count * 20;
-  let attempts = 0;
-
-  while (points.length < count && attempts < maxAttempts) {
-    attempts++;
-
-    const theta = seededRandom() * Math.PI * 2;
-    const phi = Math.acos(2 * seededRandom() - 1);
-
-    const x = Math.sin(phi) * Math.cos(theta) * radius;
-    const y = Math.cos(phi) * radius;
-    const z = Math.sin(phi) * Math.sin(theta) * radius;
-
-    const newPoint = new THREE.Vector3(x, y, z);
-
-    let tooClose = false;
-    for (const existing of points) {
-      if (newPoint.distanceTo(existing) < minDistance) {
-        tooClose = true;
-        break;
-      }
-    }
-
-    if (!tooClose) {
-      points.push(newPoint);
-    }
-  }
-
-  const positions = new Float32Array(points.length * 3);
-  for (let i = 0; i < points.length; i++) {
-    positions[i * 3] = points[i].x;
-    positions[i * 3 + 1] = points[i].y;
-    positions[i * 3 + 2] = points[i].z;
-  }
-
-  return positions;
+// Globe data computed by worker
+interface GlobeData {
+  positions: Float32Array;
+  liftSpeeds: Float32Array;
+  liftDirections: Float32Array;
 }
+
+// Start worker computation immediately (runs in parallel with THREE loading)
+let globeDataPromise: Promise<GlobeData> | null = null;
+
+function startWorkerComputation(): Promise<GlobeData> {
+  if (globeDataPromise) return globeDataPromise;
+
+  globeDataPromise = new Promise((resolve) => {
+    const worker = new Worker(new URL('../workers/globeWorker.ts', import.meta.url), {
+      type: 'module',
+    });
+
+    worker.onmessage = (e: MessageEvent<GlobeData>) => {
+      resolve(e.data);
+      worker.terminate();
+    };
+
+    worker.postMessage({ type: 'compute', count: 1000, radius: 6, minDistance: 0.18 });
+  });
+
+  return globeDataPromise;
+}
+
+// Kick off computation immediately when module loads (but in worker, not main thread)
+startWorkerComputation();
 
 interface GlobeProps {
   containerRef: RefObject<HTMLDivElement | null>;
-}
-
-// Fresnel rim shader - glows at edges
-function FresnelSphere({ radius, color, opacity }: { radius: number; color: string; opacity: number }) {
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      uniforms: {
-        color: { value: new THREE.Color(color) },
-        opacity: { value: opacity },
-      },
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          vViewPosition = -mvPosition.xyz;
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 color;
-        uniform float opacity;
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        void main() {
-          vec3 viewDir = normalize(vViewPosition);
-          float fresnel = 1.0 - abs(dot(viewDir, vNormal));
-          fresnel = pow(fresnel, 3.0);
-          gl_FragColor = vec4(color, fresnel * opacity);
-        }
-      `,
-    });
-  }, [color, opacity]);
-
-  return (
-    <mesh material={material}>
-      <sphereGeometry args={[radius, 64, 64]} />
-    </mesh>
-  );
-}
-
-// Atmosphere glow - soft halo behind globe
-function AtmosphereGlow({ radius, color, opacity }: { radius: number; color: string; opacity: number }) {
-  const material = useMemo(() => {
-    return new THREE.ShaderMaterial({
-      transparent: true,
-      depthWrite: false,
-      side: THREE.BackSide,
-      uniforms: {
-        color: { value: new THREE.Color(color) },
-        opacity: { value: opacity },
-      },
-      vertexShader: `
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        void main() {
-          vNormal = normalize(normalMatrix * normal);
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          vViewPosition = -mvPosition.xyz;
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        uniform vec3 color;
-        uniform float opacity;
-        varying vec3 vNormal;
-        varying vec3 vViewPosition;
-        void main() {
-          vec3 viewDir = normalize(vViewPosition);
-          float rim = abs(dot(viewDir, vNormal));
-          // Reversed - stronger at outer edge, fades toward globe
-          float intensity = smoothstep(0.0, 1.0, rim);
-          gl_FragColor = vec4(color, intensity * opacity);
-        }
-      `,
-    });
-  }, [color, opacity]);
-
-  return (
-    <mesh material={material}>
-      <sphereGeometry args={[radius, 64, 64]} />
-    </mesh>
-  );
+  data: GlobeData;
 }
 
 // Trail shader - thin lines from surface to dot
@@ -194,16 +103,15 @@ const trailShader = {
   `,
 };
 
-// GPU-based dots shader - all calculations on GPU
-const dotsShader = {
+// GPU Points shader - renders dots as GL_POINTS instead of instanced spheres
+const pointsShader = {
   vertexShader: `
-    attribute vec3 basePosition;
     attribute float liftSpeed;
     attribute vec3 liftDirection;
 
     uniform float hoverAmount;
     uniform float baseRadius;
-    uniform float dotSize;
+    uniform float pointSize;
 
     varying float vFade;
 
@@ -213,20 +121,21 @@ const dotsShader = {
       float liftDistance = delayedHover * liftSpeed * 4.0;
 
       // Start at surface position
-      float len = length(basePosition);
-      vec3 surfacePos = (basePosition / len) * baseRadius;
+      float len = length(position);
+      vec3 surfacePos = (position / len) * baseRadius;
 
-      // Lift off in random direction (mixed with outward direction)
+      // Lift off in random direction
       vec3 newPos = surfacePos + liftDirection * liftDistance;
 
       // Scale down as dots lift off
       float fadeScale = max(0.0, 1.0 - liftDistance / 8.0);
       vFade = fadeScale;
 
-      // Apply position offset and scale
-      vec3 transformed = position * dotSize * fadeScale + newPos;
+      vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
+      gl_Position = projectionMatrix * mvPosition;
 
-      gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
+      // Size attenuation based on distance
+      gl_PointSize = pointSize * fadeScale * (300.0 / -mvPosition.z);
     }
   `,
   fragmentShader: `
@@ -237,139 +146,290 @@ const dotsShader = {
     varying float vFade;
 
     void main() {
-      float opacity = baseOpacity * (1.0 - hoverAmount * 0.5) * vFade;
+      // Circular soft-edge point
+      vec2 center = gl_PointCoord - vec2(0.5);
+      float dist = length(center);
+      if (dist > 0.5) discard;
+
+      float alpha = 1.0 - smoothstep(0.3, 0.5, dist);
+      float opacity = baseOpacity * (1.0 - hoverAmount * 0.5) * vFade * alpha;
       gl_FragColor = vec4(color, opacity);
     }
   `,
 };
 
-function FlatCircles({
+// Fresnel rim shader - glows at edges
+function FresnelSphere({ radius, color, opacity }: { radius: number; color: string; opacity: number }) {
+  const material = useMemo(() => {
+    if (!THREE) return null;
+    return new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      uniforms: {
+        color: { value: new THREE.Color(color) },
+        opacity: { value: opacity },
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vViewPosition;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          vViewPosition = -mvPosition.xyz;
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        uniform float opacity;
+        varying vec3 vNormal;
+        varying vec3 vViewPosition;
+        void main() {
+          vec3 viewDir = normalize(vViewPosition);
+          float fresnel = 1.0 - abs(dot(viewDir, vNormal));
+          fresnel = pow(fresnel, 3.0);
+          gl_FragColor = vec4(color, fresnel * opacity);
+        }
+      `,
+    });
+  }, [color, opacity]);
+
+  if (!material) return null;
+
+  return (
+    <mesh material={material}>
+      <sphereGeometry args={[radius, 32, 32]} />
+    </mesh>
+  );
+}
+
+// Atmosphere glow - soft halo behind globe
+function AtmosphereGlow({ radius, color, opacity }: { radius: number; color: string; opacity: number }) {
+  const material = useMemo(() => {
+    if (!THREE) return null;
+    return new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      side: THREE.BackSide,
+      uniforms: {
+        color: { value: new THREE.Color(color) },
+        opacity: { value: opacity },
+      },
+      vertexShader: `
+        varying vec3 vNormal;
+        varying vec3 vViewPosition;
+        void main() {
+          vNormal = normalize(normalMatrix * normal);
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          vViewPosition = -mvPosition.xyz;
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        uniform float opacity;
+        varying vec3 vNormal;
+        varying vec3 vViewPosition;
+        void main() {
+          vec3 viewDir = normalize(vViewPosition);
+          float rim = abs(dot(viewDir, vNormal));
+          // Reversed - stronger at outer edge, fades toward globe
+          float intensity = smoothstep(0.0, 1.0, rim);
+          gl_FragColor = vec4(color, intensity * opacity);
+        }
+      `,
+    });
+  }, [color, opacity]);
+
+  if (!material) return null;
+
+  return (
+    <mesh material={material}>
+      <sphereGeometry args={[radius, 32, 32]} />
+    </mesh>
+  );
+}
+
+function PointsDots({
   positions,
+  liftSpeeds,
+  liftDirections,
   color,
-  radius,
-  opacity,
-  surfaceRadius = 5.86,
+  size,
+  baseOpacity,
+  scrollProgressRef,
 }: {
   positions: Float32Array;
+  liftSpeeds: Float32Array;
+  liftDirections: Float32Array;
   color: string;
-  radius: number;
-  opacity: number;
-  surfaceRadius?: number;
+  size: number;
+  baseOpacity: number;
+  scrollProgressRef: RefObject<number>;
 }) {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const initializedRef = useRef(false);
-  const count = positions.length / 3;
+  const materialRef = useRef<ShaderMaterial>(null);
 
-  // Pre-compute all matrices
-  const matrices = useMemo(() => {
-    const result: THREE.Matrix4[] = [];
-    const dummy = new THREE.Object3D();
-    const up = new THREE.Vector3(0, 0, 1); // Circle geometry faces +Z by default
+  const uniforms = useMemo(() => {
+    if (!THREE) return null;
+    return {
+      hoverAmount: { value: 0 },
+      baseRadius: { value: 5.865 },
+      pointSize: { value: size * 100 },
+      color: { value: new THREE.Color(color) },
+      baseOpacity: { value: baseOpacity },
+    };
+  }, [size, color, baseOpacity]);
 
-    for (let i = 0; i < count; i++) {
-      const x = positions[i * 3];
-      const y = positions[i * 3 + 1];
-      const z = positions[i * 3 + 2];
+  const geometry = useMemo(() => {
+    if (!THREE) return null;
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('liftSpeed', new THREE.BufferAttribute(liftSpeeds, 1));
+    geo.setAttribute('liftDirection', new THREE.BufferAttribute(liftDirections, 3));
+    return geo;
+  }, [positions, liftSpeeds, liftDirections]);
 
-      // Normalize and scale to surface radius
-      const normal = new THREE.Vector3(x, y, z).normalize();
-      dummy.position.copy(normal).multiplyScalar(surfaceRadius);
-
-      // Orient so circle lays flat on surface (normal points outward)
-      const quaternion = new THREE.Quaternion().setFromUnitVectors(up, normal);
-      dummy.quaternion.copy(quaternion);
-
-      dummy.updateMatrix();
-      result.push(dummy.matrix.clone());
-    }
-
-    return result;
-  }, [positions, count, surfaceRadius]);
-
-  // Apply matrices once mesh is ready (only once)
   useFrame(() => {
-    if (!initializedRef.current && meshRef.current && meshRef.current.instanceMatrix) {
-      for (let i = 0; i < matrices.length; i++) {
-        meshRef.current.setMatrixAt(i, matrices[i]);
-      }
-      meshRef.current.instanceMatrix.needsUpdate = true;
-      initializedRef.current = true;
+    if (materialRef.current) {
+      materialRef.current.uniforms.hoverAmount.value = scrollProgressRef.current;
     }
   });
 
+  if (!THREE || !geometry || !uniforms) return null;
+
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, count]} frustumCulled={false}>
-      <circleGeometry args={[radius, 32]} />
-      <meshBasicMaterial color={color} transparent opacity={opacity} side={THREE.DoubleSide} />
-    </instancedMesh>
+    <points geometry={geometry}>
+      <shaderMaterial
+        ref={materialRef}
+        transparent
+        depthWrite={false}
+        uniforms={uniforms}
+        vertexShader={pointsShader.vertexShader}
+        fragmentShader={pointsShader.fragmentShader}
+      />
+    </points>
   );
+}
+
+// Scroll-driven invalidation hook - only renders when scroll changes
+function useScrollInvalidate(
+  containerRef: RefObject<HTMLDivElement | null>,
+  scrollProgressRef: RefObject<number>
+) {
+  const { invalidate, viewport } = useThree();
+  const isScrollingRef = useRef(false);
+  const positionGroupRef = useRef<Group>(null);
+
+  // Mutable ref to track scroll progress without triggering re-renders
+  const mutableScrollRef = useRef(0);
+
+  const updateScroll = useCallback(() => {
+    if (!containerRef.current) return false;
+
+    const rect = containerRef.current.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+    const start = windowHeight;
+    const end = -rect.height;
+    const rawProgress = (start - rect.top) / (start - end);
+    const newProgress = Math.max(0, Math.min(1, rawProgress));
+
+    // Only invalidate if changed significantly
+    if (Math.abs(newProgress - mutableScrollRef.current) > 0.0005) {
+      mutableScrollRef.current = newProgress;
+      // Update the shared ref that components read from
+      (scrollProgressRef as { current: number }).current = newProgress;
+      return true;
+    }
+    return false;
+  }, [containerRef, scrollProgressRef]);
+
+  useEffect(() => {
+    let rafId: number | null = null;
+    let timeoutId: number | null = null;
+
+    const handleScroll = () => {
+      isScrollingRef.current = true;
+      if (timeoutId) clearTimeout(timeoutId);
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          if (updateScroll()) {
+            invalidate();
+          }
+          rafId = null;
+        });
+      }
+
+      timeoutId = window.setTimeout(() => {
+        isScrollingRef.current = false;
+      }, 150);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Initial scroll position
+    if (updateScroll()) {
+      invalidate();
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [updateScroll, invalidate]);
+
+  // Idle rotation at ~60 FPS
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isScrollingRef.current) {
+        invalidate();
+      }
+    }, 16);
+
+    return () => clearInterval(interval);
+  }, [invalidate]);
+
+  // Update position group based on aspect ratio
+  useFrame(() => {
+    if (positionGroupRef.current) {
+      const aspect = viewport.width / viewport.height;
+      const baseY = -5;
+      const yOffset = aspect < 1 ? (1 - aspect) * -8 : 0;
+      positionGroupRef.current.position.y = baseY + yOffset;
+    }
+  });
+
+  return { isScrollingRef, positionGroupRef };
 }
 
 function Trails({
   positions,
+  liftSpeeds,
+  liftDirections,
   color,
   baseOpacity,
   scrollProgressRef,
 }: {
   positions: Float32Array;
+  liftSpeeds: Float32Array;
+  liftDirections: Float32Array;
   color: string;
   baseOpacity: number;
   scrollProgressRef: RefObject<number>;
 }) {
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const materialRef = useRef<ShaderMaterial>(null);
   const count = positions.length / 3;
 
-  // Create instance attributes (same as dots)
-  const { basePositions, liftSpeeds, liftDirections } = useMemo(() => {
-    const basePositions = new Float32Array(count * 3);
-    const liftSpeeds = new Float32Array(count);
-    const liftDirections = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      const x = positions[i * 3];
-      const y = positions[i * 3 + 1];
-      const z = positions[i * 3 + 2];
-
-      basePositions[i * 3] = x;
-      basePositions[i * 3 + 1] = y;
-      basePositions[i * 3 + 2] = z;
-
-      const seed = i * 127.1 + 311.7;
-      liftSpeeds[i] = (Math.sin(seed) * 0.5 + 0.5) * 2;
-
-      const len = Math.sqrt(x * x + y * y + z * z);
-      const nx = x / len;
-      const ny = y / len;
-      const nz = z / len;
-
-      const seed2 = i * 43.758 + 23.421;
-      const seed3 = i * 91.113 + 47.532;
-      const randX = Math.sin(seed2) * 0.5;
-      const randY = Math.sin(seed3) * 0.5;
-      const randZ = Math.sin(seed2 + seed3) * 0.5;
-
-      const dirX = nx * 0.7 + randX * 0.3;
-      const dirY = ny * 0.7 + randY * 0.3;
-      const dirZ = nz * 0.7 + randZ * 0.3;
-
-      const dirLen = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
-      liftDirections[i * 3] = dirX / dirLen;
-      liftDirections[i * 3 + 1] = dirY / dirLen;
-      liftDirections[i * 3 + 2] = dirZ / dirLen;
-    }
-
-    return { basePositions, liftSpeeds, liftDirections };
-  }, [positions, count]);
-
-  const uniforms = useMemo(
-    () => ({
+  const uniforms = useMemo(() => {
+    if (!THREE) return null;
+    return {
       hoverAmount: { value: 0 },
       baseRadius: { value: 5.865 },
       color: { value: new THREE.Color(color) },
       baseOpacity: { value: baseOpacity },
-    }),
-    [color, baseOpacity],
-  );
+    };
+  }, [color, baseOpacity]);
 
   useFrame(() => {
     if (materialRef.current) {
@@ -378,14 +438,17 @@ function Trails({
   });
 
   const geometry = useMemo(() => {
+    if (!THREE) return null;
     const geo = new THREE.CylinderGeometry(1, 1, 1, 4, 1);
 
-    geo.setAttribute('basePosition', new THREE.InstancedBufferAttribute(basePositions, 3));
+    geo.setAttribute('basePosition', new THREE.InstancedBufferAttribute(positions, 3));
     geo.setAttribute('liftSpeed', new THREE.InstancedBufferAttribute(liftSpeeds, 1));
     geo.setAttribute('liftDirection', new THREE.InstancedBufferAttribute(liftDirections, 3));
 
     return geo;
-  }, [basePositions, liftSpeeds, liftDirections]);
+  }, [positions, liftSpeeds, liftDirections]);
+
+  if (!THREE || !geometry || !uniforms) return null;
 
   return (
     <instancedMesh args={[geometry, undefined, count]} frustumCulled={false}>
@@ -401,140 +464,16 @@ function Trails({
   );
 }
 
-function GPUDots({
-  positions,
-  color,
-  size,
-  baseOpacity,
-  scrollProgressRef,
-}: {
-  positions: Float32Array;
-  color: string;
-  size: number;
-  baseOpacity: number;
-  scrollProgressRef: RefObject<number>;
-}) {
-  const meshRef = useRef<THREE.InstancedMesh>(null);
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-  const count = positions.length / 3;
-
-  // Create instance attributes once
-  const { basePositions, liftSpeeds, liftDirections } = useMemo(() => {
-    const basePositions = new Float32Array(count * 3);
-    const liftSpeeds = new Float32Array(count);
-    const liftDirections = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      const x = positions[i * 3];
-      const y = positions[i * 3 + 1];
-      const z = positions[i * 3 + 2];
-
-      basePositions[i * 3] = x;
-      basePositions[i * 3 + 1] = y;
-      basePositions[i * 3 + 2] = z;
-
-      const seed = i * 127.1 + 311.7;
-      liftSpeeds[i] = (Math.sin(seed) * 0.5 + 0.5) * 2;
-
-      // Calculate outward normal
-      const len = Math.sqrt(x * x + y * y + z * z);
-      const nx = x / len;
-      const ny = y / len;
-      const nz = z / len;
-
-      // Generate random tangent offset using seeded random
-      const seed2 = i * 43.758 + 23.421;
-      const seed3 = i * 91.113 + 47.532;
-      const randX = Math.sin(seed2) * 0.5;
-      const randY = Math.sin(seed3) * 0.5;
-      const randZ = Math.sin(seed2 + seed3) * 0.5;
-
-      // Mix outward direction with random offset (mostly outward, some sideways)
-      const dirX = nx * 0.7 + randX * 0.3;
-      const dirY = ny * 0.7 + randY * 0.3;
-      const dirZ = nz * 0.7 + randZ * 0.3;
-
-      // Normalize
-      const dirLen = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
-      liftDirections[i * 3] = dirX / dirLen;
-      liftDirections[i * 3 + 1] = dirY / dirLen;
-      liftDirections[i * 3 + 2] = dirZ / dirLen;
-    }
-
-    return { basePositions, liftSpeeds, liftDirections };
-  }, [positions, count]);
-
-  const uniforms = useMemo(
-    () => ({
-      hoverAmount: { value: 0 },
-      baseRadius: { value: 5.865 },
-      dotSize: { value: size },
-      color: { value: new THREE.Color(color) },
-      baseOpacity: { value: baseOpacity },
-    }),
-    [size, color, baseOpacity],
-  );
-
-  // Only update the uniform (very cheap) - read from ref, no React re-renders
-  useFrame(() => {
-    if (materialRef.current) {
-      materialRef.current.uniforms.hoverAmount.value = scrollProgressRef.current;
-    }
-  });
-
-  // Set up instanced attributes
-  const geometry = useMemo(() => {
-    const geo = new THREE.SphereGeometry(1, 6, 6);
-
-    // Add instance attributes
-    geo.setAttribute('basePosition', new THREE.InstancedBufferAttribute(basePositions, 3));
-    geo.setAttribute('liftSpeed', new THREE.InstancedBufferAttribute(liftSpeeds, 1));
-    geo.setAttribute('liftDirection', new THREE.InstancedBufferAttribute(liftDirections, 3));
-
-    return geo;
-  }, [basePositions, liftSpeeds, liftDirections]);
-
-  return (
-    <instancedMesh ref={meshRef} args={[geometry, undefined, count]} frustumCulled={false}>
-      <shaderMaterial
-        ref={materialRef}
-        transparent
-        depthWrite={false}
-        uniforms={uniforms}
-        vertexShader={dotsShader.vertexShader}
-        fragmentShader={dotsShader.fragmentShader}
-      />
-    </instancedMesh>
-  );
-}
-
-function Globe({ containerRef }: GlobeProps) {
-  const groupRef = useRef<THREE.Group>(null);
-  const positionGroupRef = useRef<THREE.Group>(null);
+function Globe({ containerRef, data }: GlobeProps) {
+  const groupRef = useRef<Group>(null);
   const scrollProgressRef = useRef(0);
-  const { viewport } = useThree();
 
-  const spherePositions = useMemo(() => generateSpherePoints(2000, 6, 0.18), []);
+  const { positions, liftSpeeds, liftDirections } = data;
+
+  // Use scroll-driven invalidation (only renders when scroll changes)
+  const { positionGroupRef } = useScrollInvalidate(containerRef, scrollProgressRef);
 
   useFrame((state) => {
-    // Adjust Y position based on aspect ratio - move down on narrow screens
-    if (positionGroupRef.current) {
-      const aspect = viewport.width / viewport.height;
-      // On wide screens (aspect > 1), use -5. On narrow, push further down
-      const baseY = -5;
-      const yOffset = aspect < 1 ? (1 - aspect) * -8 : 0;
-      positionGroupRef.current.position.y = baseY + yOffset;
-    }
-    // Calculate scroll progress directly from DOM - no React state updates
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const start = windowHeight;
-      const end = -rect.height;
-      const rawProgress = (start - rect.top) / (start - end);
-      scrollProgressRef.current = Math.max(0, Math.min(1, rawProgress));
-    }
-
     const scrollProgress = scrollProgressRef.current;
     const elapsed = state.clock.getElapsedTime();
     const baseRotation = elapsed * 0.05;
@@ -553,22 +492,32 @@ function Globe({ containerRef }: GlobeProps) {
       <group ref={groupRef}>
         {/* Atmosphere glow behind */}
         <AtmosphereGlow radius={7.0} color="#ffbb49" opacity={0.12} />
-        {/* Solid surface */}
+        {/* Solid surface - reduced segments from 64 to 32 */}
         <mesh>
-          <sphereGeometry args={[5.85, 64, 64]} />
+          <sphereGeometry args={[5.85, 32, 32]} />
           <meshBasicMaterial color="#e5e5e5" transparent opacity={0.15} />
         </mesh>
         {/* Fresnel rim highlight */}
         <FresnelSphere radius={5.86} color="#ffffff" opacity={0.3} />
-        <Trails positions={spherePositions} color="#ffbb49" baseOpacity={0.5} scrollProgressRef={scrollProgressRef} />
-        <GPUDots
-          positions={spherePositions}
+        <Trails
+          positions={positions}
+          liftSpeeds={liftSpeeds}
+          liftDirections={liftDirections}
           color="#ffbb49"
-          size={0.015}
-          baseOpacity={0.3}
+          baseOpacity={0.5}
           scrollProgressRef={scrollProgressRef}
         />
-        <FlatCircles positions={spherePositions} color="#ffbb49" radius={0.015} opacity={0.3} />
+        {/* GPU Points instead of instanced spheres - 72x triangle reduction */}
+        <PointsDots
+          positions={positions}
+          liftSpeeds={liftSpeeds}
+          liftDirections={liftDirections}
+          color="#ffbb49"
+          size={0.0075}
+          baseOpacity={0.5}
+          scrollProgressRef={scrollProgressRef}
+        />
+        {/* FlatCircles removed - was 64,000 triangles for same visual effect */}
       </group>
     </group>
   );
@@ -576,24 +525,54 @@ function Globe({ containerRef }: GlobeProps) {
 
 export function GlobeBackground({ className }: { className?: string }) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isReady, setIsReady] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [globeData, setGlobeData] = useState<GlobeData | null>(null);
+
+  useEffect(() => {
+    // Wait for both THREE and worker data to be ready
+    Promise.all([threePromise, startWorkerComputation()]).then(([, data]) => {
+      // Use requestIdleCallback to defer even further if available
+      const scheduleMount = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
+      scheduleMount(() => {
+        setGlobeData(data);
+        setIsReady(true);
+      });
+    });
+  }, []);
+
+  // IntersectionObserver - zero GPU usage when off-screen
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0.01 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <div
       ref={containerRef}
       className={cn('pointer-events-none absolute inset-x-0 top-0 hidden aspect-square w-full md:block', className)}
       style={{
-        // Fade mask - fade out at bottom
         maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
       }}
     >
-      <Canvas
-        camera={{ position: [0, -5, 10], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: 'transparent' }}
-      >
-        <Globe containerRef={containerRef} />
-      </Canvas>
+      {isReady && globeData && isVisible && (
+        <Canvas
+          camera={{ position: [0, -5, 10], fov: 45 }}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+          style={{ background: 'transparent' }}
+          frameloop="demand"
+        >
+          <Globe containerRef={containerRef} data={globeData} />
+        </Canvas>
+      )}
     </div>
   );
 }

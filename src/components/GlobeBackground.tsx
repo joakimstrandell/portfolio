@@ -37,7 +37,7 @@ function startWorkerComputation(): Promise<GlobeData> {
       worker.terminate();
     };
 
-    worker.postMessage({ type: 'compute', count: 1000, radius: 6, minDistance: 0.18 });
+    worker.postMessage({ type: 'compute', count: 100, radius: 6, minDistance: 0.18 });
   });
 
   return globeDataPromise;
@@ -312,11 +312,8 @@ function PointsDots({
 }
 
 // Scroll-driven invalidation hook - only renders when scroll changes
-function useScrollInvalidate(
-  containerRef: RefObject<HTMLDivElement | null>,
-  scrollProgressRef: RefObject<number>
-) {
-  const { invalidate, viewport } = useThree();
+function useScrollInvalidate(containerRef: RefObject<HTMLDivElement | null>, scrollProgressRef: RefObject<number>) {
+  const { invalidate } = useThree();
   const isScrollingRef = useRef(false);
   const positionGroupRef = useRef<Group>(null);
 
@@ -390,13 +387,10 @@ function useScrollInvalidate(
     return () => clearInterval(interval);
   }, [invalidate]);
 
-  // Update position group based on aspect ratio
+  // Fixed position (no aspect ratio adjustment)
   useFrame(() => {
     if (positionGroupRef.current) {
-      const aspect = viewport.width / viewport.height;
-      const baseY = -5;
-      const yOffset = aspect < 1 ? (1 - aspect) * -8 : 0;
-      positionGroupRef.current.position.y = baseY + yOffset;
+      positionGroupRef.current.position.y = -5;
     }
   });
 
@@ -545,10 +539,7 @@ export function GlobeBackground({ className }: { className?: string }) {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.01 }
-    );
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { threshold: 0.01 });
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
@@ -557,7 +548,10 @@ export function GlobeBackground({ className }: { className?: string }) {
   return (
     <div
       ref={containerRef}
-      className={cn('pointer-events-none absolute inset-x-0 top-0 hidden aspect-square w-full md:block', className)}
+      className={cn(
+        'pointer-events-none absolute top-[100px] left-1/2 hidden h-[1000px] w-full -translate-x-1/2 md:block',
+        className,
+      )}
       style={{
         maskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',
         WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 50%, transparent 100%)',

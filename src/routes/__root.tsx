@@ -2,6 +2,8 @@ import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-r
 import { Header } from '@/components/Header';
 import { CustomCursor } from '@/components/CustomCursor';
 import { Grid } from '@/components/Grid';
+import { CellGrid } from '@josui/react/src';
+
 import '@fontsource-variable/roboto-mono';
 import '@/styles/globals.css';
 
@@ -24,16 +26,26 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="dark">
       <head>
         <HeadContent />
       </head>
       <body className="antialiased">
-        <Grid className="min-h-screen">
+        <CellGrid
+          className="min-h-screen"
+          gridColor="color-foreground"
+          gridOpacity={0.05}
+          cellOpacity={0.3}
+          cellSize={16}
+        >
           <CustomCursor />
           <Header />
           <Outlet />
-        </Grid>
+          <div
+            className="pointer-events-none fixed inset-x-0 top-0 z-0 h-150 bg-[radial-gradient(ellipse_100%_60%_at_50%_0%,var(--color-background)_0%,transparent_100%)]"
+            aria-hidden="true"
+          />
+        </CellGrid>
         <Scripts />
       </body>
     </html>

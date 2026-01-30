@@ -1,20 +1,28 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import AnimateContent from '@/components/AnimateContent'
-import { Page, PageContent } from '@/components/page'
-import { Button } from '@josui/react'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import StackedPanes from '@/components/StackedPanes'
-import { cn } from '@/lib/utils'
-import { Footer } from '@/components/Footer'
-import { RotatingText } from '@/components/RotatingText'
+import { createFileRoute, Link } from '@tanstack/react-router';
+import AnimateContent from '@/components/AnimateContent';
+import { Page, PageContent } from '@/components/page';
+import StackedPanes from '@/components/StackedPanes';
+import { cn } from '@/lib/utils';
+import { Footer } from '@/components/Footer';
+import { RotatingText } from '@/components/RotatingText';
+import { Button } from '@/components/ui/button';
+import { Card } from '@josui/react/src';
+import DesignProcessAnimation from '@/components/DesignProcessAnimation';
+import FullstackAnimation from '@/components/FullstackAnimation';
+import ArchitectureAnimation from '@/components/ArchitectureAnimation';
+import GlobeBackground from '@/components/GlobeBackground';
+import { getCssVariable } from '@josui/core-web/src';
+
+// Lazy load heavy Three.js component to avoid blocking initial render
+//const GlobeBackground = lazy(() => import('@/components/GlobeBackground'));
 
 export const Route = createFileRoute('/')({
   component: Home,
-})
+});
 
 function Home() {
   return (
-    <Page className="justify-center">
+    <Page>
       <div className="relative flex min-h-[calc(100vh-60px)] flex-col">
         <div
           className={cn(
@@ -23,7 +31,7 @@ function Home() {
             'pl-3 lg:w-3/8',
           )}
         >
-          <AnimateContent delay={0.2} animationType="slideLeft" className="pointer-events-auto -mr-24">
+          <AnimateContent delay={0.2} animationType="fadeLeft" className="pointer-events-auto -mr-24">
             <StackedPanes />
           </AnimateContent>
         </div>
@@ -33,19 +41,17 @@ function Home() {
             'flex h-full flex-1 flex-col justify-center',
           )}
         >
-          <AnimateContent className="prose prose-sm md:prose-base dark:prose-invert md:max-w-[62ch] lg:max-w-[78ch]">
+          <AnimateContent className="prose prose-sm md:prose-base md:max-w-[62ch] lg:max-w-[78ch]">
             <h1 className="pointer-events-auto leading-9 md:leading-12">
               I help teams ship{' '}
-              <span className="text-strategy-950 bg-strategy-500/20 inline-block pb-1 leading-none">ideas</span> faster
-              by unifying{' '}
-              <span className="bg-design-500/20 text-design-950 inline-block pb-1 leading-none">design</span> and{' '}
-              <span className="bg-engineering-500/20 text-engineering-950 inline-block pb-1 leading-none">
-                engineering
-              </span>
+              <span className="text-primary-950 bg-primary-100 inline-block pb-1 leading-none">ideas</span> faster by
+              unifying <span className="bg-tertiary-100 text-tertiary-900 inline-block pb-1 leading-none">design</span>{' '}
+              and{' '}
+              <span className="bg-secondary-500/20 text-secondary-900 inline-block pb-1 leading-none">engineering</span>
               .
             </h1>
           </AnimateContent>
-          <AnimateContent className="prose dark:prose-invert pointer-events-auto md:max-w-[67ch] lg:max-w-[78ch]">
+          <AnimateContent className="prose pointer-events-auto md:max-w-[67ch]">
             <p className="prose-lg pointer-events-auto">
               With 20+ years of experience, I eliminate the friction between concept and code. I build scalable design
               systems and robust fullstack architectures that allow teams to go from idea to production without the
@@ -54,179 +60,91 @@ function Home() {
           </AnimateContent>
           <AnimateContent className="mt-2">
             <div className="flex items-center gap-8">
-              <Button size="lg" asChild className="pointer-events-auto">
+              <Button size="lg" variant="primary" asChild className="pointer-events-auto">
                 <Link to="/work">View work</Link>
               </Button>
 
-              <Button size="lg" variant="outline" asChild className="pointer-events-auto">
+              <Button size="lg" asChild className="pointer-events-auto">
                 <Link to="/about">Readme</Link>
               </Button>
             </div>
           </AnimateContent>
         </PageContent>
       </div>
-      <AnimateContent delay={0.2}>
-        <PageContent className="space-y-8 py-0">
-          <div className="prose prose-xl max-w-[78ch] text-center">
-            <h2>
-              How I Help You <RotatingText words={['Succeed', 'Scale', 'Innovate', 'Ship', 'Launch']} />
-            </h2>
-            <p>
-              I adapt quickly to your team&apos;s needs and can parachute into any stage of development, or execute
-              across the entire product lifecycle.
-            </p>
-          </div>
-          <AnimateContent>
-            <div className="prose mx-auto w-full max-w-7xl rounded-2xl border border-gray-100 bg-white">
-              <h2>Product Design & Design Systems</h2>
-              <p>Designing for implementation, not just presentation.</p>
-              <p className="mb-0 font-bold">Discovery & Strategy</p>
-              <p className="mt-0">
-                Partnering with stakeholders to define the right product. I focus on technical feasibility during
-                ideation to ensure complex requirements never compromise the user experience.
-              </p>
 
-              <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
-                <li>
-                  <h4>Discovery & Strategy</h4>
-                  <p>
-                    Partnering with stakeholders to define the right product. I focus on technical feasibility during
-                    ideation to ensure complex requirements never compromise the user experience.
-                  </p>
-                </li>
-              </ul>
+      <AnimateContent>
+        <GlobeBackground className="-mt-72" />
+
+        {/* <div
+            className="absolute inset-0 backdrop-blur-md"
+            style={{
+              maskImage: 'radial-gradient(ellipse at center, transparent 20%, black 70%)',
+              WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 20%, black 70%)',
+            }}
+          /> */}
+        <PageContent className="relative z-10 max-w-6xl pt-48">
+          <AnimateContent animationType="slideUp" className="-mt-32">
+            <div className="prose prose-2xl prose-a mx-auto text-center">
+              <h2 className="mb-4">
+                How I Help You{' '}
+                <RotatingText className="text-primary-600" words={['Succeed', 'Scale', 'Innovate', 'Ship', 'Launch']} />
+              </h2>
+              <p className="mx-auto max-w-[52ch]">
+                I adapt quickly to your team&apos;s needs and can parachute into any stage of development, or execute
+                across the entire product lifecycle.
+              </p>
             </div>
           </AnimateContent>
-        </PageContent>
-      </AnimateContent>
-      <AnimateContent>
-        <PageContent className="space-y-8">
-          <div className="mx-auto w-full max-w-7xl rounded-2xl border border-gray-100 bg-white">
-            <AnimateContent className="space-y-8">
-              <Accordion type="multiple" className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>
-                    <div className="prose">
-                      <h3>01. UX/UI & Product Design</h3>
-                      <p className="-mt-2 text-lg font-normal">Designing for implementation, not just presentation.</p>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
-                      <li>
-                        <h4>Discovery & Strategy</h4>
-                        <p>
-                          Partnering with stakeholders to define the right product. I focus on technical feasibility
-                          during ideation to ensure complex requirements never compromise the user experience.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>High-Fidelity Prototyping</h4>
-                        <p>
-                          Designing complex interaction patterns and states. I often skip static mockups for complex
-                          flows, prototyping directly in code to validate logic and feel immediately.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Systematic Design</h4>
-                        <p>
-                          I treat the codebase as the source of truth. While Figma is used for rapid ideation, I
-                          architect systems directly in code. This &quot;Zero-Loss&quot; approach is faster and ensures
-                          the approved design is exactly what ships to production.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>High-Fidelity Prototyping</h4>
-                        <p>
-                          Designing complex interaction patterns and states. I often skip static mockups for complex
-                          flows, prototyping directly in code to validate logic and feel immediately.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Zero-Friction Integration</h4>
-                        <p>
-                          I eliminate the traditional &quot;handoff.&quot; Instead of delivering static files, I ship
-                          production-ready components. This closes the gap between design intent and engineering
-                          reality, preventing technical debt before it starts.
-                        </p>
-                      </li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>
-                    <div className="prose">
-                      <h3>02. Fullstack Engineering</h3>
-                      <p className="-mt-2 font-normal">Vertical ownership from database to UI.</p>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
-                      <li>
-                        <h4>Modern Frontend</h4>
-                        <p>
-                          Building pixel-perfect, accessible interfaces in a modern frontend stack. I use
-                          component-driven architecture to ensure the UI is modular, testable, and strictly typed.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Robust Backend</h4>
-                        <p>
-                          Architecting scalable backend logic in a modern stack. I focus on performance and data
-                          integrity, ensuring the API layer serves the frontend efficiently.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Type-Safe Integration</h4>
-                        <p>
-                          Bridging the gap with end-to-end type safety. I use TypeScript and tools like Zod and OpenAPI
-                          to generate strict contracts between backend and frontend, eliminating runtime errors.
-                        </p>
-                      </li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>
-                    <div className="prose">
-                      <h3>03. Architecture & Developer Experience</h3>
-                      <p className="-mt-2 font-normal">Building the systems that build the product.</p>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="text-foreground [&>li]:prose space-y-6 text-base leading-7 [&>li>h4]:mt-0 [&>li>h4]:mb-0 [&>li>h4]:text-base [&>li>p:last-child]:mb-0">
-                      <li>
-                        <h4>Monorepo Architecture</h4>
-                        <p>
-                          Setting up modern workspaces (e.g., Turborepo/Nx) that allow multiple applications and
-                          libraries to share logic efficiently while keeping build times fast.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Design System Infrastructure</h4>
-                        <p>
-                          Bridging Figma and code. I build shared UI libraries using primitives (like Radix UI) and
-                          styling engines (like Tailwind) to enforce consistency across the platform.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Tooling & CI/CD</h4>
-                        <p>
-                          Automating quality. I configure ESLint, Prettier, and GitHub Actions pipelines to catch errors
-                          early and deploy with confidence.
-                        </p>
-                      </li>
-                      <li>
-                        <h4>Maintainability</h4>
-                        <p>
-                          Writing code that is easy to delete and easy to extend. I prioritize clean abstractions and
-                          documentation so the team can move fast without breaking things.
-                        </p>
-                      </li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+          {/* Product Design */}
+          <div className="mt-24 space-y-12">
+            <AnimateContent animationType="slideUp">
+              <Card shadow="none" className="bg-background/80 flex items-center p-0">
+                <div className="flex-1 p-12">
+                  <h3 className="text-3xl font-semibold">Product Design</h3>
+                  <p className="mt-1 text-lg text-gray-600">Designing for implementation, not just presentation.</p>
+                  <ul className="mt-4 space-y-2">
+                    <li>Prototype complex flows directly in code</li>
+                    <li>Design systems built in the codebase, not just Figma</li>
+                    <li>No handoff — I ship production-ready components</li>
+                  </ul>
+                </div>
+                <DesignProcessAnimation />
+              </Card>
+            </AnimateContent>
+
+            {/* Fullstack Engineering */}
+            <AnimateContent>
+              <Card shadow="none" className="flex min-h-96 items-center p-0">
+                <div className="flex-1 pl-12">
+                  <h3 className="text-3xl font-semibold">Fullstack Engineering</h3>
+                  <p className="mt-1 text-lg text-gray-600">Vertical ownership from database to UI.</p>
+                  <ul className="mt-4 space-y-2">
+                    <li>Component-driven, accessible frontends in React/TypeScript</li>
+                    <li>Scalable backend architecture with clean API design</li>
+                    <li>End-to-end type safety — contracts generated, not assumed</li>
+                  </ul>
+                </div>
+                <FullstackAnimation />
+              </Card>
+            </AnimateContent>
+
+            {/* Architecture & DX */}
+            <AnimateContent>
+              <Card shadow="none" className="border-border/50 flex min-h-96 items-center border p-0">
+                <div className="flex-1 pl-12">
+                  <h3 className="text-3xl font-semibold">Architecture & DX</h3>
+                  <p className="mt-1 text-gray-600">Building the systems that build the product.</p>
+                  <ul className="mt-4 space-y-2">
+                    <li>Monorepo setup with fast, cacheable builds</li>
+                    <li>Shared UI libraries bridging design tokens to code</li>
+                    <li>CI/CD pipelines that catch problems before deploy</li>
+                  </ul>
+                </div>
+                <ArchitectureAnimation />
+              </Card>
+            </AnimateContent>
+
+            <AnimateContent>
               <Button size="lg" asChild variant="outline" className="pointer-events-auto">
                 <Link to="/contact">Let&apos;s connect</Link>
               </Button>
@@ -237,5 +155,5 @@ function Home() {
 
       <Footer />
     </Page>
-  )
+  );
 }

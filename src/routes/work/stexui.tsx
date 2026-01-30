@@ -3,7 +3,7 @@ import AnimateContent from '@/components/AnimateContent';
 import { Page } from '@/components/page';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
-import { cn } from '@josui/core-web';
+import { cn } from '@josui/core-web/src';
 
 export const Route = createFileRoute('/work/stexui')({
   component: STEXUICase,

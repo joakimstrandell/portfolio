@@ -1,5 +1,5 @@
 import { Check } from 'lucide-react';
-import { cn } from '@josui/core-web';
+import { cn } from '@josui/core-web/src';
 
 interface ChecklistProps {
   items: string[];

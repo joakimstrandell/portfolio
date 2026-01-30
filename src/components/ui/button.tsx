@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-import { cn } from '@josui/core-web';
+import { cn } from '@josui/core-web/src';
 
 const buttonVariants = cva(
   cn(

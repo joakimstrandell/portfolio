@@ -1,4 +1,4 @@
-import { cn } from '@josui/core-web';
+import { cn } from '@josui/core-web/src';
 
 export function Page({ children, className, id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (

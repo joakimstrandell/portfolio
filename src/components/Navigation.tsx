@@ -1,7 +1,7 @@
 'use client';
 
 import { Link, useLocation } from '@tanstack/react-router';
-import { cn } from '@josui/core-web';
+import { cn } from '@josui/core-web/src';
 import { Button } from './ui/button';
 
 export function Navigation() {

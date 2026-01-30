@@ -117,7 +117,7 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   sphereRadius: 5.85,
   sphereSegments: 64,
   sphereColor: 'blue',
-  sphereOpacity: 0.03,
+  sphereOpacity: 0.02,
 
   // Atmosphere
   atmosphereColor: 'blue',
@@ -130,7 +130,7 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   fresnelPower: 3.0,
 
   // Noise texture
-  noise: true,
+  noise: false,
   noiseColor: 'gray',
   noiseOpacity: 0.2,
   noiseScale: 3.0,
@@ -1195,15 +1195,25 @@ export function GlobeBackground({ className, ...configOverrides }: { className?:
     return () => observer.disconnect();
   }, []);
 
+  // Track if globe has ever been visible (for fade-in, don't fade out)
+  const [hasBeenVisible, setHasBeenVisible] = useState(false);
+
+  useEffect(() => {
+    if (isVisible && !hasBeenVisible) {
+      setHasBeenVisible(true);
+    }
+  }, [isVisible, hasBeenVisible]);
+
   return (
     <div
       ref={containerRef}
       className={cn(
-        'pointer-events-none absolute left-1/2 hidden h-250 w-full -translate-x-1/2 mask-[linear-gradient(to_bottom,background_0%,background_50%,transparent_100%)] md:block',
+        'pointer-events-none absolute left-1/2 hidden h-250 w-full -translate-x-1/2 mask-[linear-gradient(to_bottom,background_0%,background_50%,transparent_100%)] transition-opacity duration-1000 ease-out md:block',
+        hasBeenVisible ? 'opacity-100' : 'opacity-0',
         className,
       )}
     >
-      {isReady && globeData && isVisible && (
+      {isReady && globeData && hasBeenVisible && (
         <Canvas
           camera={{ position: [0, -5, 10], fov: 45 }}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}

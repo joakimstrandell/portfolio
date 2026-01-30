@@ -11,15 +11,15 @@ const StackedPanes = () => {
   const panes = useMemo(
     () => [
       {
-        gradient: 'from-engineering-500/40 via-engineering-500/20 to-engineering-500/10',
+        gradient: 'from-secondary-500/40 via-secondary-500/20 to-secondary-500/10',
         delay: 0.2,
       },
       {
-        gradient: 'from-design-500/40 via-design-500/20 to-design-500/10',
+        gradient: 'from-tertiary-500/40 via-tertiary-500/20 to-tertiary-500/10',
         delay: 0,
       },
       {
-        gradient: 'from-strategy-500/40 via-strategy-500/20 to-strategy-500/10',
+        gradient: 'from-primary-500/40 via-primary-500/20 to-primary-500/10',
         delay: 0.6,
       },
     ],

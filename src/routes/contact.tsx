@@ -17,7 +17,7 @@ function Contact() {
   return (
     <Page>
       <PageContent>
-        <AnimateContent className="prose dark:prose-invert">
+        <AnimateContent className="prose">
           <h1>Contact</h1>
           <p className="font flex items-center rounded-sm border border-green-200 bg-green-100/50 p-4 text-green-950">
             <span className="mr-4 inline-block aspect-square h-4 rounded-full bg-green-500" />I am currently available

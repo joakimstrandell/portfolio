@@ -17,7 +17,7 @@ function Work() {
   return (
     <Page>
       <PageContent>
-        <AnimateContent className="prose dark:prose-invert">
+        <AnimateContent className="prose">
           <h1>Work</h1>
           <p>
             A collection of client projects, concepts, and thoughts — things I've built or learned while designing and

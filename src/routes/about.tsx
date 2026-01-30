@@ -36,7 +36,7 @@ function About() {
                   </div>
                 </div>
               </AnimateContent>
-              <AnimateContent className="prose dark:prose-invert">
+              <AnimateContent className="prose">
                 <h2>From Soapbox Cars to Enterprise Products</h2>
                 <p>
                   I've always liked building things. As a kid it was boats, soapbox cars, and questionable DIY
@@ -106,7 +106,7 @@ function About() {
         </AnimateContent>
 
         <PageContent id="experience">
-          <AnimateContent className="prose dark:prose-invert">
+          <AnimateContent className="prose">
             <h1>Experience</h1>
             <p className="-mt-4">
               In recent years, I've focused on uniting human-centered design principles with frontend engineering —
@@ -192,7 +192,7 @@ function About() {
                 </div>
               </AnimateContent>
               <AnimateContent className="mt-12">
-                <div className="[&>a]:bg-strategy-500/20 [&>a]:text-strategy-950 space-y-2 space-x-2 [&>a]:inline-block [&>a]:rounded-md [&>a]:p-2">
+                <div className="[&>a]:bg-primary-500/20 [&>a]:text-primary-950 space-y-2 space-x-2 [&>a]:inline-block [&>a]:rounded-md [&>a]:p-2">
                   <a href="https://www.ideou.com/blogs/inspiration/what-is-human-centered-design">
                     Human-Centered Design
                   </a>

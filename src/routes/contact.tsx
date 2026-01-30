@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 import { Footer } from '@/components/Footer';

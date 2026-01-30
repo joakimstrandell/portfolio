@@ -1169,7 +1169,6 @@ export function GlobeBackground({ className, ...configOverrides }: { className?:
       // Ensure trailColor defaults to dotColor if not specified
       trailColor: configOverrides.trailColor ?? configOverrides.dotColor ?? DEFAULT_CONFIG.trailColor,
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [JSON.stringify(configOverrides)],
   );
 

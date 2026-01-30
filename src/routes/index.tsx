@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
+import { Checklist } from '@/components/Checklist';
 import { Page, PageContent } from '@/components/page';
 import StackedPanes from '@/components/StackedPanes';
 import { cn } from '@josui/core-web';
@@ -80,7 +81,7 @@ function Home() {
           /> */}
         <PageContent className="relative z-10 max-w-6xl pt-48">
           <AnimateContent animationType="slideUp" className="-mt-32">
-            <div className="prose prose-2xl prose-a mx-auto text-center">
+            <div className="prose prose-xl md:prose-2xl prose-a mx-auto text-center">
               <h2 className="mb-4">
                 How I Help You{' '}
                 <RotatingText className="text-primary-600" words={['Succeed', 'Scale', 'Innovate', 'Ship', 'Launch']} />
@@ -92,57 +93,82 @@ function Home() {
             </div>
           </AnimateContent>
           {/* Product Design */}
-          <div className="mt-24 space-y-12">
+          <div className="mt-12 space-y-8 md:mt-24 md:space-y-12">
             <AnimateContent animationType="slideUp">
-              <Card shadow="none" className="bg-background/80 flex items-center p-0">
-                <div className="flex-1 p-12">
-                  <h3 className="text-3xl font-semibold">Product Design</h3>
-                  <p className="mt-1 text-lg text-gray-600">Designing for implementation, not just presentation.</p>
-                  <ul className="mt-4 space-y-2">
-                    <li>Prototype complex flows directly in code</li>
-                    <li>Design systems built in the codebase, not just Figma</li>
-                    <li>No handoff — I ship production-ready components</li>
-                  </ul>
+              <Card shadow="none" className="border-border/40 flex flex-col items-center border p-0 md:flex-row">
+                <div className="flex-1 p-6 md:p-12">
+                  <h3 className="text-2xl font-semibold md:text-3xl">Product Design</h3>
+                  <p className="mt-1 text-base text-gray-600 md:text-lg">
+                    Designing for implementation, not just presentation.
+                  </p>
+                  <Checklist
+                    className="mt-4"
+                    items={[
+                      'Prototype complex flows directly in code',
+                      'Design systems built in the codebase, not just Figma',
+                      'No handoff — I ship production-ready components',
+                    ]}
+                  />
                 </div>
-                <DesignProcessAnimation />
+                <div className="flex w-full justify-center md:w-auto">
+                  <DesignProcessAnimation />
+                </div>
               </Card>
             </AnimateContent>
 
             {/* Fullstack Engineering */}
             <AnimateContent>
-              <Card shadow="none" className="flex min-h-96 items-center p-0">
-                <div className="flex-1 pl-12">
-                  <h3 className="text-3xl font-semibold">Fullstack Engineering</h3>
-                  <p className="mt-1 text-lg text-gray-600">Vertical ownership from database to UI.</p>
-                  <ul className="mt-4 space-y-2">
-                    <li>Component-driven, accessible frontends in React/TypeScript</li>
-                    <li>Scalable backend architecture with clean API design</li>
-                    <li>End-to-end type safety — contracts generated, not assumed</li>
-                  </ul>
+              <Card
+                shadow="none"
+                className="border-border/40 flex flex-col items-center border p-0 md:min-h-96 md:flex-row"
+              >
+                <div className="flex-1 p-6 md:pl-12">
+                  <h3 className="text-2xl font-semibold md:text-3xl">Fullstack Engineering</h3>
+                  <p className="mt-1 text-base text-gray-600 md:text-lg">Vertical ownership from database to UI.</p>
+                  <Checklist
+                    className="mt-4"
+                    items={[
+                      'Component-driven, accessible frontends in React/TypeScript',
+                      'Scalable backend architecture with clean API design',
+                      'End-to-end type safety — contracts generated, not assumed',
+                    ]}
+                  />
                 </div>
-                <FullstackAnimation />
+                <div className="flex w-full justify-center md:w-auto">
+                  <FullstackAnimation />
+                </div>
               </Card>
             </AnimateContent>
 
             {/* Architecture & DX */}
             <AnimateContent>
-              <Card shadow="none" className="border-border/50 flex min-h-96 items-center border p-0">
-                <div className="flex-1 pl-12">
-                  <h3 className="text-3xl font-semibold">Architecture & DX</h3>
-                  <p className="mt-1 text-gray-600">Building the systems that build the product.</p>
-                  <ul className="mt-4 space-y-2">
-                    <li>Monorepo setup with fast, cacheable builds</li>
-                    <li>Shared UI libraries bridging design tokens to code</li>
-                    <li>CI/CD pipelines that catch problems before deploy</li>
-                  </ul>
+              <Card
+                shadow="none"
+                className="border-border/40 flex flex-col items-center border p-0 md:min-h-96 md:flex-row"
+              >
+                <div className="flex-1 p-6 md:pl-12">
+                  <h3 className="text-2xl font-semibold md:text-3xl">Architecture & DX</h3>
+                  <p className="mt-1 text-sm text-gray-600 md:text-base">
+                    Building the systems that build the product.
+                  </p>
+                  <Checklist
+                    className="mt-4"
+                    items={[
+                      'Monorepo setup with fast, cacheable builds',
+                      'Shared UI libraries bridging design tokens to code',
+                      'CI/CD pipelines that catch problems before deploy',
+                    ]}
+                  />
                 </div>
-                <ArchitectureAnimation />
+                <div className="flex w-full justify-center md:w-auto">
+                  <ArchitectureAnimation />
+                </div>
               </Card>
             </AnimateContent>
 
-            <AnimateContent>
-              <Button size="lg" asChild variant="outline" className="pointer-events-auto">
-                <Link to="/contact">Let&apos;s connect</Link>
+            <AnimateContent className="text-center">
+              <Button size="xl" variant="primary" asChild className="pointer-events-auto">
+                <Link to="/contact">Let&apos;s Chat!</Link>
               </Button>
             </AnimateContent>
           </div>

@@ -8,19 +8,32 @@ gsap.registerPlugin(ScrollTrigger);
 
 const FullstackAnimation = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const leftStackRef = useRef<HTMLDivElement>(null);
-  const rightStackRef = useRef<HTMLDivElement>(null);
+  const panesContainerRef = useRef<HTMLDivElement>(null);
   const ideWindowRef = useRef<HTMLDivElement>(null);
   const codeLinesRef = useRef<HTMLDivElement[]>([]);
+  const panesRef = useRef<HTMLDivElement[]>([]);
+
+  // Interleaved panes: L0, R0, L1, R1, L2, R2, L3, R3, L4, R4
+  // This ensures proper z-ordering when merged
+  const panes = [
+    { side: 'left', index: 0, isPrimary: true },
+    { side: 'right', index: 0, isPrimary: false },
+    { side: 'left', index: 1, isPrimary: false },
+    { side: 'right', index: 1, isPrimary: false },
+    { side: 'left', index: 2, isPrimary: false },
+    { side: 'right', index: 2, isPrimary: true },
+    { side: 'left', index: 3, isPrimary: false },
+    { side: 'right', index: 3, isPrimary: false },
+    { side: 'left', index: 4, isPrimary: false },
+    { side: 'right', index: 4, isPrimary: false },
+  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      if (!leftStackRef.current || !rightStackRef.current || !ideWindowRef.current || !containerRef.current) return;
+      if (!panesContainerRef.current || !ideWindowRef.current || !containerRef.current) return;
 
       const codeLines = codeLinesRef.current;
-      const leftPanes = Array.from(leftStackRef.current.children) as HTMLElement[];
-      const rightPanes = Array.from(rightStackRef.current.children) as HTMLElement[];
-      const allPanes = [...leftPanes, ...rightPanes];
+      const allPanes = panesRef.current.filter(Boolean);
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -31,34 +44,40 @@ const FullstackAnimation = () => {
         },
       });
 
-      // Initial state - stacks at their respective halves
-      gsap.set(leftStackRef.current, { left: '25%', opacity: 1 });
-      gsap.set(rightStackRef.current, { left: '75%', opacity: 1 });
+      // Initial state
       gsap.set(ideWindowRef.current, { opacity: 0, scale: 0.9 });
       gsap.set(codeLines, { scaleX: 0, transformOrigin: 'left center' });
 
-      // Set initial Y positions for panes (GSAP will animate these)
-      // Right stack offset by half spacing (12.5px) to interleave with left
-      leftPanes.forEach((pane, i) => {
-        gsap.set(pane, { y: i * -25 });
-      });
-      rightPanes.forEach((pane, i) => {
-        gsap.set(pane, { y: -12.5 + i * -25 });
+      // Set initial positions for each pane
+      // Left panes start at x=-100, right panes at x=+100 (within canvas)
+      // Y positions interleave: left at i*-25, right at -12.5 + i*-25
+      allPanes.forEach((pane, domIndex) => {
+        const paneData = panes[domIndex];
+        const xOffset = paneData.side === 'left' ? -100 : 100;
+        const yOffset = paneData.side === 'left' ? paneData.index * -25 : -12.5 + paneData.index * -25;
+
+        gsap.set(pane, {
+          x: xOffset,
+          y: yOffset,
+        });
       });
 
       // Animation sequence
       tl.to({}, { duration: 0.3 })
-        // Move stacks toward center
-        .to(leftStackRef.current, { left: '50%', duration: 0.6, ease: 'power2.inOut' })
-        .to(rightStackRef.current, { left: '50%', duration: 0.6, ease: 'power2.inOut' }, '<')
+        // Move all panes to center (x=0)
+        .to(allPanes, {
+          x: 0,
+          duration: 0.6,
+          ease: 'power2.inOut',
+        })
         // Collapse all panes to Y=0 simultaneously
         .to(allPanes, {
           y: 0,
           duration: 0.4,
           ease: 'power2.inOut',
         })
-        // Hide stacks, show IDE window
-        .to([leftStackRef.current, rightStackRef.current], { opacity: 0, duration: 0.2 })
+        // Hide panes, show IDE window
+        .to(allPanes, { opacity: 0, duration: 0.2 })
         .to(
           ideWindowRef.current,
           {
@@ -81,36 +100,28 @@ const FullstackAnimation = () => {
     return () => ctx.revert();
   }, []);
 
-  const paneStyle =
-    'absolute w-36 h-24 rounded-xl bg-secondary-500 shadow-md shadow-secondary-500/30 opacity-80 drop-shadow-sm';
+  const paneStyle = 'absolute w-36 h-24 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 shadow-sm shadow-black/20 opacity-80';
+  const paneStylePrimary = 'absolute w-36 h-24 rounded-xl bg-primary-500 shadow-sm shadow-black/20 opacity-90';
 
   return (
     <div ref={containerRef} className="relative flex aspect-square h-96 items-center justify-center">
-      <div className="from-secondary-500/5 to-secondary-500/10 absolute inset-0 bg-linear-to-br via-transparent" />
+      <div className="absolute inset-0 bg-linear-to-br from-gray-200/30 via-transparent to-gray-100/20" />
 
-      {/* Left stack (Frontend) - 5 panes - centered on left half */}
-      <div ref={leftStackRef} className="absolute top-1/2" style={{ left: '25%', perspective: '500px' }}>
-        {[0, 1, 2, 3, 4].map((i) => (
+      {/* All panes in a single container, interleaved for proper z-ordering */}
+      <div
+        ref={panesContainerRef}
+        className="absolute top-1/2 left-1/2"
+        style={{ perspective: '500px' }}
+      >
+        {panes.map((pane, i) => (
           <div
-            key={`left-${i}`}
-            className={paneStyle}
+            key={`${pane.side}-${pane.index}`}
+            ref={(el) => {
+              if (el) panesRef.current[i] = el;
+            }}
+            className={pane.isPrimary ? paneStylePrimary : paneStyle}
             style={{
               transform: `translate(-72px, 0px) rotateX(74deg)`,
-              zIndex: 5 - i,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Right stack (Backend) - 5 panes */}
-      <div ref={rightStackRef} className="absolute top-1/2" style={{ left: '75%', perspective: '500px' }}>
-        {[0, 1, 2, 3, 4].map((i) => (
-          <div
-            key={`right-${i}`}
-            className={paneStyle}
-            style={{
-              transform: `translate(-72px, 0px) rotateX(75deg)`,
-              zIndex: 5 - i,
             }}
           />
         ))}
@@ -119,7 +130,7 @@ const FullstackAnimation = () => {
       {/* IDE Window */}
       <div
         ref={ideWindowRef}
-        className="bg-secondary-500 shadow-secondary-500/30 absolute flex h-36 w-52 flex-col overflow-hidden rounded-lg shadow-lg"
+        className="absolute flex h-36 w-52 flex-col overflow-hidden rounded-lg bg-gradient-to-br from-gray-700 to-gray-800 shadow-md shadow-black/20"
       >
         {/* IDE title bar */}
         <div className="flex h-6 items-center gap-1.5 bg-black/20 px-2">
@@ -131,19 +142,19 @@ const FullstackAnimation = () => {
         {/* Code area */}
         <div className="flex flex-1 flex-col gap-2 p-3">
           {[
-            { width: 'w-20', indent: 0 },
-            { width: 'w-28', indent: 8 },
-            { width: 'w-24', indent: 8 },
-            { width: 'w-16', indent: 16 },
-            { width: 'w-32', indent: 8 },
-            { width: 'w-12', indent: 0 },
+            { width: 'w-20', indent: 0, highlight: true },
+            { width: 'w-28', indent: 8, highlight: false },
+            { width: 'w-24', indent: 8, highlight: false },
+            { width: 'w-16', indent: 16, highlight: true },
+            { width: 'w-32', indent: 8, highlight: false },
+            { width: 'w-12', indent: 0, highlight: false },
           ].map((line, i) => (
             <div
               key={i}
               ref={(el) => {
                 if (el) codeLinesRef.current[i] = el;
               }}
-              className={`h-2 rounded bg-white/60 ${line.width}`}
+              className={`h-2 rounded ${line.highlight ? 'bg-primary-400' : 'bg-white/60'} ${line.width}`}
               style={{ marginLeft: line.indent }}
             />
           ))}

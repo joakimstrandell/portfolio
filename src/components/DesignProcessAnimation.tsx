@@ -23,6 +23,7 @@ const DesignProcessAnimation = () => {
     { id: 'checkbox', x: 265, y: 102 },
     { id: 'badge', x: 100, y: 152 },
     { id: 'avatar', x: 220, y: 152 },
+    { id: 'dropdown', x: 280, y: 152 },
   ];
 
   useEffect(() => {
@@ -144,32 +145,40 @@ const DesignProcessAnimation = () => {
   return (
     <div ref={containerRef} className="relative flex aspect-square h-96 items-center justify-center">
       {/* Glass background layers */}
-      <div className="from-tertiary-500/5 to-tertiary-500/10 absolute inset-0 bg-linear-to-br via-transparent" />
+      <div className="absolute inset-0 bg-linear-to-br from-gray-200/30 via-transparent to-gray-100/20" />
 
       {/* SVG container */}
       <svg viewBox="0 0 320 200" className="relative z-10 h-full w-full" style={{ overflow: 'visible' }}>
         <defs>
           <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="var(--color-tertiary-600)" floodOpacity="0.3" />
+            <feDropShadow dx="0" dy="1" stdDeviation="2" floodColor="#000" floodOpacity="0.25" />
           </filter>
+          <linearGradient id="grayGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#525252" />
+            <stop offset="100%" stopColor="#3f3f3f" />
+          </linearGradient>
+          <linearGradient id="grayGradientLight" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#5a5a5a" />
+            <stop offset="100%" stopColor="#454545" />
+          </linearGradient>
         </defs>
 
         {/* Rotating group for diamonds */}
         <g ref={groupRef}>
           {/* Left diamond */}
-          <path ref={leftDiamondRef} d="M 100 60 L 140 100 L 100 140 L 60 100 Z" fill="var(--color-tertiary-500)" filter="url(#shadow)" />
+          <path ref={leftDiamondRef} d="M 100 60 L 140 100 L 100 140 L 60 100 Z" fill="var(--color-primary-500)" filter="url(#shadow)" />
 
           {/* Right diamond */}
-          <path ref={rightDiamondRef} d="M 220 60 L 260 100 L 220 140 L 180 100 Z" fill="var(--color-tertiary-500)" filter="url(#shadow)" />
+          <path ref={rightDiamondRef} d="M 220 60 L 260 100 L 220 140 L 180 100 Z" fill="url(#grayGradient)" filter="url(#shadow)" />
         </g>
 
         {/* Card (center, transforms from square) */}
         <g ref={cardRef} filter="url(#shadow)">
-          <rect x="120" y="77" width="80" height="50" rx="6" fill="var(--color-tertiary-500)" />
+          <rect x="120" y="77" width="80" height="50" rx="6" fill="url(#grayGradient)" />
           <rect x="128" y="85" width="24" height="4" rx="2" fill="white" fillOpacity="0.9" />
           <rect x="128" y="94" width="64" height="3" rx="1.5" fill="white" fillOpacity="0.5" />
           <rect x="128" y="101" width="50" height="3" rx="1.5" fill="white" fillOpacity="0.5" />
-          <rect x="128" y="113" width="28" height="8" rx="4" fill="white" fillOpacity="0.8" />
+          <rect x="128" y="113" width="28" height="8" rx="4" fill="var(--color-primary-500)" />
         </g>
 
         {/* Secondary UI Elements (animate in after card) */}
@@ -181,7 +190,7 @@ const DesignProcessAnimation = () => {
           }}
           filter="url(#shadow)"
         >
-          <rect x="40" y="40" width="60" height="24" rx="12" fill="var(--color-tertiary-500)" />
+          <rect x="40" y="40" width="60" height="24" rx="12" fill="url(#grayGradientLight)" />
           <rect x="52" y="50" width="36" height="4" rx="2" fill="white" fillOpacity="0.9" />
         </g>
 
@@ -199,20 +208,20 @@ const DesignProcessAnimation = () => {
             height="24"
             rx="4"
             fill="white"
-            stroke="var(--color-tertiary-500)"
+            stroke="#525252"
             strokeWidth="2"
           />
-          <rect x="158" y="50" width="30" height="4" rx="2" fill="var(--color-tertiary-300)" />
+          <rect x="158" y="50" width="30" height="4" rx="2" fill="#737373" />
         </g>
 
-        {/* Toggle */}
+        {/* Toggle - highlighted with primary */}
         <g
           ref={(el) => {
             uiElementsRef.current[2] = el;
           }}
           filter="url(#shadow)"
         >
-          <rect x="30" y="92" width="40" height="20" rx="10" fill="var(--color-tertiary-500)" />
+          <rect x="30" y="92" width="40" height="20" rx="10" fill="var(--color-primary-500)" />
           <circle cx="60" cy="102" r="7" fill="white" />
         </g>
 
@@ -223,7 +232,7 @@ const DesignProcessAnimation = () => {
           }}
           filter="url(#shadow)"
         >
-          <rect x="250" y="92" width="20" height="20" rx="4" fill="var(--color-tertiary-500)" />
+          <rect x="250" y="92" width="20" height="20" rx="4" fill="url(#grayGradientLight)" />
           <path
             d="M 256 102 L 260 106 L 266 97"
             fill="none"
@@ -241,7 +250,7 @@ const DesignProcessAnimation = () => {
           }}
           filter="url(#shadow)"
         >
-          <rect x="75" y="143" width="50" height="18" rx="9" fill="var(--color-tertiary-500)" />
+          <rect x="75" y="143" width="50" height="18" rx="9" fill="url(#grayGradientLight)" />
           <rect x="85" y="150" width="30" height="4" rx="2" fill="white" fillOpacity="0.9" />
         </g>
 
@@ -252,9 +261,21 @@ const DesignProcessAnimation = () => {
           }}
           filter="url(#shadow)"
         >
-          <circle cx="220" cy="152" r="14" fill="var(--color-tertiary-500)" />
+          <circle cx="220" cy="152" r="14" fill="url(#grayGradient)" />
           <circle cx="220" cy="148" r="5" fill="white" fillOpacity="0.8" />
           <path d="M 211 160 Q 220 154 229 160" fill="white" fillOpacity="0.8" />
+        </g>
+
+        {/* Dropdown - light theme with dark border */}
+        <g
+          ref={(el) => {
+            uiElementsRef.current[6] = el;
+          }}
+          filter="url(#shadow)"
+        >
+          <rect x="245" y="140" width="50" height="24" rx="4" fill="white" stroke="#525252" strokeWidth="1.5" />
+          <rect x="253" y="150" width="24" height="4" rx="2" fill="#525252" />
+          <path d="M 283 148 l 4 4 l 4 -4" fill="none" stroke="#525252" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </g>
       </svg>
     </div>

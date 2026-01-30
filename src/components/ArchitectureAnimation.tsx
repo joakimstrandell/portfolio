@@ -29,17 +29,17 @@ const ArchitectureAnimation = () => {
     content: contentTypes[i],
   }));
 
-  // Scattered starting positions (within canvas bounds)
+  // Scattered starting positions (balanced within canvas bounds)
   const scatteredPositions = [
-    { x: 40, y: 30 },
-    { x: 220, y: 50 },
-    { x: 130, y: 140 },
-    { x: 260, y: 130 },
-    { x: 50, y: 100 },
-    { x: 180, y: 25 },
-    { x: 90, y: 150 },
-    { x: 240, y: 90 },
-    { x: 70, y: 60 },
+    { x: 70, y: 35 },
+    { x: 250, y: 45 },
+    { x: 160, y: 140 },
+    { x: 240, y: 130 },
+    { x: 80, y: 100 },
+    { x: 200, y: 30 },
+    { x: 100, y: 145 },
+    { x: 230, y: 95 },
+    { x: 90, y: 55 },
   ];
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const ArchitectureAnimation = () => {
         return (
           <>
             <rect x={x + 12} y={y + 12} width={12} height={12} rx={2} fill="white" fillOpacity={0.7} />
-            <path d={`M ${x + 15} ${y + 18} l 2 2 l 4 -4`} stroke="var(--color-primary-500)" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+            <path d={`M ${x + 15} ${y + 18} l 2 2 l 4 -4`} stroke="#525252" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" fill="none" />
           </>
         );
       case 'bars':
@@ -150,36 +150,44 @@ const ArchitectureAnimation = () => {
   return (
     <div ref={containerRef} className="relative flex aspect-square h-96 items-center justify-center">
       {/* Glass background layers */}
-      <div className="from-primary-500/5 to-primary-500/10 absolute inset-0 bg-linear-to-br via-transparent" />
+      <div className="absolute inset-0 bg-linear-to-br from-gray-200/30 via-transparent to-gray-100/20" />
 
       {/* SVG container */}
       <svg viewBox="0 0 320 200" className="relative z-10 h-full w-full" style={{ overflow: 'visible' }}>
         <defs>
           <filter id="blockShadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="var(--color-primary-700)" floodOpacity="0.3" />
+            <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="#000" floodOpacity="0.25" />
           </filter>
+          <linearGradient id="blockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#525252" />
+            <stop offset="100%" stopColor="#3f3f3f" />
+          </linearGradient>
         </defs>
 
         {/* Blocks */}
-        {blocks.map((block, i) => (
-          <g
-            key={block.id}
-            ref={(el) => {
-              blocksRef.current[i] = el;
-            }}
-            filter="url(#blockShadow)"
-          >
-            <rect
-              x={block.finalX}
-              y={block.finalY}
-              width={blockSize}
-              height={blockSize}
-              rx={6}
-              fill="var(--color-primary-500)"
-            />
-            {renderContent(block.content, block.finalX, block.finalY)}
-          </g>
-        ))}
+        {blocks.map((block, i) => {
+          // Primary highlights: center (4), top-right (2), and bottom-left (6)
+          const isPrimary = i === 4 || i === 2 || i === 6;
+          return (
+            <g
+              key={block.id}
+              ref={(el) => {
+                blocksRef.current[i] = el;
+              }}
+              filter="url(#blockShadow)"
+            >
+              <rect
+                x={block.finalX}
+                y={block.finalY}
+                width={blockSize}
+                height={blockSize}
+                rx={6}
+                fill={isPrimary ? 'var(--color-primary-500)' : 'url(#blockGradient)'}
+              />
+              {renderContent(block.content, block.finalX, block.finalY)}
+            </g>
+          );
+        })}
       </svg>
     </div>
   );

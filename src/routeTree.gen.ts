@@ -13,6 +13,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work/index'
+import { Route as WorkStexuiRouteImport } from './routes/work/stexui'
 
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
@@ -34,17 +35,24 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
   path: '/work/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkStexuiRoute = WorkStexuiRouteImport.update({
+  id: '/work/stexui',
+  path: '/work/stexui',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/work/stexui': typeof WorkStexuiRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/work/stexui': typeof WorkStexuiRoute
   '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/work/stexui': typeof WorkStexuiRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/work/'
+  fullPaths: '/' | '/about' | '/contact' | '/work/stexui' | '/work/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/work'
-  id: '__root__' | '/' | '/about' | '/contact' | '/work/'
+  to: '/' | '/about' | '/contact' | '/work/stexui' | '/work'
+  id: '__root__' | '/' | '/about' | '/contact' | '/work/stexui' | '/work/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
+  WorkStexuiRoute: typeof WorkStexuiRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
 
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/stexui': {
+      id: '/work/stexui'
+      path: '/work/stexui'
+      fullPath: '/work/stexui'
+      preLoaderRoute: typeof WorkStexuiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
+  WorkStexuiRoute: WorkStexuiRoute,
   WorkIndexRoute: WorkIndexRoute,
 }
 export const routeTree = rootRouteImport

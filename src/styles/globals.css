@@ -1,7 +1,7 @@
 @import 'tw-animate-css';
 @import '@josui/tailwind';
 @plugin "@tailwindcss/typography";
-@source "../../node_modules/@josui/react/**/*.ts";
+@source "../../node_modules/@josui/react/**/*.{ts,tsx}";
 
 body * {
   cursor: none !important;

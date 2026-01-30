@@ -1,8 +1,6 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { Header } from '@/components/Header';
-import { CustomCursor } from '@/components/CustomCursor';
-import { Grid } from '@/components/Grid';
-import { CellGrid } from '@josui/react/src';
+import { CellGrid, CustomCursor } from '@josui/react/src';
 
 import '@fontsource-variable/roboto-mono';
 import '@/styles/globals.css';

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 import StackedPanes from '@/components/StackedPanes';
-import { cn } from '@/lib/utils';
+import { cn } from '@josui/core-web';
 import { Footer } from '@/components/Footer';
 import { RotatingText } from '@/components/RotatingText';
 import { Button } from '@/components/ui/button';
@@ -11,10 +11,6 @@ import DesignProcessAnimation from '@/components/DesignProcessAnimation';
 import FullstackAnimation from '@/components/FullstackAnimation';
 import ArchitectureAnimation from '@/components/ArchitectureAnimation';
 import GlobeBackground from '@/components/GlobeBackground';
-import { getCssVariable } from '@josui/core-web/src';
-
-// Lazy load heavy Three.js component to avoid blocking initial render
-//const GlobeBackground = lazy(() => import('@/components/GlobeBackground'));
 
 export const Route = createFileRoute('/')({
   component: Home,

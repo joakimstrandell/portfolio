@@ -3,7 +3,7 @@
 import { useEffect, useRef, ReactNode } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { cn } from '@/lib/utils';
+import { cn } from '@josui/core-web';
 
 interface AnimateContentProps {
   children: ReactNode;

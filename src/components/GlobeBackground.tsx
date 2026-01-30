@@ -2,7 +2,7 @@
 
 import { useRef, useMemo, useState, useEffect, useCallback, type RefObject } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { cn, getCssVariable } from '@/lib/utils';
+import { cn, getCssVariable } from '@josui/core-web';
 
 // Import types only (no runtime cost) for TypeScript
 import type { ShaderMaterial, Group } from 'three';

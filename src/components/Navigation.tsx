@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import { Link, useLocation } from '@tanstack/react-router'
-import { cn } from '@/lib/utils'
-import { Button } from './ui/button'
+import { Link, useLocation } from '@tanstack/react-router';
+import { cn } from '@josui/core-web';
+import { Button } from './ui/button';
 
 export function Navigation() {
   return (
@@ -13,12 +13,12 @@ export function Navigation() {
         <Navigation.Item href="/contact">Contact</Navigation.Item>
       </ul>
     </nav>
-  )
+  );
 }
 
 Navigation.Item = function NavigationItem({ href, children }: { href: string; children: React.ReactNode }) {
-  const location = useLocation()
-  const isActive = location.pathname === href
+  const location = useLocation();
+  const isActive = location.pathname === href;
 
   return (
     <li
@@ -31,5 +31,5 @@ Navigation.Item = function NavigationItem({ href, children }: { href: string; ch
         <Button variant="ghost">{children}</Button>
       </Link>
     </li>
-  )
-}
+  );
+};

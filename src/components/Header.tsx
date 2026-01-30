@@ -6,7 +6,7 @@ import { Menu } from 'lucide-react';
 import Signature from '@/components/Signature';
 import { Navigation } from '@/components/Navigation';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
-import { cn } from '@/lib/utils';
+import { cn } from '@josui/core-web';
 
 const THRESHOLD = 30;
 

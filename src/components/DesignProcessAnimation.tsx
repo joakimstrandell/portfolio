@@ -172,16 +172,7 @@ const DesignProcessAnimation = () => {
           <path ref={rightDiamondRef} d="M 220 60 L 260 100 L 220 140 L 180 100 Z" fill="url(#grayGradient)" filter="url(#shadow)" />
         </g>
 
-        {/* Card (center, transforms from square) */}
-        <g ref={cardRef} filter="url(#shadow)">
-          <rect x="120" y="77" width="80" height="50" rx="6" fill="url(#grayGradient)" />
-          <rect x="128" y="85" width="24" height="4" rx="2" fill="white" fillOpacity="0.9" />
-          <rect x="128" y="94" width="64" height="3" rx="1.5" fill="white" fillOpacity="0.5" />
-          <rect x="128" y="101" width="50" height="3" rx="1.5" fill="white" fillOpacity="0.5" />
-          <rect x="128" y="113" width="28" height="8" rx="4" fill="var(--color-primary-500)" />
-        </g>
-
-        {/* Secondary UI Elements (animate in after card) */}
+        {/* Secondary UI Elements (rendered before card so they appear beneath) */}
 
         {/* Button */}
         <g
@@ -276,6 +267,15 @@ const DesignProcessAnimation = () => {
           <rect x="245" y="140" width="50" height="24" rx="4" fill="white" stroke="#525252" strokeWidth="1.5" />
           <rect x="253" y="150" width="24" height="4" rx="2" fill="#525252" />
           <path d="M 283 148 l 4 4 l 4 -4" fill="none" stroke="#525252" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </g>
+
+        {/* Card (center, transforms from square) - rendered last to appear on top */}
+        <g ref={cardRef} filter="url(#shadow)">
+          <rect x="120" y="77" width="80" height="50" rx="6" fill="url(#grayGradient)" />
+          <rect x="128" y="85" width="24" height="4" rx="2" fill="white" fillOpacity="0.9" />
+          <rect x="128" y="94" width="64" height="3" rx="1.5" fill="white" fillOpacity="0.5" />
+          <rect x="128" y="101" width="50" height="3" rx="1.5" fill="white" fillOpacity="0.5" />
+          <rect x="128" y="113" width="28" height="8" rx="4" fill="var(--color-primary-500)" />
         </g>
       </svg>
     </div>

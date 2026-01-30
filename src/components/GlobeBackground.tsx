@@ -94,7 +94,7 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   // Dots
   dotCount: 100,
   dotSize: 0.0075,
-  dotColor: '#ffbb49',
+  dotColor: '#ffb92f',
   dotOpacity: 0.3,
   dotBlur: 0.5,
   dotOffset: 0.05,
@@ -102,13 +102,13 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
 
   // Dot shadows
   dotShadows: true,
-  dotShadowColor: '#ffbb49',
+  dotShadowColor: '#ffb92f',
   dotShadowOpacity: 0.2,
   dotShadowSize: 0.05,
   dotShadowBlur: 1,
 
   // Trails
-  trailColor: '#ffbb49',
+  trailColor: '#ffb92f',
   trailOpacity: 1,
   trailWidth: 0.008,
   trailBlur: 0.3,
@@ -116,28 +116,28 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   // Sphere
   sphereRadius: 5.85,
   sphereSegments: 64,
-  sphereColor: 'blue',
-  sphereOpacity: 0.02,
+  sphereColor: '#ffb92f',
+  sphereOpacity: 0.01,
 
   // Atmosphere
-  atmosphereColor: 'blue',
+  atmosphereColor: '#ffb92f',
   atmosphereOpacity: 0.1,
   atmosphereScale: 1.1,
 
   // Fresnel rim
   fresnelColor: '#ffffff',
-  fresnelOpacity: 0.2,
+  fresnelOpacity: 0.15,
   fresnelPower: 3.0,
 
   // Noise texture
-  noise: false,
-  noiseColor: 'gray',
-  noiseOpacity: 0.2,
+  noise: true,
+  noiseColor: '#2076ff',
+  noiseOpacity: 0.3,
   noiseScale: 3.0,
 
   // City lights
   cityLights: true,
-  cityLightColor: '#ffdd88',
+  cityLightColor: '#F5B82E',
   cityLightOpacity: 0.3,
   cityLightDensity: 30.0,
   cityLightSize: 0.05,

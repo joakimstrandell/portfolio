@@ -13,16 +13,13 @@
 # testing
 /coverage
 
-# next.js (legacy)
-/.next/
-/out/
-
 # vinxi / tanstack start
 /.vinxi/
 /.output/
 
 # production
 /build
+/dist
 
 # misc
 .DS_Store

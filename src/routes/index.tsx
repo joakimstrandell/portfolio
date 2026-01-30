@@ -7,7 +7,7 @@ import { cn } from '@josui/core-web';
 import { Footer } from '@/components/Footer';
 import { RotatingText } from '@/components/RotatingText';
 import { Button } from '@/components/ui/button';
-import { Card } from '@josui/react/src';
+import { Card } from '@josui/react';
 import DesignProcessAnimation from '@/components/DesignProcessAnimation';
 import FullstackAnimation from '@/components/FullstackAnimation';
 import ArchitectureAnimation from '@/components/ArchitectureAnimation';

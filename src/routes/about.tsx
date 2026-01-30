@@ -1,19 +1,22 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
-import AnimateContent from '@/components/AnimateContent'
-import { Page, PageContent } from '@/components/page'
-import { Experience } from '@/components/Experience'
-import { Button } from '@/components/ui/button'
-import { Footer } from '@/components/Footer'
+import { createFileRoute } from '@tanstack/react-router';
+import AnimateContent from '@/components/AnimateContent';
+import { Page, PageContent } from '@/components/page';
+import { Button } from '@/components/ui/button';
+import { Footer } from '@/components/Footer';
 
 export const Route = createFileRoute('/about')({
   component: About,
   head: () => ({
     meta: [
       { title: 'About - Joakim Strandell' },
-      { name: 'description', content: 'Learn about Joakim Strandell, a product engineer with 20+ years of experience in UX/UI Design and Fullstack Engineering.' },
+      {
+        name: 'description',
+        content:
+          'Learn about Joakim Strandell, a product engineer with 20+ years of experience in UX/UI Design and Fullstack Engineering.',
+      },
     ],
   }),
-})
+});
 
 function About() {
   return (
@@ -59,17 +62,13 @@ function About() {
               <AnimateContent className="mt-12">
                 <div className="flex items-center gap-8">
                   <Button size="lg" asChild>
-                    <Link to="/about" hash="experience">My experience</Link>
-                  </Button>
-
-                  <Button size="lg" variant="outline" asChild>
-                    <a href="/CV - Joakim Strandell.pdf">CV as PDF</a>
+                    <a href="/Consultant CV – Joakim Strandell.pdf">Consultant CV</a>
                   </Button>
                 </div>
               </AnimateContent>
             </div>
             <AnimateContent
-              animationType="slideLeft"
+              animationType="fadeLeft"
               className="border-foreground/10 hidden items-center justify-center overflow-hidden rounded-full border-8 bg-white/20 lg:flex"
             >
               <img src="/joakim-sketch-transparent.png" alt="Old man laptop" width={320} height={320} />
@@ -105,76 +104,8 @@ function About() {
           </div>
         </AnimateContent>
 
-        <PageContent id="experience">
-          <AnimateContent className="prose">
-            <h1>Experience</h1>
-            <p className="-mt-4">
-              In recent years, I've focused on uniting human-centered design principles with frontend engineering —
-              working closely with product teams to design thoughtful experiences, build scalable frontend
-              infrastructures and developer tooling, and bring clarity between design and code through documentation and
-              shared best practices.
-            </p>
-          </AnimateContent>
-          <AnimateContent>
-            <Experience
-              title="Stockholm Exergi"
-              period="2018-2025"
-              type="Contract"
-              time="7 years"
-              role="UX/UI Designer and Frontend Developer"
-              description="As a long-term consultant for Stockholm Exergi's Intelligy Solution Platform, I led initiatives spanning UX/UI design, frontend development and infrastructure. I helped transition multiple products from a Python/Django-based interface to a modern React architecture, and later focused on building scalable frontend systems – including design systems, shared libraries, developer tooling, and documentation – to improve consistency and efficiency across applications and teams. In recent years, I've focused on uniting user-centered design principles with frontend engineering —
-              working closely with product teams to design thoughtful experiences, build scalable frontend
-              infrastructures and developer tooling, and bring clarity between design and code through documentation and
-              shared best practices."
-              skills={['React', 'TypeScript', 'Design Systems', 'Frontend Development', 'Developer Tooling']}
-            >
-              <p>
-                I joined Stockholm Exergi as a UX/UI Designer for Intelligy Solutions – a platform used by property
-                owners to monitor, control and analyze district energy usage, subplant capacity, and indoor climate
-                across single buildings or large property portfolios. My work centered on creating intuitive,
-                data-driven interfaces to enhance usability and deliver clear, actionable information to users.
-              </p>
-
-              <p>
-                After my initial work in UX/UI design, I was contracted to contribute to frontend development. My
-                responsibilities began with implementing a new GUI within the existing Python and Django stack. As the
-                platform evolved, we transitioned to a single-page application architecture in React, establishing a
-                clear separation between backend and frontend.
-              </p>
-
-              <p>
-                Over five years, I worked across multiple Intelligy Solutions products, primarily internal tools for
-                managing installations and load balancing in district energy networks, with a focus on both UX/UI design
-                and frontend development.
-              </p>
-
-              <p>
-                In recent years, I have concentrated on frontend infrastructure – designing and building design systems,
-                component libraries, tooling for application configuration, API SDK generation, and shared libraries for
-                formatting and translations, all maintained in a shared monorepo for consistency and efficiency across
-                applications.
-              </p>
-
-              <p>
-                As the frontend team grew, I supported onboarding new developers and took the lead in creating
-                comprehensive guidelines and documentation. This included not only Git workflows and commit strategies,
-                but also API specification and design guidelines, deployment strategies, and best practices for working
-                within our shared codebase. These efforts helped ensure consistency, clarity, and efficiency as the team
-                and product portfolio expanded.
-              </p>
-            </Experience>
-            <div className="prose">
-              <br />
-              <h2>More coming soon...</h2>
-              <p>
-                For now you can download my CV as a PDF <a href="/CV - Joakim Strandell.pdf">here</a>.
-              </p>
-            </div>
-          </AnimateContent>
-        </PageContent>
-
         <AnimateContent>
-          <div id="stack" className="relative border-t-8 border-black/10 bg-white/50">
+          <div id="stack" className="relative border-black/10">
             <PageContent className="max-w-6xl">
               <AnimateContent>
                 <div className="prose">
@@ -186,8 +117,8 @@ function About() {
                   </p>
                   <p>
                     Within all areas of my work I use AI where it makes sense to do so. I believe there is no substitute
-                    (yet) for human creativity and problem solving, but AI can help with the repetitive and routine
-                    tasks, act as a second pair of eyes, and speed up the process.
+                    for human creativity and problem solving – but AI can help with many tasks, act as a second pair of
+                    eyes, and speed up the product development process.
                   </p>
                 </div>
               </AnimateContent>
@@ -227,7 +158,7 @@ function About() {
                   <a href="https://www.gitlab.com/">GitLab</a>
                   <a href="https://www.cursor.com/">Cursor</a>
                   <a href="https://www.claude.ai/">Claude</a>
-                  <a href="https://www.gemini.com/">Gemini</a>
+                  <a href="https://gemini.google.com">Gemini</a>
                   <a href="https://www.atlassian.com/software/jira">Jira</a>
                   <a href="https://www.microsoft.com/en-us/microsoft-365">Microsoft 365</a>
                   <a href="https://www.notion.com/">Notion</a>
@@ -239,5 +170,5 @@ function About() {
         <Footer />
       </Page>
     </>
-  )
+  );
 }

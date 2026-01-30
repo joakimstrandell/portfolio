@@ -67,6 +67,25 @@ export const Route = createFileRoute('/page')({
 })
 ```
 
+## Deployment
+
+Hosted on Vercel. Push to `main` triggers automatic deployment.
+
+### Commands
+```bash
+npx vercel list --yes              # Check deployment status
+npx vercel inspect <url> --logs    # Get build logs
+npx vercel deploy --prod --force   # Deploy without build cache
+```
+
+### Known deployment issues
+
+**@josui packages resolve to stale versions:** Vercel's build cache holds old npm resolutions. The lockfile only has local link references (from `.pnpmfile.cjs`), not npm pins. Fix: deploy with `--force`.
+
+**pnpm lockfile checksum mismatch:** `.pnpmfile.cjs` behaves differently locally (applies overrides) vs CI (no overrides), causing `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`. Fix: `vercel.json` uses `installCommand: "pnpm install --no-frozen-lockfile"`.
+
+**After publishing new @josui versions:** Deploy with `--force` to ensure Vercel resolves the latest versions from npm.
+
 ## Dependencies
 
 ### @josui packages

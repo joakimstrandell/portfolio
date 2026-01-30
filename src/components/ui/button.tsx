@@ -22,9 +22,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          'border-accent hover:bg-accent/20 text-accent-foreground hover:text-accent-foreground hover:border-accent/80 bg-accent/10',
-        outline: '',
+        default: 'border-gray-300 bg-gray-50 text-gray-950 hover:border-gray-300 hover:bg-gray-100/70',
+        primary: 'border-primary-500 hover:bg-primary-200/70 text-primary-950 hover:border-primary-500 bg-primary-100',
+        secondary:
+          'border-secondary-300 hover:bg-secondary-100/70 text-secondary-950 hover:border-secondary-300 bg-secondary-50/70',
         ghost: 'text-inherit',
       },
       size: {
@@ -91,8 +92,8 @@ function ButtonContent({ children, variant }: { children: React.ReactNode; varia
           'group-hover:w-1/2 group-hover:opacity-100',
         )}
       >
-        <span className="block w-full border-t-1 border-inherit" />
-        <span className="block w-full border-b-1 border-inherit" />
+        <span className="block w-full border-t border-inherit" />
+        <span className="block w-full border-b border-inherit" />
       </span>
       <span className="relative z-10 flex items-center gap-3">{children}</span>
       <span
@@ -103,8 +104,8 @@ function ButtonContent({ children, variant }: { children: React.ReactNode; varia
           'group-hover:w-1/2 group-hover:opacity-100',
         )}
       >
-        <span className="block w-full border-t-1 border-inherit" />
-        <span className="block w-full border-b-1 border-inherit" />
+        <span className="block w-full border-t border-inherit" />
+        <span className="block w-full border-b border-inherit" />
       </span>
       {variant !== 'ghost' && <span className="absolute inset-0 block border border-inherit opacity-10" />}
     </>

@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 interface AnimateContentProps {
   children: ReactNode;
   className?: string;
-  animationType?: 'fadeUp' | 'fadeIn' | 'slideLeft' | 'slideRight';
+  animationType?: 'fadeUp' | 'fadeIn' | 'fadeLeft' | 'fadeRight' | 'slideUp' | 'slideLeft' | 'slideRight';
   delay?: number;
   duration?: number;
   start?: string;
@@ -109,13 +109,19 @@ export default function AnimateContent({
   const getInitialClass = () => {
     switch (animationType) {
       case 'fadeUp':
-        return 'opacity-0 translate-y-[50px]';
+        return 'opacity-0 translate-y-[40px]';
       case 'fadeIn':
         return 'opacity-0';
+      case 'fadeLeft':
+        return 'opacity-0 translate-x-[40px]';
+      case 'fadeRight':
+        return 'opacity-0 -translate-x-[40px]';
+      case 'slideUp':
+        return 'translate-y-[100px]';
       case 'slideLeft':
-        return 'opacity-0 translate-x-[100px]';
+        return 'translate-x-[100px]';
       case 'slideRight':
-        return 'opacity-0 -translate-x-[100px]';
+        return '-translate-x-[100px]';
       default:
         return 'opacity-0 translate-y-[50px]';
     }

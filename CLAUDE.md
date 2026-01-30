@@ -90,7 +90,18 @@ npx vercel deploy --prod --force   # Deploy without build cache
 
 ### @josui packages
 
-The `@josui/*` packages are published on npm but linked locally during development:
+The `@josui/*` packages are published on npm but linked locally during development.
+
+**Always import from `/src`:**
+```tsx
+// Correct
+import { cn } from '@josui/core-web/src';
+import { Button } from '@josui/react/src';
+
+// Wrong
+import { cn } from '@josui/core-web';
+import { Button } from '@josui/react';
+```
 
 - `@josui/core` - Core utilities
 - `@josui/core-web` - Web-specific core

@@ -1,4 +1,5 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
+import { Analytics } from '@vercel/analytics/react';
 import { Header } from '@/components/Header';
 import { CellGrid, CustomCursor } from '@josui/react/src';
 
@@ -45,6 +46,7 @@ function RootComponent() {
           />
         </CellGrid>
         <Scripts />
+        <Analytics />
       </body>
     </html>
   );

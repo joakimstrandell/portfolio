@@ -100,7 +100,8 @@ const FullstackAnimation = () => {
     return () => ctx.revert();
   }, []);
 
-  const paneStyle = 'absolute w-36 h-24 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 shadow-sm shadow-black/20 opacity-80';
+  const paneStyle =
+    'absolute w-36 h-24 rounded-xl bg-gradient-to-br from-gray-600 to-gray-700 shadow-sm shadow-black/20 opacity-80';
   const paneStylePrimary = 'absolute w-36 h-24 rounded-xl bg-primary-500 shadow-sm shadow-black/20 opacity-90';
 
   return (
@@ -108,11 +109,7 @@ const FullstackAnimation = () => {
       <div className="absolute inset-0 bg-linear-to-br from-gray-200/30 via-transparent to-gray-100/20" />
 
       {/* All panes in a single container, interleaved for proper z-ordering */}
-      <div
-        ref={panesContainerRef}
-        className="absolute top-1/2 left-1/2"
-        style={{ perspective: '500px' }}
-      >
+      <div ref={panesContainerRef} className="absolute top-1/2 left-1/2" style={{ perspective: '500px' }}>
         {panes.map((pane, i) => (
           <div
             key={`${pane.side}-${pane.index}`}
@@ -133,11 +130,11 @@ const FullstackAnimation = () => {
         className="absolute flex h-36 w-52 flex-col overflow-hidden rounded-lg bg-gradient-to-br from-gray-700 to-gray-800 shadow-md shadow-black/20"
       >
         {/* IDE title bar */}
-        <div className="flex h-6 items-center gap-1.5 bg-black/20 px-2">
-          <div className="h-2 w-2 rounded-full bg-white/40" />
-          <div className="h-2 w-2 rounded-full bg-white/40" />
-          <div className="h-2 w-2 rounded-full bg-white/40" />
-          <div className="ml-2 h-2 w-16 rounded bg-white/20" />
+        <div className="bg-foreground/20 flex h-6 items-center gap-1.5 px-2">
+          <div className="bg-background/40 h-2 w-2 rounded-full" />
+          <div className="bg-background/40 h-2 w-2 rounded-full" />
+          <div className="bg-background/40 h-2 w-2 rounded-full" />
+          <div className="bg-background/20 ml-2 h-2 w-16 rounded" />
         </div>
         {/* Code area */}
         <div className="flex flex-1 flex-col gap-2 p-3">
@@ -154,7 +151,7 @@ const FullstackAnimation = () => {
               ref={(el) => {
                 if (el) codeLinesRef.current[i] = el;
               }}
-              className={`h-2 rounded ${line.highlight ? 'bg-primary-400' : 'bg-white/60'} ${line.width}`}
+              className={`h-2 rounded ${line.highlight ? 'bg-primary-400' : 'bg-gray-300'} ${line.width}`}
               style={{ marginLeft: line.indent }}
             />
           ))}

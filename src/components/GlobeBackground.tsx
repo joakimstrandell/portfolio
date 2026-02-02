@@ -185,8 +185,10 @@ function computeGlobeData(count: number, radius: number, minDistance: number): P
   return promise;
 }
 
-// Pre-compute with defaults for fast initial load
-computeGlobeData(DEFAULT_CONFIG.dotCount, DEFAULT_CONFIG.sphereRadius + 0.15, DEFAULT_CONFIG.minDotDistance);
+// Pre-compute with defaults for fast initial load (browser only)
+if (typeof window !== 'undefined') {
+  computeGlobeData(DEFAULT_CONFIG.dotCount, DEFAULT_CONFIG.sphereRadius + 0.15, DEFAULT_CONFIG.minDotDistance);
+}
 
 // ============================================================================
 // Shader factories

@@ -13,6 +13,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work/index'
+import { Route as WorkStockholmExergiDesignToEngineeringRouteImport } from './routes/work/stockholm-exergi-design-to-engineering'
 import { Route as WorkStexuiRouteImport } from './routes/work/stexui'
 
 const ContactRoute = ContactRouteImport.update({
@@ -35,6 +36,12 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
   path: '/work/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkStockholmExergiDesignToEngineeringRoute =
+  WorkStockholmExergiDesignToEngineeringRouteImport.update({
+    id: '/work/stockholm-exergi-design-to-engineering',
+    path: '/work/stockholm-exergi-design-to-engineering',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WorkStexuiRoute = WorkStexuiRouteImport.update({
   id: '/work/stexui',
   path: '/work/stexui',
@@ -46,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/work/stexui': typeof WorkStexuiRoute
+  '/work/stockholm-exergi-design-to-engineering': typeof WorkStockholmExergiDesignToEngineeringRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +61,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/work/stexui': typeof WorkStexuiRoute
+  '/work/stockholm-exergi-design-to-engineering': typeof WorkStockholmExergiDesignToEngineeringRoute
   '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
@@ -61,14 +70,34 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/work/stexui': typeof WorkStexuiRoute
+  '/work/stockholm-exergi-design-to-engineering': typeof WorkStockholmExergiDesignToEngineeringRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/work/stexui' | '/work/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/work/stexui'
+    | '/work/stockholm-exergi-design-to-engineering'
+    | '/work/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/work/stexui' | '/work'
-  id: '__root__' | '/' | '/about' | '/contact' | '/work/stexui' | '/work/'
+  to:
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/work/stexui'
+    | '/work/stockholm-exergi-design-to-engineering'
+    | '/work'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/contact'
+    | '/work/stexui'
+    | '/work/stockholm-exergi-design-to-engineering'
+    | '/work/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +105,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   WorkStexuiRoute: typeof WorkStexuiRoute
+  WorkStockholmExergiDesignToEngineeringRoute: typeof WorkStockholmExergiDesignToEngineeringRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
 
@@ -109,6 +139,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/stockholm-exergi-design-to-engineering': {
+      id: '/work/stockholm-exergi-design-to-engineering'
+      path: '/work/stockholm-exergi-design-to-engineering'
+      fullPath: '/work/stockholm-exergi-design-to-engineering'
+      preLoaderRoute: typeof WorkStockholmExergiDesignToEngineeringRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/stexui': {
       id: '/work/stexui'
       path: '/work/stexui'
@@ -124,6 +161,8 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   WorkStexuiRoute: WorkStexuiRoute,
+  WorkStockholmExergiDesignToEngineeringRoute:
+    WorkStockholmExergiDesignToEngineeringRoute,
   WorkIndexRoute: WorkIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -4,7 +4,6 @@ import { Checklist } from '@/components/Checklist';
 import { Page, PageContent } from '@/components/page';
 import StackedPanes from '@/components/StackedPanes';
 import { cn } from '@josui/core-web/src';
-import { Footer } from '@/components/Footer';
 import { RotatingText } from '@/components/RotatingText';
 import { Button } from '@/components/ui/button';
 import { Card } from '@josui/react/src';
@@ -62,7 +61,7 @@ function Home() {
               </Button>
 
               <Button size="lg" asChild className="pointer-events-auto">
-                <Link to="/about">Readme</Link>
+                <Link to="/readme">Read readme</Link>
               </Button>
             </div>
           </AnimateContent>
@@ -168,14 +167,12 @@ function Home() {
 
             <AnimateContent className="text-center">
               <Button size="xl" variant="primary" asChild className="pointer-events-auto">
-                <Link to="/contact">Let&apos;s Chat!</Link>
+                <Link to="/connect">Let&apos;s Connect!</Link>
               </Button>
             </AnimateContent>
           </div>
         </PageContent>
       </AnimateContent>
-
-      <Footer />
     </Page>
   );
 }

@@ -3,10 +3,6 @@
 @plugin "@tailwindcss/typography";
 @source "../../node_modules/@josui/react/**/*.{ts,tsx}";
 
-html {
-  scroll-behavior: smooth;
-}
-
 body * {
   cursor: none !important;
 }

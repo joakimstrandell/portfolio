@@ -3,11 +3,11 @@ import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 import { Footer } from '@/components/Footer';
 
-export const Route = createFileRoute('/contact')({
-  component: Contact,
+export const Route = createFileRoute('/connect')({
+  component: Connect,
   head: () => ({
     meta: [
-      { title: 'Contact - Joakim Strandell' },
+      { title: 'Connect - Joakim Strandell' },
       {
         name: 'description',
         content: 'Get in touch with Joakim Strandell for product design, engineering, or consulting opportunities.',
@@ -16,12 +16,12 @@ export const Route = createFileRoute('/contact')({
   }),
 });
 
-function Contact() {
+function Connect() {
   return (
     <Page>
       <PageContent>
         <AnimateContent className="prose">
-          <h1>Contact</h1>
+          <h1>Connect</h1>
           <p>
             Ready to ship? Whether you need a specific design system audit or a fullstack product engineer, let's
             discuss how we can build scalable software together.
@@ -41,7 +41,6 @@ function Contact() {
           <p>I am based in Stockholm, Sweden.</p>
         </AnimateContent>
       </PageContent>
-      <Footer />
     </Page>
   );
 }

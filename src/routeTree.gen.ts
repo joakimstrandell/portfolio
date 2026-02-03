@@ -9,21 +9,24 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutRouteImport } from './routes/about'
+import { Route as ReadmeRouteImport } from './routes/readme'
+import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work/index'
-import { Route as WorkStockholmExergiDesignToEngineeringRouteImport } from './routes/work/stockholm-exergi-design-to-engineering'
-import { Route as WorkStexuiRouteImport } from './routes/work/stexui'
+import { Route as WorkPersonalIndexRouteImport } from './routes/work/personal/index'
+import { Route as WorkClientIndexRouteImport } from './routes/work/client/index'
+import { Route as WorkPersonalJosuiRouteImport } from './routes/work/personal/josui'
+import { Route as WorkClientDesignToEngineeringAtStockholmExergiRouteImport } from './routes/work/client/design-to-engineering-at-stockholm-exergi'
+import { Route as WorkClientContractFirstApisAtStockholmExergiRouteImport } from './routes/work/client/contract-first-apis-at-stockholm-exergi'
 
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const ReadmeRoute = ReadmeRouteImport.update({
+  id: '/readme',
+  path: '/readme',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+const ConnectRoute = ConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -36,93 +39,130 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
   path: '/work/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WorkStockholmExergiDesignToEngineeringRoute =
-  WorkStockholmExergiDesignToEngineeringRouteImport.update({
-    id: '/work/stockholm-exergi-design-to-engineering',
-    path: '/work/stockholm-exergi-design-to-engineering',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const WorkStexuiRoute = WorkStexuiRouteImport.update({
-  id: '/work/stexui',
-  path: '/work/stexui',
+const WorkPersonalIndexRoute = WorkPersonalIndexRouteImport.update({
+  id: '/work/personal/',
+  path: '/work/personal/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkClientIndexRoute = WorkClientIndexRouteImport.update({
+  id: '/work/client/',
+  path: '/work/client/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkPersonalJosuiRoute = WorkPersonalJosuiRouteImport.update({
+  id: '/work/personal/josui',
+  path: '/work/personal/josui',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkClientDesignToEngineeringAtStockholmExergiRoute =
+  WorkClientDesignToEngineeringAtStockholmExergiRouteImport.update({
+    id: '/work/client/design-to-engineering-at-stockholm-exergi',
+    path: '/work/client/design-to-engineering-at-stockholm-exergi',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const WorkClientContractFirstApisAtStockholmExergiRoute =
+  WorkClientContractFirstApisAtStockholmExergiRouteImport.update({
+    id: '/work/client/contract-first-apis-at-stockholm-exergi',
+    path: '/work/client/contract-first-apis-at-stockholm-exergi',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/contact': typeof ContactRoute
-  '/work/stexui': typeof WorkStexuiRoute
-  '/work/stockholm-exergi-design-to-engineering': typeof WorkStockholmExergiDesignToEngineeringRoute
+  '/connect': typeof ConnectRoute
+  '/readme': typeof ReadmeRoute
   '/work/': typeof WorkIndexRoute
+  '/work/client/contract-first-apis-at-stockholm-exergi': typeof WorkClientContractFirstApisAtStockholmExergiRoute
+  '/work/client/design-to-engineering-at-stockholm-exergi': typeof WorkClientDesignToEngineeringAtStockholmExergiRoute
+  '/work/personal/josui': typeof WorkPersonalJosuiRoute
+  '/work/client/': typeof WorkClientIndexRoute
+  '/work/personal/': typeof WorkPersonalIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/contact': typeof ContactRoute
-  '/work/stexui': typeof WorkStexuiRoute
-  '/work/stockholm-exergi-design-to-engineering': typeof WorkStockholmExergiDesignToEngineeringRoute
+  '/connect': typeof ConnectRoute
+  '/readme': typeof ReadmeRoute
   '/work': typeof WorkIndexRoute
+  '/work/client/contract-first-apis-at-stockholm-exergi': typeof WorkClientContractFirstApisAtStockholmExergiRoute
+  '/work/client/design-to-engineering-at-stockholm-exergi': typeof WorkClientDesignToEngineeringAtStockholmExergiRoute
+  '/work/personal/josui': typeof WorkPersonalJosuiRoute
+  '/work/client': typeof WorkClientIndexRoute
+  '/work/personal': typeof WorkPersonalIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/contact': typeof ContactRoute
-  '/work/stexui': typeof WorkStexuiRoute
-  '/work/stockholm-exergi-design-to-engineering': typeof WorkStockholmExergiDesignToEngineeringRoute
+  '/connect': typeof ConnectRoute
+  '/readme': typeof ReadmeRoute
   '/work/': typeof WorkIndexRoute
+  '/work/client/contract-first-apis-at-stockholm-exergi': typeof WorkClientContractFirstApisAtStockholmExergiRoute
+  '/work/client/design-to-engineering-at-stockholm-exergi': typeof WorkClientDesignToEngineeringAtStockholmExergiRoute
+  '/work/personal/josui': typeof WorkPersonalJosuiRoute
+  '/work/client/': typeof WorkClientIndexRoute
+  '/work/personal/': typeof WorkPersonalIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
-    | '/contact'
-    | '/work/stexui'
-    | '/work/stockholm-exergi-design-to-engineering'
+    | '/connect'
+    | '/readme'
     | '/work/'
+    | '/work/client/contract-first-apis-at-stockholm-exergi'
+    | '/work/client/design-to-engineering-at-stockholm-exergi'
+    | '/work/personal/josui'
+    | '/work/client/'
+    | '/work/personal/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
-    | '/contact'
-    | '/work/stexui'
-    | '/work/stockholm-exergi-design-to-engineering'
+    | '/connect'
+    | '/readme'
     | '/work'
+    | '/work/client/contract-first-apis-at-stockholm-exergi'
+    | '/work/client/design-to-engineering-at-stockholm-exergi'
+    | '/work/personal/josui'
+    | '/work/client'
+    | '/work/personal'
   id:
     | '__root__'
     | '/'
-    | '/about'
-    | '/contact'
-    | '/work/stexui'
-    | '/work/stockholm-exergi-design-to-engineering'
+    | '/connect'
+    | '/readme'
     | '/work/'
+    | '/work/client/contract-first-apis-at-stockholm-exergi'
+    | '/work/client/design-to-engineering-at-stockholm-exergi'
+    | '/work/personal/josui'
+    | '/work/client/'
+    | '/work/personal/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  ContactRoute: typeof ContactRoute
-  WorkStexuiRoute: typeof WorkStexuiRoute
-  WorkStockholmExergiDesignToEngineeringRoute: typeof WorkStockholmExergiDesignToEngineeringRoute
+  ConnectRoute: typeof ConnectRoute
+  ReadmeRoute: typeof ReadmeRoute
   WorkIndexRoute: typeof WorkIndexRoute
+  WorkClientContractFirstApisAtStockholmExergiRoute: typeof WorkClientContractFirstApisAtStockholmExergiRoute
+  WorkClientDesignToEngineeringAtStockholmExergiRoute: typeof WorkClientDesignToEngineeringAtStockholmExergiRoute
+  WorkPersonalJosuiRoute: typeof WorkPersonalJosuiRoute
+  WorkClientIndexRoute: typeof WorkClientIndexRoute
+  WorkPersonalIndexRoute: typeof WorkPersonalIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/readme': {
+      id: '/readme'
+      path: '/readme'
+      fullPath: '/readme'
+      preLoaderRoute: typeof ReadmeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
+    '/connect': {
+      id: '/connect'
+      path: '/connect'
+      fullPath: '/connect'
+      preLoaderRoute: typeof ConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -139,18 +179,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/work/stockholm-exergi-design-to-engineering': {
-      id: '/work/stockholm-exergi-design-to-engineering'
-      path: '/work/stockholm-exergi-design-to-engineering'
-      fullPath: '/work/stockholm-exergi-design-to-engineering'
-      preLoaderRoute: typeof WorkStockholmExergiDesignToEngineeringRouteImport
+    '/work/personal/': {
+      id: '/work/personal/'
+      path: '/work/personal'
+      fullPath: '/work/personal/'
+      preLoaderRoute: typeof WorkPersonalIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/work/stexui': {
-      id: '/work/stexui'
-      path: '/work/stexui'
-      fullPath: '/work/stexui'
-      preLoaderRoute: typeof WorkStexuiRouteImport
+    '/work/client/': {
+      id: '/work/client/'
+      path: '/work/client'
+      fullPath: '/work/client/'
+      preLoaderRoute: typeof WorkClientIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/personal/josui': {
+      id: '/work/personal/josui'
+      path: '/work/personal/josui'
+      fullPath: '/work/personal/josui'
+      preLoaderRoute: typeof WorkPersonalJosuiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/client/design-to-engineering-at-stockholm-exergi': {
+      id: '/work/client/design-to-engineering-at-stockholm-exergi'
+      path: '/work/client/design-to-engineering-at-stockholm-exergi'
+      fullPath: '/work/client/design-to-engineering-at-stockholm-exergi'
+      preLoaderRoute: typeof WorkClientDesignToEngineeringAtStockholmExergiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/client/contract-first-apis-at-stockholm-exergi': {
+      id: '/work/client/contract-first-apis-at-stockholm-exergi'
+      path: '/work/client/contract-first-apis-at-stockholm-exergi'
+      fullPath: '/work/client/contract-first-apis-at-stockholm-exergi'
+      preLoaderRoute: typeof WorkClientContractFirstApisAtStockholmExergiRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -158,12 +219,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  ContactRoute: ContactRoute,
-  WorkStexuiRoute: WorkStexuiRoute,
-  WorkStockholmExergiDesignToEngineeringRoute:
-    WorkStockholmExergiDesignToEngineeringRoute,
+  ConnectRoute: ConnectRoute,
+  ReadmeRoute: ReadmeRoute,
   WorkIndexRoute: WorkIndexRoute,
+  WorkClientContractFirstApisAtStockholmExergiRoute:
+    WorkClientContractFirstApisAtStockholmExergiRoute,
+  WorkClientDesignToEngineeringAtStockholmExergiRoute:
+    WorkClientDesignToEngineeringAtStockholmExergiRoute,
+  WorkPersonalJosuiRoute: WorkPersonalJosuiRoute,
+  WorkClientIndexRoute: WorkClientIndexRoute,
+  WorkPersonalIndexRoute: WorkPersonalIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

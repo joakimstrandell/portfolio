@@ -4,11 +4,11 @@ import { Page, PageContent } from '@/components/page';
 import { Button } from '@/components/ui/button';
 import { Footer } from '@/components/Footer';
 
-export const Route = createFileRoute('/about')({
-  component: About,
+export const Route = createFileRoute('/readme')({
+  component: Readme,
   head: () => ({
     meta: [
-      { title: 'About - Joakim Strandell' },
+      { title: 'Readme - Joakim Strandell' },
       {
         name: 'description',
         content:
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/about')({
   }),
 });
 
-function About() {
+function Readme() {
   return (
     <>
       <Page>
@@ -61,6 +61,9 @@ function About() {
               </AnimateContent>
               <AnimateContent className="mt-12">
                 <div className="flex items-center gap-8">
+                  <Button size="lg" asChild variant="primary">
+                    <a href="/CV – Joakim Strandell.pdf">Personal CV</a>
+                  </Button>
                   <Button size="lg" asChild>
                     <a href="/Consultant CV – Joakim Strandell.pdf">Consultant CV</a>
                   </Button>
@@ -76,7 +79,7 @@ function About() {
           </div>
         </PageContent>
         <AnimateContent>
-          <div id="philosophy" className="relative border-t-8 border-b-8 border-black/10 bg-white/50">
+          <div id="philosophy" className="border-border/50 bg-background/50 relative border-t-8 border-b-8">
             <PageContent className="space-y-8">
               <div className="prose">
                 <h2>My Philosophy</h2>
@@ -105,7 +108,7 @@ function About() {
         </AnimateContent>
 
         <AnimateContent>
-          <div id="stack" className="relative border-black/10">
+          <div id="stack" className="border-border relative">
             <PageContent className="max-w-6xl">
               <AnimateContent>
                 <div className="prose">
@@ -167,7 +170,6 @@ function About() {
             </PageContent>
           </div>
         </AnimateContent>
-        <Footer />
       </Page>
     </>
   );

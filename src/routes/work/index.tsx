@@ -25,24 +25,24 @@ function Work() {
           <p className="mb-12 text-xl">
             A collection of client work, personal projects and concepts from Joakim Strandell.
           </p>
+        </AnimateContent>
+        <AnimateContent className="space-y-8">
           <ProjectCard
-            to="/work/client-work/stockholm-exergi-design-to-engineering"
+            to="/work/client/design-to-engineering-at-stockholm-exergi"
             type="client"
-            title="Unifying Design and Engineering with Design Systems"
+            title="Unifying Design and Engineering"
             extract="A 3-year effort to remove handoffs by building a shared design system and frontend architecture for internal operations products in Intelligy Solutions."
             thumbnail={{ src: '/exergi-plant.png', alt: 'Stockholm Exergi Plant in Lego blocks' }}
             logo={{ src: '/exergi-logo.png', alt: 'Stockholm Exergi Logo' }}
           />
-          <div className="mt-12" />
           <ProjectCard
-            to="/work/client-work/contract-first-apis-at-stockholm-exergi"
+            to="/work/client/contract-first-apis-at-stockholm-exergi"
             type="client"
-            title="Contract-First APIs at Stockholm Exergi"
+            title="Contract-First APIs"
             extract="How we aligned backend and frontend on shared API contracts, then generated type-safe SDKs, TanStack Query hooks, and validation to speed up delivery across multiple services."
             thumbnail={{ src: '/contract-first-apis-thumb.png', alt: 'Abstract contract-first API diagram' }}
             logo={{ src: '/exergi-logo.png', alt: 'Stockholm Exergi Logo' }}
           />
-          <div className="mt-12" />
           <ProjectCard
             to="/work/personal/josui"
             type="personal"

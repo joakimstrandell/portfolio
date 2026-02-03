@@ -20,9 +20,9 @@ interface ProjectCardProps {
 
 export function ProjectCard({ to, type, pinned = false, title, extract, thumbnail, logo }: ProjectCardProps) {
   return (
-    <Link to={to} className="group">
+    <Link to={to} className="group block">
       <article className="flex flex-col items-center space-x-8 md:flex-row">
-        <div className="relative w-56 shrink-0 overflow-hidden rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105">
+        <div className="relative h-36 w-56 shrink-0 overflow-hidden rounded-lg shadow-lg transition-transform duration-300 group-hover:scale-105">
           <div className="bg-foreground/20 group-hover:bg-foreground/40 absolute top-0 left-0 h-full w-full transition-colors duration-300"></div>
           <img
             src={logo.src}

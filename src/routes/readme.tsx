@@ -2,7 +2,6 @@ import { createFileRoute } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
 import { Button } from '@/components/ui/button';
-import { Footer } from '@/components/Footer';
 
 export const Route = createFileRoute('/readme')({
   component: Readme,

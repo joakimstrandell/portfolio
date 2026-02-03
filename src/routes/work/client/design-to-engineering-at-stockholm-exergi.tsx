@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageContent } from '@/components/page';
-import { Footer } from '@/components/Footer';
 import { Checklist } from '@/components/Checklist';
 
 export const Route = createFileRoute('/work/client/design-to-engineering-at-stockholm-exergi')({

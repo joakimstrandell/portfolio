@@ -1,6 +1,5 @@
 import { PageContent } from './page';
 import { Link } from '@tanstack/react-router';
-import AnimateContent from './AnimateContent';
 
 export function Footer() {
   return (

@@ -9,8 +9,8 @@ export function Navigation() {
     <nav>
       <ul className="flex gap-0 text-sm leading-none">
         <Navigation.Item href="/work">Work</Navigation.Item>
-        <Navigation.Item href="/about">About</Navigation.Item>
-        <Navigation.Item href="/contact">Contact</Navigation.Item>
+        <Navigation.Item href="/readme">Readme</Navigation.Item>
+        <Navigation.Item href="/connect">Connect</Navigation.Item>
       </ul>
     </nav>
   );

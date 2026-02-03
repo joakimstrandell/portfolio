@@ -5,6 +5,7 @@ import { CellGrid, CustomCursor } from '@josui/react/src';
 
 import '@fontsource-variable/roboto-mono';
 import '@/styles/globals.css';
+import { Footer } from '@/components/Footer';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -44,7 +45,12 @@ function RootComponent() {
             className="pointer-events-none fixed inset-x-0 top-0 z-0 h-150 bg-[radial-gradient(ellipse_100%_60%_at_50%_0%,var(--color-background)_0%,transparent_100%)]"
             aria-hidden="true"
           />
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-150 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,var(--color-background)_0%,transparent_100%)] opacity-80"
+            aria-hidden="true"
+          />
         </CellGrid>
+        <Footer />
         <Scripts />
         <Analytics />
       </body>

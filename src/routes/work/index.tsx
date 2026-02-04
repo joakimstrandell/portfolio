@@ -20,11 +20,9 @@ function Work() {
   return (
     <Page>
       <PageSection>
-        <AnimateContent>
-          <h1 className="mb-2 text-4xl font-bold">Work</h1>
-          <p className="mb-12 text-xl">
-            A collection of client work, personal projects and concepts from Joakim Strandell.
-          </p>
+        <AnimateContent className="prose">
+          <h1 className="mb-2 font-bold">Work</h1>
+          <p className="text-xl">A collection of client work, personal projects and concepts.</p>
         </AnimateContent>
         <AnimateContent className="space-y-8">
           <ProjectCard

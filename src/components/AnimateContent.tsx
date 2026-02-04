@@ -130,7 +130,7 @@ export default function AnimateContent({
   };
 
   return (
-    <div ref={sectionRef} className={cn('block', className, getInitialClass())} data-animate-content id={id}>
+    <div ref={sectionRef} className={cn('block w-full', className, getInitialClass())} data-animate-content id={id}>
       {children}
     </div>
   );

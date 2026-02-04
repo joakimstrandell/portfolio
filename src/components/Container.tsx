@@ -9,16 +9,16 @@ export type ContainerWidth = 'narrowest' | 'narrower' | 'narrow' | 'wide' | 'wid
 
 export const containerVariants = cva('px-6', {
   variants: {
+    paddingSize: {
+      sm: 'py-12',
+      md: 'py-24',
+      lg: 'py-32',
+    },
     padding: {
       top: 'pb-0',
       bottom: 'pt-0',
       'top-bottom': '',
       none: 'py-0',
-    },
-    paddingSize: {
-      sm: 'py-12',
-      md: 'py-24',
-      lg: 'py-32',
     },
     width: {
       narrowest: 'max-w-md',

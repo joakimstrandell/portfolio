@@ -20,26 +20,18 @@ export const Route = createFileRoute('/work/client/contract-first-apis-at-stockh
 function ContractFirstApisCase() {
   return (
     <Page>
-      <PageSection width="lg" padding="none">
-        <AnimateContent>
+      <PageSection width="narrow">
+        <AnimateContent className="prose">
           <h1 className="mb-6 text-4xl font-bold">Contract-First APIs</h1>
-          <p className="text-muted-foreground grid grid-cols-3 gap-x-8">
-            <div className="prose">
-              <strong>Role:</strong>
-              <p>Frontend Engineer, leading architecture for frontend infrastructure and applications</p>
-            </div>
-            <div>
-              <strong>Outcome:</strong>
-              <p>Shared API contracts and generated SDKs adopted across multiple services</p>
-            </div>
-            <div>
-              <strong>Focus period:</strong>
-              <p>2024–2025</p>
-            </div>
+          <p className="text-muted-foreground">
+            <strong>Role:</strong> Frontend Engineer, leading architecture for frontend infrastructure and applications
+            <br />
+            <strong>Outcome:</strong> Shared API contracts and generated SDKs adopted across multiple services
+            <br />
+            <strong>Focus period:</strong> 2024–2025
+            <br />
           </p>
         </AnimateContent>
-      </PageSection>
-      <PageSection>
         <AnimateContent className="prose">
           <h2>Overview</h2>
           <p>
@@ -166,11 +158,10 @@ function ContractFirstApisCase() {
         </AnimateContent>
 
         <AnimateContent className="prose">
-          <h2>Next</h2>
-          <p>If you want to build reliable, scalable API contracts and type-safe frontend integrations, let’s talk.</p>
-          <Link to="/connect" className="inline-flex font-semibold underline">
-            Start a conversation
-          </Link>
+          <p>
+            Lets <Link to="/connect">connect</Link> if you want to build reliable, scalable API contracts and type-safe
+            frontend integrations that reduce bug tickets and increase delivery speed.
+          </p>
         </AnimateContent>
       </PageSection>
     </Page>

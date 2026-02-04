@@ -20,7 +20,7 @@ export const Route = createFileRoute('/work/client/design-to-engineering-at-stoc
 function StockholmExergiCase() {
   return (
     <Page>
-      <PageSection>
+      <PageSection width="narrow">
         <AnimateContent className="prose">
           <h1>Unifying Design and Engineering</h1>
           <p className="text-muted-foreground">
@@ -190,19 +190,6 @@ function StockholmExergiCase() {
           </p>
         </AnimateContent>
 
-        <AnimateContent>
-          <blockquote className="border-primary-500/30 my-12 border-l-2 pl-6">
-            <p className="text-lg italic">
-              "His ability to own the entire chain – from design concept to complex implementation – enabled us to
-              deliver higher quality faster."
-            </p>
-            <footer className="text-muted-foreground mt-3 text-sm">
-              <strong className="text-foreground">Patrik Höjner</strong> · Head of Intelligy Solutions DevOps, Stockholm
-              Exergi
-            </footer>
-          </blockquote>
-        </AnimateContent>
-
         <AnimateContent className="prose">
           <h2>Learnings</h2>
           <p>
@@ -228,6 +215,20 @@ function StockholmExergiCase() {
           <p>
             <strong>Scope:</strong> Internal operations products with a shared design system and frontend architecture
           </p>
+        </AnimateContent>
+        <AnimateContent>
+          <blockquote className="border-primary-500/30 my-12 border-l-2 pl-6">
+            <p className="text-lg italic">
+              "Joakim's ability to own the entire chain – from design concept to complex implementation – enabled us to
+              deliver higher quality faster."
+            </p>
+            <footer className="text-muted-foreground mt-3 text-sm">
+              <strong className="text-foreground">Patrik Höjner</strong> · Head of Intelligy Solutions DevOps, Stockholm
+              Exergi
+            </footer>
+          </blockquote>
+        </AnimateContent>
+        <AnimateContent className="prose">
           <p>
             See some of the patterns in action in the{' '}
             <Link to="/work/personal/josui" className="underline underline-offset-4">
@@ -248,7 +249,7 @@ function TimelineItem({ period, title, children }: { period: string; title: stri
       <div className="bg-primary-500 absolute top-1 -left-9.25 h-2 w-2 rounded-full" />
       <p className="text-muted-foreground font-mono text-sm">{period}</p>
       <h3 className="mt-1 text-lg font-semibold">{title}</h3>
-      <p className="text-muted-foreground mt-1">{children}</p>
+      <p className="text-muted-foreground prose mt-1">{children}</p>
     </div>
   );
 }

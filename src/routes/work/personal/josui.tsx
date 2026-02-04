@@ -2,9 +2,6 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
 import { Page, PageSection } from '@/components/Page';
 import { Checklist } from '@/components/Checklist';
-import { Card } from '@josui/react/src';
-import { Button } from '@/components/ui/button';
-import { ArrowLeftIcon } from 'lucide-react';
 
 export const Route = createFileRoute('/work/personal/josui')({
   component: JosuiCase,
@@ -23,18 +20,19 @@ export const Route = createFileRoute('/work/personal/josui')({
 function JosuiCase() {
   return (
     <Page>
-      <PageSection>
+      <PageSection width="narrow">
         <AnimateContent className="prose">
-          <h1>JOSUI Design System Monorepo (Work in Progress)</h1>
+          <h1 className="mb-6 text-4xl font-bold">JOSUI Design System</h1>
+          <p className="text-primary-700 -mt-4">Work in progress</p>
           <p className="text-muted-foreground">
             <strong>Role:</strong> Creator and sole contributor
             <br />
             <strong>Focus period:</strong> January 2026–Present
             <br />
             <strong>Outcome:</strong> Evolving design system architecture with multi-framework delivery
+            <br />
           </p>
         </AnimateContent>
-
         <AnimateContent className="prose">
           <h2>Overview</h2>
           <p>
@@ -157,26 +155,10 @@ function JosuiCase() {
             Repository: <a href="https://github.com/joakimstrandell/josui">github.com/joakimstrandell/josui</a>
           </p>
         </AnimateContent>
-      </PageSection>
-      <PageSection width="xl" padding="none">
-        <AnimateContent>
-          <Card>
-            <h2>More work</h2>
-            <p className="prose-lg"></p>
-            <Button size="lg" asChild>
-              <Link to="/work">
-                <ArrowLeftIcon className="size-4" /> View work
-              </Link>
-            </Button>
-          </Card>
-          <Card variant="bordered">
-            <p className="prose-lg">
-              If you’re building a multi-framework design system or token pipeline, let’s talk.
-            </p>
-            <Button size="lg" variant="primary" asChild>
-              <Link to="/connect">Let's connect!</Link>
-            </Button>
-          </Card>
+        <AnimateContent className="prose">
+          <p>
+            Lets <Link to="/connect">connect</Link> if you want to talk design systems or token pipelines.
+          </p>
         </AnimateContent>
       </PageSection>
     </Page>

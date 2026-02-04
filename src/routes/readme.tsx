@@ -32,8 +32,8 @@ function Readme() {
                     20+ years in UX/UI Design and Fullstack Engineering
                   </p>
                 </div>
-                <div className="hidden overflow-hidden rounded-full border-2 border-black/10 sm:block lg:hidden">
-                  <img src="/joakim-sketch-transparent.png" alt="Joakim Strandell" width={100} height={100} />
+                <div className="border-border/50 hidden overflow-hidden rounded-full border-2 sm:block lg:hidden">
+                  <img src="/joakim-sketch-transparent.png" alt="Joakim Strandell" width={80} height={80} />
                 </div>
               </div>
             </AnimateContent>
@@ -70,7 +70,7 @@ function Readme() {
           </div>
           <AnimateContent
             animationType="fadeLeft"
-            className="border-foreground/10 hidden items-center justify-center overflow-hidden rounded-full border-8 bg-white/20 lg:flex"
+            className="border-border/50 hidden w-80 items-center justify-center overflow-hidden rounded-full border-8 bg-white/20 lg:flex"
           >
             <img src="/joakim-sketch-transparent.png" alt="Old man laptop" width={320} height={320} />
           </AnimateContent>

@@ -26,7 +26,7 @@ export function PageSection({
 }) {
   return (
     <Container padding={padding} paddingSize={paddingSize} width={width} asChild>
-      <section className={cn('space-y-6', className)} id={id}>
+      <section className={cn('flex flex-col justify-center space-y-10 lg:space-y-12', className)} id={id}>
         {children}
       </section>
     </Container>

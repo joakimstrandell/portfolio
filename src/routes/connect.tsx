@@ -18,7 +18,7 @@ export const Route = createFileRoute('/connect')({
 function Connect() {
   return (
     <Page>
-      <PageSection>
+      <PageSection width="narrow">
         <AnimateContent className="prose">
           <h1>Connect</h1>
           <p>

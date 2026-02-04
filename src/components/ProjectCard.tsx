@@ -31,9 +31,9 @@ export function ProjectCard({ to, type, pinned = false, title, extract, thumbnai
           />
           <img src={thumbnail.src} alt={thumbnail.alt} className="h-full w-full object-cover" />
         </div>
-        <div className="transition-transform duration-300 group-hover:translate-x-2">
-          <h1 className="mb-2 flex items-center gap-x-3 text-2xl font-bold">{title}</h1>
-          <p className="mb-2 group-hover:underline">{extract}</p>
+        <div className="prose transition-transform duration-300 group-hover:translate-x-2">
+          <h1 className="mb-0 flex items-center gap-x-3 text-2xl font-bold">{title}</h1>
+          <p className="mt-2 mb-2 group-hover:underline">{extract}</p>
           <span
             className={cn(
               'bg-secondary-200 text-secondary-900 inline-flex items-center gap-x-1 rounded px-2 py-1 text-sm',

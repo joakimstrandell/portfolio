@@ -93,17 +93,17 @@ export interface GlobeConfig {
 const DEFAULT_CONFIG: Required<GlobeConfig> = {
   // Dots
   dotCount: 100,
-  dotSize: 0.0075,
+  dotSize: 0.0055,
   dotColor: '#ffb92f',
-  dotOpacity: 0.3,
-  dotBlur: 0.5,
+  dotOpacity: 0.5,
+  dotBlur: 0.3,
   dotOffset: 0.05,
   minDotDistance: 0.18,
 
   // Dot shadows
   dotShadows: true,
   dotShadowColor: '#ffb92f',
-  dotShadowOpacity: 0.2,
+  dotShadowOpacity: 0.4,
   dotShadowSize: 0.05,
   dotShadowBlur: 1,
 
@@ -115,18 +115,18 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
 
   // Sphere
   sphereRadius: 5.85,
-  sphereSegments: 64,
+  sphereSegments: 32,
   sphereColor: '#ffb92f',
   sphereOpacity: 0.01,
 
   // Atmosphere
   atmosphereColor: '#ffb92f',
-  atmosphereOpacity: 0.1,
+  atmosphereOpacity: 0.15,
   atmosphereScale: 1.1,
 
   // Fresnel rim
   fresnelColor: '#ffffff',
-  fresnelOpacity: 0.15,
+  fresnelOpacity: 0.8,
   fresnelPower: 3.0,
 
   // Noise texture
@@ -136,7 +136,7 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   noiseScale: 3.0,
 
   // City lights
-  cityLights: true,
+  cityLights: false,
   cityLightColor: '#F5B82E',
   cityLightOpacity: 0.3,
   cityLightDensity: 30.0,
@@ -152,7 +152,7 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   scrollTilt: 0.1,
 
   // Performance
-  idleFps: 60,
+  idleFps: 24,
 };
 
 // ============================================================================
@@ -348,12 +348,14 @@ function FresnelSphere({
   opacity,
   power,
   segments,
+  renderOrder,
 }: {
   radius: number;
   color: string;
   opacity: number;
   power: number;
   segments: number;
+  renderOrder?: number;
 }) {
   const shader = useMemo(() => createFresnelShader(power), [power]);
 
@@ -374,7 +376,7 @@ function FresnelSphere({
   if (!material) return null;
 
   return (
-    <mesh material={material}>
+    <mesh material={material} renderOrder={renderOrder}>
       <sphereGeometry args={[radius, segments, segments]} />
     </mesh>
   );
@@ -732,6 +734,7 @@ function PointsDots({
   liftDistance,
   blur,
   offset,
+  renderOrder,
 }: {
   positions: Float32Array;
   liftSpeeds: Float32Array;
@@ -745,6 +748,7 @@ function PointsDots({
   liftDistance: number;
   blur: number;
   offset: number;
+  renderOrder?: number;
 }) {
   const materialRef = useRef<ShaderMaterial>(null);
   const shader = useMemo(() => createPointsShader(takeoffThreshold, liftDistance), [takeoffThreshold, liftDistance]);
@@ -779,7 +783,7 @@ function PointsDots({
   if (!THREE || !geometry || !uniforms) return null;
 
   return (
-    <points geometry={geometry}>
+    <points geometry={geometry} renderOrder={renderOrder}>
       <shaderMaterial
         ref={materialRef}
         transparent
@@ -988,6 +992,7 @@ function Trails({
   liftDistance,
   trailWidth,
   blur,
+  renderOrder,
 }: {
   positions: Float32Array;
   liftSpeeds: Float32Array;
@@ -1000,6 +1005,7 @@ function Trails({
   liftDistance: number;
   trailWidth: number;
   blur: number;
+  renderOrder?: number;
 }) {
   const materialRef = useRef<ShaderMaterial>(null);
   const count = positions.length / 3;
@@ -1039,7 +1045,7 @@ function Trails({
   if (!THREE || !geometry || !uniforms) return null;
 
   return (
-    <instancedMesh args={[geometry, undefined, count]} frustumCulled={false}>
+    <instancedMesh args={[geometry, undefined, count]} frustumCulled={false} renderOrder={renderOrder}>
       <shaderMaterial
         ref={materialRef}
         transparent
@@ -1095,6 +1101,7 @@ function Globe({ containerRef, data, config }: GlobeProps) {
           opacity={config.fresnelOpacity}
           power={config.fresnelPower}
           segments={config.sphereSegments}
+          renderOrder={2}
         />
         {config.noise && (
           <NoiseSphere
@@ -1138,6 +1145,7 @@ function Globe({ containerRef, data, config }: GlobeProps) {
           liftDistance={config.liftDistance}
           trailWidth={config.trailWidth}
           blur={config.trailBlur}
+          renderOrder={4}
         />
         <PointsDots
           positions={positions}
@@ -1152,6 +1160,7 @@ function Globe({ containerRef, data, config }: GlobeProps) {
           liftDistance={config.liftDistance}
           blur={config.dotBlur}
           offset={config.dotOffset}
+          renderOrder={5}
         />
       </group>
     </group>
@@ -1220,6 +1229,7 @@ export function GlobeBackground({ className, ...configOverrides }: { className?:
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           style={{ background: 'transparent' }}
           frameloop="demand"
+          dpr={[1, 1.5]}
         >
           <Globe containerRef={containerRef} data={globeData} config={config} />
         </Canvas>

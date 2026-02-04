@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent, PageSection } from '@/components/page';
+import { Page, PageSection } from '@/components/Page';
 import { Checklist } from '@/components/Checklist';
 import { Card } from '@josui/react/src';
+import { Button } from '@/components/ui/button';
+import { ArrowLeftIcon } from 'lucide-react';
 
 export const Route = createFileRoute('/work/personal/josui')({
   component: JosuiCase,
@@ -21,7 +23,7 @@ export const Route = createFileRoute('/work/personal/josui')({
 function JosuiCase() {
   return (
     <Page>
-      <PageContent>
+      <PageSection>
         <AnimateContent className="prose">
           <h1>JOSUI Design System Monorepo (Work in Progress)</h1>
           <p className="text-muted-foreground">
@@ -104,8 +106,8 @@ function JosuiCase() {
             <strong>Framework packages and tooling</strong>
             <br />
             React and Vue libraries are published separately, each with Storybook, Vitest, and Testing Library setup.
-            The monorepo includes internal linting, TypeScript, and Prettier config packages to enforce consistency.
-            It also includes `AGENTS.md` guidance and scoped skills to support agentic coding workflows across packages.
+            The monorepo includes internal linting, TypeScript, and Prettier config packages to enforce consistency. It
+            also includes `AGENTS.md` guidance and scoped skills to support agentic coding workflows across packages.
           </p>
         </AnimateContent>
 
@@ -155,15 +157,25 @@ function JosuiCase() {
             Repository: <a href="https://github.com/joakimstrandell/josui">github.com/joakimstrandell/josui</a>
           </p>
         </AnimateContent>
-      </PageContent>
-      <PageSection width="xl">
+      </PageSection>
+      <PageSection width="xl" padding="none">
         <AnimateContent>
-          <Card className="prose">
-            <h2>Next</h2>
-            <p>If you’re building a multi-framework design system or token pipeline, let’s talk.</p>
-            <Link to="/connect" className="inline-flex font-semibold underline">
-              Start a conversation
-            </Link>
+          <Card>
+            <h2>More work</h2>
+            <p className="prose-lg"></p>
+            <Button size="lg" asChild>
+              <Link to="/work">
+                <ArrowLeftIcon className="size-4" /> View work
+              </Link>
+            </Button>
+          </Card>
+          <Card variant="bordered">
+            <p className="prose-lg">
+              If you’re building a multi-framework design system or token pipeline, let’s talk.
+            </p>
+            <Button size="lg" variant="primary" asChild>
+              <Link to="/connect">Let's connect!</Link>
+            </Button>
           </Card>
         </AnimateContent>
       </PageSection>

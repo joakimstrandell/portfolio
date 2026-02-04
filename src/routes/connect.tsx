@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent } from '@/components/page';
+import { Page, PageSection } from '@/components/Page';
 
 export const Route = createFileRoute('/connect')({
   component: Connect,
@@ -18,7 +18,7 @@ export const Route = createFileRoute('/connect')({
 function Connect() {
   return (
     <Page>
-      <PageContent>
+      <PageSection>
         <AnimateContent className="prose">
           <h1>Connect</h1>
           <p>
@@ -39,7 +39,7 @@ function Connect() {
           </p>
           <p>I am based in Stockholm, Sweden.</p>
         </AnimateContent>
-      </PageContent>
+      </PageSection>
     </Page>
   );
 }

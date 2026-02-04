@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent, PageSection } from '@/components/page';
+import { Page, PageSection } from '@/components/Page';
 import { Checklist } from '@/components/Checklist';
 
 export const Route = createFileRoute('/work/client/contract-first-apis-at-stockholm-exergi')({
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/work/client/contract-first-apis-at-stockh
 function ContractFirstApisCase() {
   return (
     <Page>
-      <PageSection width="lg">
+      <PageSection width="lg" padding="none">
         <AnimateContent>
           <h1 className="mb-6 text-4xl font-bold">Contract-First APIs</h1>
           <p className="text-muted-foreground grid grid-cols-3 gap-x-8">
@@ -39,7 +39,7 @@ function ContractFirstApisCase() {
           </p>
         </AnimateContent>
       </PageSection>
-      <PageContent>
+      <PageSection>
         <AnimateContent className="prose">
           <h2>Overview</h2>
           <p>
@@ -172,7 +172,7 @@ function ContractFirstApisCase() {
             Start a conversation
           </Link>
         </AnimateContent>
-      </PageContent>
+      </PageSection>
     </Page>
   );
 }

@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { cn } from '@josui/core-web/src';
 
 interface AnimateContentProps {
+  id?: string;
   children: ReactNode;
   className?: string;
   animationType?: 'fadeUp' | 'fadeIn' | 'fadeLeft' | 'fadeRight' | 'slideUp' | 'slideLeft' | 'slideRight';
@@ -18,6 +19,7 @@ interface AnimateContentProps {
 }
 
 export default function AnimateContent({
+  id,
   children,
   className = '',
   animationType = 'fadeUp',
@@ -128,7 +130,7 @@ export default function AnimateContent({
   };
 
   return (
-    <div ref={sectionRef} className={cn('block', className, getInitialClass())} data-animate-content>
+    <div ref={sectionRef} className={cn('block', className, getInitialClass())} data-animate-content id={id}>
       {children}
     </div>
   );

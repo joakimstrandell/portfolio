@@ -38,19 +38,19 @@ function RootComponent() {
           cellOpacity={0.3}
           cellSize={16}
         >
-          <CustomCursor />
-          <Header />
-          <Outlet />
           <div
             className="pointer-events-none fixed inset-x-0 top-0 z-0 h-150 bg-[radial-gradient(ellipse_100%_60%_at_50%_0%,var(--color-background)_0%,transparent_100%)]"
             aria-hidden="true"
           />
+          <Header />
+          <Outlet />
           <div
             className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-150 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,var(--color-background)_0%,transparent_100%)] opacity-80"
             aria-hidden="true"
           />
         </CellGrid>
         <Footer />
+        <CustomCursor />
         <Scripts />
         <Analytics />
       </body>

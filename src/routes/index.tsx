@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
 import { Checklist } from '@/components/Checklist';
-import { Page, PageContent } from '@/components/page';
+import { Page, PageSection } from '@/components/Page';
 import StackedPanes from '@/components/StackedPanes';
 import { cn } from '@josui/core-web/src';
 import { RotatingText } from '@/components/RotatingText';
@@ -31,7 +31,7 @@ function Home() {
             <StackedPanes />
           </AnimateContent>
         </div>
-        <PageContent
+        <PageSection
           className={cn(
             'pointer-events-none relative z-10 max-w-2xl md:max-w-7xl',
             'flex h-full flex-1 flex-col justify-center',
@@ -61,24 +61,16 @@ function Home() {
               </Button>
 
               <Button size="lg" asChild className="pointer-events-auto">
-                <Link to="/readme">Read readme</Link>
+                <Link to="/readme">Readme</Link>
               </Button>
             </div>
           </AnimateContent>
-        </PageContent>
+        </PageSection>
       </div>
 
       <AnimateContent>
         <GlobeBackground className="-mt-72" />
-
-        {/* <div
-            className="absolute inset-0 backdrop-blur-md"
-            style={{
-              maskImage: 'radial-gradient(ellipse at center, transparent 20%, black 70%)',
-              WebkitMaskImage: 'radial-gradient(ellipse at center, transparent 20%, black 70%)',
-            }}
-          /> */}
-        <PageContent className="relative z-10 max-w-6xl pt-48">
+        <PageSection className="relative z-10 max-w-6xl pt-48">
           <AnimateContent animationType="slideUp" className="-mt-32">
             <div className="prose prose-xl md:prose-2xl prose-a mx-auto text-center">
               <h2 className="mb-4">
@@ -171,7 +163,7 @@ function Home() {
               </Button>
             </AnimateContent>
           </div>
-        </PageContent>
+        </PageSection>
       </AnimateContent>
     </Page>
   );

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent } from '@/components/page';
+import { Page, PageSection } from '@/components/Page';
 import { Checklist } from '@/components/Checklist';
 
 export const Route = createFileRoute('/work/client/design-to-engineering-at-stockholm-exergi')({
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/work/client/design-to-engineering-at-stoc
 function StockholmExergiCase() {
   return (
     <Page>
-      <PageContent>
+      <PageSection>
         <AnimateContent className="prose">
           <h1>Unifying Design and Engineering</h1>
           <p className="text-muted-foreground">
@@ -237,7 +237,7 @@ function StockholmExergiCase() {
             by some of the same principles.
           </p>
         </AnimateContent>
-      </PageContent>
+      </PageSection>
     </Page>
   );
 }

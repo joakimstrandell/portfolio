@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import AnimateContent from '@/components/AnimateContent';
-import { Page, PageContent } from '@/components/page';
+import { Page, PageSection } from '@/components/Page';
 import { ProjectCard } from '@/components/ProjectCard';
 
 export const Route = createFileRoute('/work/')({
@@ -19,7 +19,7 @@ export const Route = createFileRoute('/work/')({
 function Work() {
   return (
     <Page>
-      <PageContent>
+      <PageSection>
         <AnimateContent>
           <h1 className="mb-2 text-4xl font-bold">Work</h1>
           <p className="mb-12 text-xl">
@@ -31,7 +31,7 @@ function Work() {
             to="/work/client/design-to-engineering-at-stockholm-exergi"
             type="client"
             title="Unifying Design and Engineering"
-            extract="A 3-year effort to remove handoffs by building a shared design system and frontend architecture for internal operations products in Intelligy Solutions."
+            extract="A 3-year unification effort: one design system and frontend architecture that made internal operations products consistent and faster to ship."
             thumbnail={{ src: '/exergi-plant.png', alt: 'Stockholm Exergi Plant in Lego blocks' }}
             logo={{ src: '/exergi-logo.png', alt: 'Stockholm Exergi Logo' }}
           />
@@ -39,20 +39,20 @@ function Work() {
             to="/work/client/contract-first-apis-at-stockholm-exergi"
             type="client"
             title="Contract-First APIs"
-            extract="How we aligned backend and frontend on shared API contracts, then generated type-safe SDKs, TanStack Query hooks, and validation to speed up delivery across multiple services."
+            extract="A contract-first workflow that made frontend–backend integrations faster and safer across multiple services with generated, type-safe clients."
             thumbnail={{ src: '/contract-first-apis-thumb.png', alt: 'Abstract contract-first API diagram' }}
             logo={{ src: '/exergi-logo.png', alt: 'Stockholm Exergi Logo' }}
           />
           <ProjectCard
             to="/work/personal/josui"
             type="personal"
-            title="JOSUI Design System Monorepo"
-            extract="A multi-package design system built with pnpm + turbo, shipping tokens, core logic, React and Vue libraries, and tooling packages for linting, TypeScript, and Prettier."
+            title="JOSUI Design System"
+            extract="An evolving design system monorepo with a token pipeline, core utilities, and React/Vue component libraries."
             thumbnail={{ src: '/josui-thumbnail.png', alt: 'Abstract design system diagram' }}
             logo={{ src: '/josui-logo.png', alt: 'JOSUI logo' }}
           />
         </AnimateContent>
-      </PageContent>
+      </PageSection>
     </Page>
   );
 }

@@ -34,6 +34,7 @@
     "gsap": "^3.13.0",
     "lucide-react": "^0.545.0",
     "nitro": "3.0.1-alpha.2",
+    "radix-ui": "^1.4.3",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "tailwind-merge": "^3.3.1",

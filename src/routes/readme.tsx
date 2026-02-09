@@ -60,10 +60,10 @@ function Readme() {
             <AnimateContent className="mt-12">
               <div className="flex items-center gap-8">
                 <Button size="lg" asChild variant="primary">
-                  <a href="/CV – Joakim Strandell.pdf">Personal CV</a>
+                  <a href="/Joakim_Strandell_Product_Engineer_CV.pdf">Personal CV</a>
                 </Button>
                 <Button size="lg" asChild>
-                  <a href="/Consultant CV – Joakim Strandell.pdf">Consultant CV</a>
+                  <a href="/Joakim_Strandell_Engineer_Designer_Consultant_CV.pdf">Consultant CV</a>
                 </Button>
               </div>
             </AnimateContent>

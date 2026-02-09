@@ -7,7 +7,7 @@ export function Footer() {
       <Container padding="top-bottom" paddingSize="md" width="wider" asChild>
         <footer className="grid gap-4 sm:grid-cols-2 md:grid-cols-4">
           <p className="leading-7">
-            © 2025
+            © {new Date().getFullYear()}
             <br /> Joakim Strandell <br />
             <a
               className="footer-link"

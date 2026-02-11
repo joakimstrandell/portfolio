@@ -53,12 +53,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a className="footer-link" href="/Joakim_Strandell_Product_Engineer_CV.pdf">
-                  Personal CV
+                <a className="footer-link" href="/Joakim_Strandell_Fullstack_Designer_CV.pdf">
+                  Employment CV
                 </a>
               </li>
               <li>
-                <a className="footer-link" href="/Joakim_Strandell_Engineer_Designer_Consultant_CV.pdf">
+                <a className="footer-link" href="/Joakim_Strandell_Fullstack_Designer_Consultant_CV.pdf">
                   Consultant CV
                 </a>
               </li>
